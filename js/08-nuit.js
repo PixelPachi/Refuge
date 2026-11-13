@@ -101,6 +101,7 @@ function nextClient(){
   if(staffOn("hypotrempe") && d.family==="Abandon") c.ouv++;
   if(staffOn("goupix") && d.family==="Abandon") c.ten--;
   staffFx("arrive", c, d);
+  if(d.onArrive) d.onArrive(c);
   if(staffOn("ronflex")) c.turns++;
   if(hasBib("sablier")) c.turns++;
   if(hasBib("clochette")) c.ouv++;

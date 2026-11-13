@@ -34,7 +34,7 @@ function startDay(){
 }
 function marketRow(k){
   const g=k.startsWith("gel_"), it = g ? null : ING[k], e = g ? ESS[k.slice(4)] : null;
-  const name = g ? e.n : it.n, price = g ? gelPrice() : it.price, desc = g ? `Goût ${e.ty}` : it.d;
+  const name = g ? e.n : it.n, price = g ? gelPrice() : ingPrice(k), desc = g ? `Goût ${e.ty}` : it.d;
   const icon = g ? gelIcon(k.slice(4)) : itemIcon(k);
   return `<div class="card row">${icon}<div class="grow"><b>${name}</b> <span class="small muted">· ×${S.stock[k]||0}</span><div class="small muted">${desc}</div></div>
     <button class="sm" data-act="buy" data-k="${k}" ${S.money<price?"disabled":""}>${price} ₽</button></div>`;
@@ -82,7 +82,7 @@ function renderMarket(){
   </div>`;
 }
 function buy(k){
-  const price = k.startsWith("gel_") ? gelPrice() : ING[k].price;
+  const price = k.startsWith("gel_") ? gelPrice() : ingPrice(k);
   if(S.money<price) return;
   const y=document.querySelector(".pad.scroll") ? document.querySelector(".pad.scroll").scrollTop : 0;
   S.money-=price; S.stock[k]=(S.stock[k]||0)+1; renderMarket();

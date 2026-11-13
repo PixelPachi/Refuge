@@ -1,6 +1,6 @@
 // ---------- Le Grand Écho : la finale de chaque saison ----------
 // ---------- Le Pourboire d'Or : la taverne rival de Miaouss (saisons 4 à 8) ----------
-function rivalOpen(){ const se=S.season||1; return se>=4 && se<=8; }
+function rivalOpen(){ const se=S.season||1; return se>=4 && se<=7; } // fermé pour faillite au début de la saison 8
 const MIAOUSS = {id:52,n:"Miaouss"};
 function miaoussVisit(next){
   if(!rivalOpen() || S.night%2!==0 || (S.miaoussSeen||{})[`${S.season}-${S.night}`]){ next(); return; }
@@ -60,14 +60,29 @@ const FINALE_MAP_S6 = (()=>{ const m=JSON.parse(JSON.stringify(FINALE_MAP)); con
   n.fh=Object.assign({},n.fh,{n:"Mewtwo dans la cuve",art:"mewtwo",say:"Mewtwo. Le Pokémon le plus puissant qu'on ait jamais créé. Il flotte dans sa cuve brisée, les yeux fermés. Il n'a jamais demandé à exister, et il ne sait pas s'il a le droit de rester.",
     boss:{id:150,n:"Mewtwo, celui qu'on a fabriqué",hp:150,moves:[{a:"atk",v:14},{a:"weak",v:2,dmg:10},{a:"def",v:16},{a:"atk",v:9,x:2},{a:"buff",v:4},{a:"vuln",v:2,dmg:11},{a:"atk",v:24}]}});
   return m; })();
+// Saison 8 : le Grand Regret du chapitre 4 est Ho-Oh, qui a abandonné les humains après l'incendie de la Tour Cendrée
+const FINALE_MAP_S8 = (()=>{ const m=JSON.parse(JSON.stringify(FINALE_MAP)); const n=m.nodes;
+  n.fg=Object.assign({},n.fg,{n:"La Tour Cendrée en flammes",art:"hooh-tour",say:"Une tour de bois qui brûle, il y a très longtemps. Des cris, des cendres. Un oiseau immense s'envole sans se retourner."});
+  n.fh=Object.assign({},n.fh,{n:"Ho-Oh au-dessus des cendres",art:"hooh",say:"Ho-Oh. L'oiseau de l'arc-en-ciel, celui qui veillait sur les fêtes des hommes. Il n'est jamais revenu depuis l'incendie. Il plane seul au-dessus des cendres, depuis des siècles.",
+    boss:{id:250,n:"Ho-Oh, le ciel abandonné",hp:165,moves:[{a:"atk",v:15},{a:"burn",v:3,dmg:9},{a:"def",v:16},{a:"atk",v:9,x:2},{a:"buff",v:4},{a:"weak",v:2,dmg:11},{a:"atk",v:26}]}});
+  return m; })();
 // Plan du Grand Écho selon la saison (Grand Regret de fin de chapitre), sinon le plan standard
-const FINALE_MAPS = {4:FINALE_MAP_S4, 6:FINALE_MAP_S6};
+const FINALE_MAPS = {4:FINALE_MAP_S4, 6:FINALE_MAP_S6, 8:FINALE_MAP_S8};
 function finaleChamps(){ return CLIENT_ORDER.filter(k=>inSeason(k) && ["apaise","staff"].includes(S.clients[k].state)); }
 function seasonClose(){
   const se=S.season||1; S.finale=S.finale||{}; S.night=Math.min(S.night,NIGHTS_PER_SEASON);
   if(S.finale[se]){ endSeason(); return; }
   music("donjon");
-  const lines = se===6 ? [
+  const fete = CLIENT_ORDER.filter(k=>[7,8].includes(CL[k].season) && ["apaise","staff"].includes(S.clients[k].state)).map(k=>CL[k].n);
+  const lines = se===8 ? [
+    {who:"narr",t:"La dernière nuit de la saison, c'est la fête de Bourg-Brume. Des lampions sur le clocher, une fanfare sur la place, l'odeur des malasadas et de la barbe à papa. La taverne a son stand, pour la première fois : un comptoir de planches, et des verres doux pour tout le monde."},
+    {who:"narr",t:fete.length?`Ils sont venus. ${fete.join(", ")}. Ceux que la ville avait oubliés sont au milieu de la place, et la ville les reconnaît. Quelqu'un rit, quelqu'un danse mal, quelqu'un pleure un peu, de joie.`:"La place est pleine. Mais au bord des lampions, quelques silhouettes restent seules, dans l'ombre, et regardent la fête sans y entrer."},
+    {who:"cog",t:"Patron… regarde le ciel ! Il y a des couleurs. Comme un arc-en-ciel, mais la nuit."},
+    {who:"narr",t:"Un oiseau immense traverse le ciel au-dessus de la place, couvert de plumes de feu et d'or. La fanfare s'arrête. Les anciens du village lèvent la tête, et l'un d'eux murmure un nom qu'on n'avait plus dit depuis des siècles."},
+    {who:{id:250,n:"Ho-Oh"},t:"<i>Sa voix tombe du ciel, comme une pluie chaude.</i> Autrefois, je volais au-dessus de toutes vos fêtes. Puis une nuit, les hommes se sont battus, et ma tour a brûlé. Je suis parti. Je n'ai jamais su revenir. Je regarde vos lampions de loin, depuis. Est-ce qu'on a encore une place, à la fête, quand on est parti ?"},
+    {who:"narr",t:"Ho-Oh se pose sur le toit de la taverne. La trappe de la cave s'ouvre toute seule, sur une lumière orange, qui sent la cendre."},
+    {who:"hector",t:"<i>Hector, très ému.</i> Ho-Oh… Je l'ai vu passer, une fois, quand j'étais vivant. Le dernier Grand Regret du chapitre, petit. Descends avec ton acolyte. Tu as appris à rendre les solitaires à la ville. Rends-lui le ciel."}
+  ] : se===6 ? [
     {who:"narr",t:"La dernière nuit de la saison, toutes les cuillères de la taverne se soulèvent en même temps, et restent suspendues dans l'air."},
     {who:"narr",t:"La porte ne s'ouvre pas. Il est simplement là, au milieu de la salle, flottant à un pied du sol. Une silhouette violette et blanche, immense, la queue enroulée autour de lui comme un enfant qui se tient les genoux."},
     {who:{id:150,n:"Mewtwo"},t:"<i>Sa voix résonne directement dans ta tête, et dans celle de tous les présents.</i> On m'a fabriqué dans une cuve, pour être le plus fort. Personne ne m'a demandé si je voulais naître. J'ai détruit le laboratoire, et depuis, je cherche une raison. On dit qu'ici, on écoute ceux qui ne savent plus qui ils sont. Moi, je ne sais même pas si j'ai le droit d'être."},
@@ -162,7 +177,16 @@ function finaleEnd(win){
   const se=S.season||1; S.finale=S.finale||{}; S.finale[se]=win?"win":"lose"; U.inDungeon=false;
   delete CL._duo; if(S.clients) delete S.clients._duo;
   const lines=[];
-  if(win && se===6){
+  if(win && se===8){
+    S.pages+=3; addXP(350); S.hooh=true;
+    lines.push({who:"narr",t:"Au fond de la cave, les cendres s'envolent d'un coup, et deviennent des plumes de toutes les couleurs."});
+    lines.push({who:{id:250,n:"Ho-Oh"},t:"<i>Il déploie ses ailes au-dessus de la place, et toute la fête lève les yeux.</i> Je croyais qu'il fallait mériter de revenir. Réparer la tour, effacer l'incendie. Mais personne ici ne m'a demandé de réparer quoi que ce soit. Ils ont juste levé la tête. …Je reviendrai chaque année. Pour la fête."});
+    lines.push({who:"narr",t:"Ho-Oh fait trois tours au-dessus de Bourg-Brume. Un arc-en-ciel se lève en pleine nuit, du clocher jusqu'à la colline de la ferme. La fanfare reprend. Sur le comptoir du stand, une plume aux sept couleurs est restée."});
+    lines.push({who:"narr",t:"Carte légendaire obtenue : 🌈 <b>Plume Arc-en-ciel</b>. Trois pages s'écrivent au Grand Registre."});
+    addCard("arcenciel","le cadeau de Ho-Oh");
+    if(!S.equip.faille){ S.equip.faille=true; lines.push({who:"narr",t:"Artefact obtenu : 🔮 <b>Éclat de la Faille</b> (+6 PV dans chaque Labyrinthe)."}); }
+    lines.push({who:"hector",t:"<i>Le mur tremble, longtemps, et pour la première fois on entend Hector pleurer de rire.</i> Une fête, petit. Une vraie. Avec Ho-Oh. …Je me souviens, maintenant. Pourquoi j'ai ouvert cette taverne, autrefois. Je te raconterai. Bientôt."});
+  } else if(win && se===6){
     S.pages+=3; addXP(300); S.mewtwo=true;
     lines.push({who:"narr",t:"Au fond de la cave, la lumière froide se réchauffe, tout doucement, jusqu'à devenir celle d'une bougie."});
     lines.push({who:{id:150,n:"Mewtwo"},t:"<i>Il pose les pieds par terre. C'est peut-être la première fois.</i> Je croyais qu'il fallait une raison pour exister. Une mission, un créateur, une utilité. Ton âme ne m'a donné aucune raison. Elle m'a juste dit : « reste, si tu veux ». …Je crois que je veux."});
@@ -193,7 +217,7 @@ function finaleEnd(win){
   playDialog(lines, endSeason, ()=>{ $app.innerHTML=`${hud()}${scene({night:false,doorOpen:false})}<div class="panel">${dialogBubble()}</div>`; });
 }
 // ---------- Fin de saison : la chronique ----------
-const LAST_SEASON = 7; // chapitre 1 « Portes ouvertes » (saisons 1 et 2) + début du chapitre 2 « La saison des pluies » (saison 3)
+const LAST_SEASON = 8; // chapitre 1 « Portes ouvertes » (saisons 1 et 2) + début du chapitre 2 « La saison des pluies » (saison 3)
 function seasonStats(){ const z=S.stats0||{served:0,perfect:0,earned:0,apaise:0}; return {served:S.stats.served-z.served, perfect:S.stats.perfect-z.perfect, earned:S.stats.earned-z.earned}; }
 function endSeason(){
   music("fin");
@@ -237,10 +261,10 @@ function endSeason(){
         <div>Pokédollars gagnés : <b>${st.earned} ₽</b></div><div>Pages du Registre : <b>${S.pages}</b></div>
         <div>Niveau du Tenancier : <b>${S.level}</b></div><div>Personnel : <b>${S.staff.map(k=>CL[k].n).join(", ")||"aucun"}</b></div>
       </div>
-      ${season===2?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 1 · Portes ouvertes.</b> La taverne a appris à écouter.</p>`:season===4?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 2 · La saison des pluies.</b> La taverne a appris à rester à côté de ceux qui ont perdu quelqu'un.</p>`:season===6?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 3 · Les métamorphoses.</b> La taverne a appris à aimer chacun tel qu'il est, même ceux qui n'ont pas demandé à naître.</p>`:""}
+      ${season===2?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 1 · Portes ouvertes.</b> La taverne a appris à écouter.</p>`:season===4?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 2 · La saison des pluies.</b> La taverne a appris à rester à côté de ceux qui ont perdu quelqu'un.</p>`:season===8?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 4 · La fête de Bourg-Brume.</b> La taverne a appris à rendre les solitaires à la ville.</p>`:season===6?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 3 · Les métamorphoses.</b> La taverne a appris à aimer chacun tel qu'il est, même ceux qui n'ont pas demandé à naître.</p>`:""}
     </div>
     <div class="row" style="margin-top:14px"><button class="grow alt" data-act="copyChron">Copier la chronique</button>${last?`<button class="grow" data-act="newGame">Nouvelle partie</button>`:`<button class="grow" data-act="nextSeason">Commencer la saison ${season+1}</button>`}</div>
-    <p class="small muted center">${last?"Fin du prototype : la saison 8 et la fête de Bourg-Brume elle-même (avec le Pourboire d'Or au bord de la faillite, et un Grand Regret aux plumes de feu) viendront dans une prochaine version.":"Tes niveaux, ton personnel, tes affinités, tes recettes et tes artefacts te suivent. Les bibelots, eux, restent dans la saison qui s'achève."}</p>
+    <p class="small muted center">${last?"Fin du prototype : le chapitre 5, où Hector raconte enfin pourquoi il a ouvert la taverne, viendra dans une prochaine version.":"Tes niveaux, ton personnel, tes affinités, tes recettes et tes artefacts te suivent. Les bibelots, eux, restent dans la saison qui s'achève."}</p>
   </div>`;
 }
 function startNextSeason(){
@@ -249,7 +273,14 @@ function startNextSeason(){
   CLIENT_ORDER.forEach(k=>{ if(!S.clients[k]) S.clients[k]={aff:0,state:"new",carryOuv:0,carryTen:0,visits:0,shake:false}; S.clients[k].lastNight=0; });
   U={}; save();
   const lines=[
-    ...(S.season===7?[
+    ...(S.season===8?[
+      {who:"narr",t:"Chapitre 4 · La fête de Bourg-Brume. Saison 8."},
+      {who:"narr",t:"Un matin, l'enseigne du Pourboire d'Or ne s'allume pas. À midi, un huissier cloue une planche en travers de la porte.",img:"pourboire"},
+      {who:{id:431,n:"Chaglam"},t:"<i>Chaglam, la commère du village, s'accoude à ta fenêtre, ravie et un peu triste à la fois.</i> Tu as vu ? Faillite ! Le banquier a tout saisi. Et son associé, le grand Persian, est parti avec la caisse la veille. Le pauvre Miaouss dort dans la remise, il paraît. Moi je dis : c'était à prévoir. …Mais ça fait quand même quelque chose."},
+      {who:"cog",t:"Patron… La rue est toute sombre, sans son enseigne. Je ne pensais pas que ça me ferait de la peine."},
+      {who:"narr",t:"Sur la place, on monte les derniers stands. La fête aura lieu à la fin de la saison. Le maire t'a gardé un emplacement, juste à côté de l'étal de Kecleon."},
+      {who:"hector",t:"<i>La voix d'Hector, pensive.</i> Hé… Celui qui comptait ses pièces n'a plus rien à compter. Il viendra, petit. Pas cette nuit, peut-être. Mais il viendra. Et ce soir-là, ne lui fais pas payer."}
+    ]:S.season===7?[
       {who:"narr",t:"Chapitre 4 · La fête de Bourg-Brume. Saison 7."},
       {who:"narr",t:"La fin de l'été approche, et tout Bourg-Brume ne parle que d'une chose : la grande fête annuelle, à la fin de la saison prochaine. On accroche déjà des lampions au clocher, on repeint les étals, on répète la fanfare sur la place."},
       {who:"narr",t:"Mais dans une ville qui se prépare à faire la fête ensemble, ceux qui sont seuls le sont encore plus. Ceux que la ville a oubliés en grandissant. Ceux qui ne servent plus à rien, croient-ils."},
@@ -281,7 +312,7 @@ function startNextSeason(){
     ]:[{who:"narr",t:`Saison ${S.season}. Les premières pluies d'automne tambourinent sur le toit de la taverne.`}]),
     {who:"cog",t:"Une nouvelle saison ! Ceux qu'on a aidés passeront sûrement de jour. Et les autres… ils reviendront, la nuit. On sera prêts."},
     ...((SEASON_NEW[S.season]||[]).length?[{who:"kecleon",t:`Nouvel arrivage à l'étal, patron ! ${(SEASON_NEW[S.season]).map(k=>ING[k].n).join(", ")}. Personne d'autre au village n'en a !`}]:[]),
-    S.season===7 ? {who:"cog",t:"Une saison pour ceux qui sont seuls. On leur gardera une place à la fête."} : S.season===6 ? {who:"cog",t:"Dernière saison du chapitre. On garde un tabouret libre, au cas où."} : S.season===5 ? {who:"cog",t:"Une saison de changements. On sera là, quoi qu'ils deviennent."} : S.season===4 ? {who:"cog",t:"Et cette saison, ceux qui ont perdu quelqu'un continuent d'arriver. On reste à côté d'eux, comme dit Hector."} : S.season===3
+    S.season===8 ? {who:"cog",t:"Dernière saison du chapitre. Et à la fin, la fête ! On aura un stand, patron. Un vrai."} : S.season===7 ? {who:"cog",t:"Une saison pour ceux qui sont seuls. On leur gardera une place à la fête."} : S.season===6 ? {who:"cog",t:"Dernière saison du chapitre. On garde un tabouret libre, au cas où."} : S.season===5 ? {who:"cog",t:"Une saison de changements. On sera là, quoi qu'ils deviennent."} : S.season===4 ? {who:"cog",t:"Et cette saison, ceux qui ont perdu quelqu'un continuent d'arriver. On reste à côté d'eux, comme dit Hector."} : S.season===3
       ? {who:"hector",t:"<i>La voix traverse le mur, plus basse que d'habitude.</i> Hé… Cette saison, ils ne viendront pas parce qu'ils ont échoué, ou parce qu'on les a laissés. Ils viendront parce qu'ils ont perdu quelqu'un. Ceux-là, petit, il ne faut pas les réparer. Il faut juste rester à côté."}
       : {who:"hector",t:"<i>Une voix rieuse traverse le mur.</i> Hé hé… Prépare un tabouret de plus, petit. Ce soir, quelqu'un de très fier va pousser la porte. Quelqu'un que personne n'a jamais attendu."}
   ];

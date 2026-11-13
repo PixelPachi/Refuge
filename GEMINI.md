@@ -91,6 +91,28 @@ Les cartes souvenir coûtent toujours 0 : le cadre porte une bulle avec « 0 ».
 - Cartes : `card-griffeombre` (Branette qui griffe dans l'ombre), `card-sourirecousu` (légendaire : Branette qui ouvre sa fermeture éclair sur un sourire cousu, des petites Branette autour d'elle)
 - Icône : `relic-zip` (une fermeture éclair dorée sur un bout de tissu noir)
 
+## À faire — Saison 8 · La fête de Bourg-Brume (fin du chapitre 4)
+
+### Kecleon (`dj-kecleon-*`)
+- a L'étal à l'aube · b Les couleurs des clients · h Le mur où il disparaît · c La place qui se remplit · i Le premier jour de l'étal · d La remise aux cageots · j La fanfare qui joue sans lui · k Le bonjour de chaque client · l Le soir où il redevient vert · f La place vide après la fête · g **Cœur** : le jour où il n'a plus su sa couleur (Kecleon à moitié transparent devant son étal, lampions éteints)
+- Cartes : `card-camouflage` (Kecleon qui se fond dans un mur de cageots), `card-vraiecouleur` (légendaire : Kecleon bien vert qui danse maladroitement sur la place illuminée)
+- Icône : `relic-bandezigzag` (un ruban rouge en zigzag)
+
+### Mimiqui (`dj-mimiqui-*`)
+- a Sous la table · b Le costume rapiécé · h Les yeux qui regardent dessous · c Les affiches de la mascotte · i Le câlin d'un enfant · d Le carton où elle dort · j La tête de chiffon qui tombe · k Le fil et l'aiguille, la nuit · l Le concours de déguisements · f Le cri de la mère · g **Cœur** : le jour où elle a cousu le costume (Mimiqui qui coud un costume jaune à la bougie, dans un carton)
+- Cartes : `card-ombreportee` (l'ombre de Mimiqui projetée sur un mur, plus grande qu'elle), `card-calinvrai` (légendaire : un enfant qui serre Mimiqui dans ses bras sous les lampions)
+- Icône : `relic-chiffon` (une tête de Pikachu en chiffon, dessinée au feutre)
+
+### Miaouss (`dj-miaouss-*`)
+- a Le Pourboire d'Or éteint · b La pièce dans le caniveau · h Le banquier qui compte · c La ruelle derrière le marché · i Le bol de lait sur la fenêtre · d Le carton de l'hiver · j Persian qui part avec la caisse · k La vieille dame qui ne demandait rien · l La petite fenêtre aux bols de lait · f La fenêtre restée fermée · g **Cœur** : le jour où il a décidé de tout acheter (un chaton Miaouss sous la neige devant une fenêtre fermée)
+- Cartes : `card-jackpot` (Miaouss qui lance une pluie de pièces), `card-bolchaud` (légendaire : un bol de lait fumant sur un rebord de fenêtre, un chaton qui s'approche)
+- Icône : `relic-rubanor` (un ruban usé sans sa pièce)
+
+### Ho-Oh — Grand Regret du chapitre 4
+- `dj-hooh-tour` : une haute tour de bois japonaise en flammes, la nuit, cendres qui volent
+- `dj-hooh` : Ho-Oh qui plane seul au-dessus d'un champ de cendres, plumes de feu, très mélancolique
+- Carte : `card-arcenciel` (légendaire : Ho-Oh au-dessus d'une fête de village illuminée, un arc-en-ciel en pleine nuit)
+
 ## Plus tard (optionnel)
 - Icônes des 8 bibelots de saison : Tasse ébréchée d'Hector, Clochette de la Faille, Torchon brodé, Lanterne de poche, Bocal à pourboires, Carnet de notes, Sablier de sable fin, Bougie parfumée.
 

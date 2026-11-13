@@ -368,6 +368,7 @@ function intentText(m, en){
 function hitClient(v){
   const D=U.dawn, C=D.combat, en=C.en;
   let x=Math.max(0,v+(en.str||0)-(en.fear||0)); if(en.weak) x=Math.floor(x*0.75); if(C.vuln) x=Math.floor(x*1.5);
+  if(C.disguise && x>0){ C.disguise=false; x=0; C.log=(C.log?C.log+" · ":"")+"🎭 Le Déguisement encaisse le coup"; }
   const ab=Math.min(C.block,x); C.block-=ab; D.hp-=(x-ab);
   if(x-ab>0){ C.hurtAll=(C.hurtAll||0)+(x-ab); C.hurtTurn=(C.hurtTurn||0)+(x-ab); if(C.rage) C.str+=C.rage; }
   if(C.thorns){ en.hp-=C.thorns; }

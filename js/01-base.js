@@ -112,10 +112,15 @@ const ING = {
   bonbonfete:{n:"Bonbon Fête",cat:"garn",price:45,c:"#e85878",item:"rage-candy-bar",season:7,d:"Un goût de fête foraine : +1 Ouverture pour les âmes de la Solitude",
     fx:x=>x.def.family==="Solitude"?{ouv:1,note:"Bonbon Fête : le goût d'un jour où l'on n'était pas seul."}:{}},
   galette:{n:"Galette de Fête",cat:"garn",price:60,c:"#e0b060",item:"lumiose-galette",season:7,d:"À partager : le client reste un échange de plus, et -1 Tension pour les âmes de la Solitude",
-    fx:x=>({turns:1,ten:x.def.family==="Solitude"?-1:0,note:"Galette de Fête : une part pour toi, une part pour moi."})}
+    fx:x=>({turns:1,ten:x.def.family==="Solitude"?-1:0,note:"Galette de Fête : une part pour toi, une part pour moi."})},
+  // --- nouveautés de la saison 8 (la fête)
+  malasada:{n:"Grosse Malasada",cat:"garn",price:55,c:"#e0a050",item:"big-malasada",season:8,d:"Beignet de fête : +1 Ouverture pour une âme qui ne s'est encore jamais confiée",
+    fx:x=>x.cur&&x.cur.stage===0?{ouv:1,note:"Grosse Malasada : un beignet chaud, ça délie la langue."}:{}},
+  craquiroc:{n:"Craquiroc",cat:"garn",price:40,c:"#a89070",item:"pewter-crunchies",season:8,d:"Croquant et rassurant : -1 Tension pour tout le monde",
+    fx:()=>({ten:-1,note:"Craquiroc : ça croque, ça rassure."})}
 };
 function ingOk(k){ return (ING[k].season||1) <= ((typeof S!=="undefined"&&S&&S.season)||1); }
-const SEASON_NEW = {2:["the","pecha","mepo","biscuit"],3:["jusbaie","pomroz","glace"],4:["grena","coeursucre"],5:["pierrestase","superbonbon","poudremetal"],6:["baieprine","eaumystique"],7:["bonbonfete","galette"]};
+const SEASON_NEW = {2:["the","pecha","mepo","biscuit"],3:["jusbaie","pomroz","glace"],4:["grena","coeursucre"],5:["pierrestase","superbonbon","poudremetal"],6:["baieprine","eaumystique"],7:["bonbonfete","galette"],8:["malasada","craquiroc"]};
 const BASES = ["eau","lait","soda","limonade","liqueur","the"];
 const CRUSH = k => ING[k] && (ING[k].cat==="baie" || ING[k].cat==="fruit");
 const EMO = {
@@ -128,4 +133,4 @@ const COUNTERS = {joie:["colere","tristesse"],nostalgie:["peur","tristesse"],col
 
 
 // Ordre d'arrivée des âmes (toutes saisons)
-const CLIENT_ORDER = ["machopeur", "ponchiot", "magicarpe", "psykokwak", "rondoudou", "leveinard", "ronflex", "tiplouf", "canarticho", "goupix", "hypotrempe", "osselait", "lokhlass", "kangourex", "lucario", "absol", "granivol", "apireine", "metamorph", "insecateur", "kadabra", "chrysacier", "ramoloss", "embrylex", "parasect", "ecremeuh", "tropius", "arcanin", "branette"];
+const CLIENT_ORDER = ["machopeur", "ponchiot", "magicarpe", "psykokwak", "rondoudou", "leveinard", "ronflex", "tiplouf", "canarticho", "goupix", "hypotrempe", "osselait", "lokhlass", "kangourex", "lucario", "absol", "granivol", "apireine", "metamorph", "insecateur", "kadabra", "chrysacier", "ramoloss", "embrylex", "parasect", "ecremeuh", "tropius", "arcanin", "branette", "kecleon", "mimiqui", "miaouss"];
