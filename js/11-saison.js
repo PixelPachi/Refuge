@@ -74,7 +74,12 @@ function seasonClose(){
   if(S.finale[se]){ endSeason(); return; }
   music("donjon");
   const fete = CLIENT_ORDER.filter(k=>[7,8].includes(CL[k].season) && ["apaise","staff"].includes(S.clients[k].state)).map(k=>CL[k].n);
-  const lines = se===8 ? [
+  const lines = se===9 ? [
+    {who:"narr",t:"La dernière nuit de la saison, le portrait d'Hector tombe du mur tout seul. Derrière, dans la pierre, une porte que personne n'avait jamais vue."},
+    {who:"hector",t:"<i>Sa voix tremble.</i> Cette porte… c'est moi qui l'ai murée, il y a cent ans. L'ombre qui remonte de la Faille à chaque fin de saison, petit… celle avec mon sourire… Ce n'est pas un regret de tes clients. C'est le mien. C'est la part de moi qui attend encore, au fond."},
+    {who:"cog",t:"Alors c'est son regret à lui qu'on va affronter, patron ? On ne va pas lui faire de mal, hein ?"},
+    {who:"hector",t:"On ne le combat pas pour le détruire, petit. On le combat comme tu combats les ombres de tes clients : pour l'écouter. Descends, avec ton acolyte. Et si tu la trouves… dis à mon ombre que j'ai le droit de me souvenir."}
+  ] : se===8 ? [
     {who:"narr",t:"La dernière nuit de la saison, c'est la fête de Bourg-Brume. Des lampions sur le clocher, une fanfare sur la place, l'odeur des malasadas et de la barbe à papa. La taverne a son stand, pour la première fois : un comptoir de planches, et des verres doux pour tout le monde."},
     {who:"narr",t:fete.length?`Ils sont venus. ${fete.join(", ")}. Ceux que la ville avait oubliés sont au milieu de la place, et la ville les reconnaît. Quelqu'un rit, quelqu'un danse mal, quelqu'un pleure un peu, de joie.`:"La place est pleine. Mais au bord des lampions, quelques silhouettes restent seules, dans l'ombre, et regardent la fête sans y entrer."},
     {who:"cog",t:"Patron… regarde le ciel ! Il y a des couleurs. Comme un arc-en-ciel, mais la nuit."},
@@ -177,7 +182,16 @@ function finaleEnd(win){
   const se=S.season||1; S.finale=S.finale||{}; S.finale[se]=win?"win":"lose"; U.inDungeon=false;
   delete CL._duo; if(S.clients) delete S.clients._duo;
   const lines=[];
-  if(win && se===8){
+  if(win && se===9){
+    S.pages+=2; addXP(250); S.hectorMem=1;
+    lines.push({who:"narr",t:"Au fond de la cave, l'ombre au sourire d'Hector cesse de se débattre. Elle s'assoit sur la dernière marche, comme un vieil homme fatigué, et regarde vers la porte murée."});
+    lines.push({who:"hector",t:"<i>Hector apparaît en entier, pour la première fois, debout dans la cave. Il regarde son ombre longtemps.</i> Je me souviens, maintenant. Pas de tout. D'une petite fille, avec un ruban rouge, qui courait entre les tables. Ma fille. Lise. Elle avait sept ans."});
+    lines.push({who:"hector",t:"On s'est disputés, un soir. Une bêtise. Elle voulait aller à la fête, je devais servir. Je lui ai dit des mots durs. Elle est partie en claquant la porte. Je me suis dit : elle reviendra, elle revient toujours. Elle n'est pas revenue."});
+    lines.push({who:"narr",t:"L'ombre se lève, prend la main d'Hector, et se fond en lui. Hector a l'air un peu plus solide, un peu moins violet."});
+    if(!S.equip.faille){ S.equip.faille=true; lines.push({who:"narr",t:"Artefact obtenu : 🔮 <b>Éclat de la Faille</b> (+6 PV dans chaque Labyrinthe)."}); }
+    lines.push({who:"narr",t:"Deux pages s'écrivent au Grand Registre. Sur la première, une seule phrase : « Lise, sept ans, un ruban rouge. »"});
+    lines.push({who:"hector",t:"<i>Plus bas.</i> Je ne sais pas encore ce qui lui est arrivé, petit. Mais la porte murée, au fond de la cave… elle tremble. Quelque chose, de l'autre côté, sait que je me souviens. Et ça ne lui plaît pas."});
+  } else if(win && se===8){
     S.pages+=3; addXP(350); S.hooh=true;
     lines.push({who:"narr",t:"Au fond de la cave, les cendres s'envolent d'un coup, et deviennent des plumes de toutes les couleurs."});
     lines.push({who:{id:250,n:"Ho-Oh"},t:"<i>Il déploie ses ailes au-dessus de la place, et toute la fête lève les yeux.</i> Je croyais qu'il fallait mériter de revenir. Réparer la tour, effacer l'incendie. Mais personne ici ne m'a demandé de réparer quoi que ce soit. Ils ont juste levé la tête. …Je reviendrai chaque année. Pour la fête."});
@@ -217,7 +231,7 @@ function finaleEnd(win){
   playDialog(lines, endSeason, ()=>{ $app.innerHTML=`${hud()}${scene({night:false,doorOpen:false})}<div class="panel">${dialogBubble()}</div>`; });
 }
 // ---------- Fin de saison : la chronique ----------
-const LAST_SEASON = 8; // chapitre 1 « Portes ouvertes » (saisons 1 et 2) + début du chapitre 2 « La saison des pluies » (saison 3)
+const LAST_SEASON = 9; // chapitre 1 « Portes ouvertes » (saisons 1 et 2) + début du chapitre 2 « La saison des pluies » (saison 3)
 function seasonStats(){ const z=S.stats0||{served:0,perfect:0,earned:0,apaise:0}; return {served:S.stats.served-z.served, perfect:S.stats.perfect-z.perfect, earned:S.stats.earned-z.earned}; }
 function endSeason(){
   music("fin");
@@ -242,7 +256,7 @@ function endSeason(){
   $app.innerHTML = `<div class="pad fade scroll" style="flex:1">
     <div class="parch" id="chron">
       <h2>Chronique de la saison ${season}</h2>
-      <div class="center small">${season===2?"Chapitre 1 · Portes ouvertes · ":season===3||season===4?"Chapitre 2 · La saison des pluies · ":season===5||season===6?"Chapitre 3 · Les métamorphoses · ":season===7||season===8?"Chapitre 4 · La fête de Bourg-Brume · ":""}La taverne · Bourg-Brume</div>
+      <div class="center small">${season===2?"Chapitre 1 · Portes ouvertes · ":season===3||season===4?"Chapitre 2 · La saison des pluies · ":season===5||season===6?"Chapitre 3 · Les métamorphoses · ":season===7||season===8?"Chapitre 4 · La fête de Bourg-Brume · ":season===9||season===10?"Chapitre 5 · Le secret d'Hector · ":""}La taverne · Bourg-Brume</div>
       <div class="souls">
         <div class="soul">${sprite(S.ten.id,S.ten.n,S.ten.c,{shiny:S.shiny})}</div>
         <div class="soul">${sprite(cog().id,cog().n,cog().c)}</div>
@@ -264,7 +278,7 @@ function endSeason(){
       ${season===2?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 1 · Portes ouvertes.</b> La taverne a appris à écouter.</p>`:season===4?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 2 · La saison des pluies.</b> La taverne a appris à rester à côté de ceux qui ont perdu quelqu'un.</p>`:season===8?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 4 · La fête de Bourg-Brume.</b> La taverne a appris à rendre les solitaires à la ville.</p>`:season===6?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 3 · Les métamorphoses.</b> La taverne a appris à aimer chacun tel qu'il est, même ceux qui n'ont pas demandé à naître.</p>`:""}
     </div>
     <div class="row" style="margin-top:14px"><button class="grow alt" data-act="copyChron">Copier la chronique</button>${last?`<button class="grow" data-act="newGame">Nouvelle partie</button>`:`<button class="grow" data-act="nextSeason">Commencer la saison ${season+1}</button>`}</div>
-    <p class="small muted center">${last?"Fin du prototype : le chapitre 5, où Hector raconte enfin pourquoi il a ouvert la taverne, viendra dans une prochaine version.":"Tes niveaux, ton personnel, tes affinités, tes recettes et tes artefacts te suivent. Les bibelots, eux, restent dans la saison qui s'achève."}</p>
+    <p class="small muted center">${last?"Fin du prototype : la saison 10, où Hector dit enfin qui il attendait, et où le maître de la Faille vient le chercher, viendra dans une prochaine version.":"Tes niveaux, ton personnel, tes affinités, tes recettes et tes artefacts te suivent. Les bibelots, eux, restent dans la saison qui s'achève."}</p>
   </div>`;
 }
 function startNextSeason(){
@@ -273,7 +287,14 @@ function startNextSeason(){
   CLIENT_ORDER.forEach(k=>{ if(!S.clients[k]) S.clients[k]={aff:0,state:"new",carryOuv:0,carryTen:0,visits:0,shake:false}; S.clients[k].lastNight=0; });
   U={}; save();
   const lines=[
-    ...(S.season===8?[
+    ...(S.season===9?[
+      {who:"narr",t:"Chapitre 5 · Le secret d'Hector. Saison 9."},
+      {who:"narr",t:"L'automne revient sur Bourg-Brume. Depuis la fête, quelque chose a changé dans la taverne : la nuit, on entend des pas dans la cave, et le vieux portrait au-dessus de la cheminée, celui qu'on ne regardait plus, semble sourire un peu."},
+      {who:"hector",t:"<i>La voix d'Hector, pour la première fois sans un rire.</i> Petit… Assieds-toi. Ce portrait, au-dessus de la cheminée. L'homme à la moustache, avec le tablier. C'est moi. Avant. Quand j'avais encore une ombre, et pas une ombre à la place de moi."},
+      {who:"hector",t:"Je m'appelais Hector. J'étais le tavernier, ici, il y a cent ans. Et une nuit, j'ai attendu quelqu'un qui n'est jamais venu. J'ai attendu si fort, si longtemps, que je suis resté. Les Ectoplasma, petit, ce sont les ombres de ceux qui n'ont pas su partir."},
+      {who:"cog",t:"Patron… Hector était humain ? Et la Faille, alors, dans la cave ? C'est lui qui l'a ouverte ?"},
+      {who:"hector",t:"<i>Un long silence.</i> Cette saison, ils viendront parce qu'ils ont laissé quelque chose d'inachevé. Une promesse, une lettre, une attente. Comme moi. Écoute-les bien, petit. Peut-être qu'en les écoutant, je me souviendrai du reste."}
+    ]:S.season===8?[
       {who:"narr",t:"Chapitre 4 · La fête de Bourg-Brume. Saison 8."},
       {who:"narr",t:"Un matin, l'enseigne du Pourboire d'Or ne s'allume pas. À midi, un huissier cloue une planche en travers de la porte.",img:"pourboire"},
       {who:{id:431,n:"Chaglam"},t:"<i>Chaglam, la commère du village, s'accoude à ta fenêtre, ravie et un peu triste à la fois.</i> Tu as vu ? Faillite ! Le banquier a tout saisi. Et son associé, le grand Persian, est parti avec la caisse la veille. Le pauvre Miaouss dort dans la remise, il paraît. Moi je dis : c'était à prévoir. …Mais ça fait quand même quelque chose."},
@@ -312,7 +333,7 @@ function startNextSeason(){
     ]:[{who:"narr",t:`Saison ${S.season}. Les premières pluies d'automne tambourinent sur le toit de la taverne.`}]),
     {who:"cog",t:"Une nouvelle saison ! Ceux qu'on a aidés passeront sûrement de jour. Et les autres… ils reviendront, la nuit. On sera prêts."},
     ...((SEASON_NEW[S.season]||[]).length?[{who:"kecleon",t:`Nouvel arrivage à l'étal, patron ! ${(SEASON_NEW[S.season]).map(k=>ING[k].n).join(", ")}. Personne d'autre au village n'en a !`}]:[]),
-    S.season===8 ? {who:"cog",t:"Dernière saison du chapitre. Et à la fin, la fête ! On aura un stand, patron. Un vrai."} : S.season===7 ? {who:"cog",t:"Une saison pour ceux qui sont seuls. On leur gardera une place à la fête."} : S.season===6 ? {who:"cog",t:"Dernière saison du chapitre. On garde un tabouret libre, au cas où."} : S.season===5 ? {who:"cog",t:"Une saison de changements. On sera là, quoi qu'ils deviennent."} : S.season===4 ? {who:"cog",t:"Et cette saison, ceux qui ont perdu quelqu'un continuent d'arriver. On reste à côté d'eux, comme dit Hector."} : S.season===3
+    S.season===9 ? {who:"cog",t:"Une saison pour ceux qui n'ont pas fini quelque chose. On va les aider à finir, patron. Et Hector aussi, peut-être."} : S.season===8 ? {who:"cog",t:"Dernière saison du chapitre. Et à la fin, la fête ! On aura un stand, patron. Un vrai."} : S.season===7 ? {who:"cog",t:"Une saison pour ceux qui sont seuls. On leur gardera une place à la fête."} : S.season===6 ? {who:"cog",t:"Dernière saison du chapitre. On garde un tabouret libre, au cas où."} : S.season===5 ? {who:"cog",t:"Une saison de changements. On sera là, quoi qu'ils deviennent."} : S.season===4 ? {who:"cog",t:"Et cette saison, ceux qui ont perdu quelqu'un continuent d'arriver. On reste à côté d'eux, comme dit Hector."} : S.season===3
       ? {who:"hector",t:"<i>La voix traverse le mur, plus basse que d'habitude.</i> Hé… Cette saison, ils ne viendront pas parce qu'ils ont échoué, ou parce qu'on les a laissés. Ils viendront parce qu'ils ont perdu quelqu'un. Ceux-là, petit, il ne faut pas les réparer. Il faut juste rester à côté."}
       : {who:"hector",t:"<i>Une voix rieuse traverse le mur.</i> Hé hé… Prépare un tabouret de plus, petit. Ce soir, quelqu'un de très fier va pousser la porte. Quelqu'un que personne n'a jamais attendu."}
   ];

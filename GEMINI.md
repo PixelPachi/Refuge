@@ -113,6 +113,31 @@ Les cartes souvenir coûtent toujours 0 : le cadre porte une bulle avec « 0 ».
 - `dj-hooh` : Ho-Oh qui plane seul au-dessus d'un champ de cendres, plumes de feu, très mélancolique
 - Carte : `card-arcenciel` (légendaire : Ho-Oh au-dessus d'une fête de village illuminée, un arc-en-ciel en pleine nuit)
 
+## À faire — Saison 9 · Le secret d'Hector (chapitre 5)
+
+### Dracolosse (`dj-dracolosse-*`)
+- a Le port au crépuscule · b La sacoche de cuir · h La tempête au-dessus des mers · c Les toits de Bourg-Brume · i La première lettre livrée · d Le phare où il se reposait · j Les portes qui se ferment · k Le vieux marin sur le quai · l Les cartes postales légères · f Les quarante ans à chercher · g **Cœur** : le soir où l'adresse s'est effacée (une enveloppe jaunie sous la pluie, l'encre qui coule)
+- Cartes : `card-ouragan` (Dracolosse en vol au-dessus de la mer, sacoche en bandoulière), `card-lettrelivree` (légendaire : Dracolosse qui tend une lettre à une vieille dame sur le pas de sa porte)
+- Icône : `relic-sacoche` (une sacoche de facteur en cuir craquelé)
+
+### Spiritomb (`dj-spiritomb-*`)
+- a La pierre fendue · b Les cent huit visages · h Le froid entre les âmes · c La foule de la fête d'autrefois · i Les cent huit qui rient · d Le creux de la pierre · j La main lâchée · k Le petit frère · l Les histoires racontées une à une · f Une vie à chercher · g **Cœur** : le soir de la promesse manquée (un petit bonnet rouge perdu dans une foule de fête ancienne)
+- Cartes : `card-malediction` (un tourbillon violet de visages au-dessus d'une pierre), `card-centhuit` (légendaire : cent huit petites lueurs qui tournent ensemble, chaudes, au-dessus de la pierre)
+- Icône : `relic-pierreclef` (une petite pierre fendue avec un éclat violet)
+
+### Muciole (`dj-muciole-*`)
+- a L'étang au crépuscule · b La fleur séchée · h La nuit sans elle · c Les roseaux de la rive · i La danse des lumières · d La feuille de nénuphar · j Le matin où il est parti · k Le signal, trois longs, deux courts · l Les jeunes qui dansent · f La maison où elle attendait · g **Cœur** : le soir de la grande danse (une seule lueur jaune au-dessus d'un étang noir, une fleur posée sur un nénuphar)
+- Cartes : `card-lumiqueue` (Muciole dont la queue dessine une étoile), `card-troislongs` (légendaire : une lueur jaune et une lueur bleue qui dessinent un cœur dans le ciel nocturne)
+- Icône : `relic-lueur` (une petite lanterne-luciole jaune)
+
+### Démolosse (`dj-demolosse-*`)
+- a La maison aux volets bleus · b Le collier et la médaille · h L'orage sur la colline · c Le chemin de la ville · i Les nuits dans la cuisine · d Le paillasson de l'entrée · j La charrette qui s'éloigne · k Théo qui le serre très fort · l La ville au loin, la nuit · f Dix-neuf hivers à garder · g **Cœur** : le matin du départ (une charrette sur un chemin, un Malosse assis devant une maison aux volets bleus)
+- Cartes : `card-crocfeu` (Démolosse aux crocs enflammés), `card-gardefidele` (légendaire : Démolosse couché sous une fenêtre éclairée de la ville, un enfant qui dort derrière la vitre)
+- Icône : `relic-collierdemo` (un collier de cuir avec une médaille gravée)
+
+### Fil rouge
+- Le portrait d'Hector humain (moustache, tablier, taverne d'il y a cent ans) pourra servir d'image de dialogue plus tard.
+
 ## Plus tard (optionnel)
 - Icônes des 8 bibelots de saison : Tasse ébréchée d'Hector, Clochette de la Faille, Torchon brodé, Lanterne de poche, Bocal à pourboires, Carnet de notes, Sablier de sable fin, Bougie parfumée.
 

@@ -117,10 +117,15 @@ const ING = {
   malasada:{n:"Grosse Malasada",cat:"garn",price:55,c:"#e0a050",item:"big-malasada",season:8,d:"Beignet de fête : +1 Ouverture pour une âme qui ne s'est encore jamais confiée",
     fx:x=>x.cur&&x.cur.stage===0?{ouv:1,note:"Grosse Malasada : un beignet chaud, ça délie la langue."}:{}},
   craquiroc:{n:"Craquiroc",cat:"garn",price:40,c:"#a89070",item:"pewter-crunchies",season:8,d:"Croquant et rassurant : -1 Tension pour tout le monde",
-    fx:()=>({ten:-1,note:"Craquiroc : ça croque, ça rassure."})}
+    fx:()=>({ten:-1,note:"Craquiroc : ça croque, ça rassure."})},
+  // --- nouveautés de la saison 9 (Le secret d'Hector)
+  runesort:{n:"Rune Sort",cat:"garn",price:55,c:"#8a68b8",item:"spell-tag",season:9,d:"Parle aux fantômes : +1 Ouverture pour les âmes de l'Inachevé",
+    fx:x=>x.def.family==="Inachevé"?{ouv:1,note:"Rune Sort : quelque chose d'ancien se réveille en lui."}:{}},
+  runepurif:{n:"Rune Purif",cat:"garn",price:50,c:"#e8e0c0",item:"cleanse-tag",season:9,d:"Chasse les ombres : -1 Tension, et -1 de plus si le client est très tendu (3 ou plus)",
+    fx:x=>({ten:x.cur&&x.cur.ten>=3?-2:-1,note:"Rune Purif : l'air devient plus léger."})}
 };
 function ingOk(k){ return (ING[k].season||1) <= ((typeof S!=="undefined"&&S&&S.season)||1); }
-const SEASON_NEW = {2:["the","pecha","mepo","biscuit"],3:["jusbaie","pomroz","glace"],4:["grena","coeursucre"],5:["pierrestase","superbonbon","poudremetal"],6:["baieprine","eaumystique"],7:["bonbonfete","galette"],8:["malasada","craquiroc"]};
+const SEASON_NEW = {2:["the","pecha","mepo","biscuit"],3:["jusbaie","pomroz","glace"],4:["grena","coeursucre"],5:["pierrestase","superbonbon","poudremetal"],6:["baieprine","eaumystique"],7:["bonbonfete","galette"],8:["malasada","craquiroc"],9:["runesort","runepurif"]};
 const BASES = ["eau","lait","soda","limonade","liqueur","the"];
 const CRUSH = k => ING[k] && (ING[k].cat==="baie" || ING[k].cat==="fruit");
 const EMO = {
@@ -133,4 +138,4 @@ const COUNTERS = {joie:["colere","tristesse"],nostalgie:["peur","tristesse"],col
 
 
 // Ordre d'arrivée des âmes (toutes saisons)
-const CLIENT_ORDER = ["machopeur", "ponchiot", "magicarpe", "psykokwak", "rondoudou", "leveinard", "ronflex", "tiplouf", "canarticho", "goupix", "hypotrempe", "osselait", "lokhlass", "kangourex", "lucario", "absol", "granivol", "apireine", "metamorph", "insecateur", "kadabra", "chrysacier", "ramoloss", "embrylex", "parasect", "ecremeuh", "tropius", "arcanin", "branette", "kecleon", "mimiqui", "miaouss"];
+const CLIENT_ORDER = ["machopeur", "ponchiot", "magicarpe", "psykokwak", "rondoudou", "leveinard", "ronflex", "tiplouf", "canarticho", "goupix", "hypotrempe", "osselait", "lokhlass", "kangourex", "lucario", "absol", "granivol", "apireine", "metamorph", "insecateur", "kadabra", "chrysacier", "ramoloss", "embrylex", "parasect", "ecremeuh", "tropius", "arcanin", "branette", "kecleon", "mimiqui", "miaouss", "dracolosse", "spiritomb", "muciole", "demolosse"];
