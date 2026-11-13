@@ -1,6 +1,7 @@
 // ---------- Actions ----------
 const ACT = {
-  newGame:()=>{ clearSave(); startNew(); },
+  newGame:()=>{ closeModal(); clearSave(); startNew(); }, newGameAsk:()=>newGameAsk(),
+  saveCodeOpen:()=>saveCodeModal(), saveCodeCopy:()=>saveCodeCopy(), loadCodeOpen:()=>loadCodeModal(), loadCodeGo:()=>loadCodeGo(),
   continue:()=>{ const sv=loadSave(); if(!sv) return; S=sv; CLIENT_ORDER.forEach(k=>{ if(!S.clients[k]) S.clients[k]={aff:0,state:"new",carryOuv:0,carryTen:0,visits:0,shake:false}; }); U={}; if(S.seasonOver) endSeason(); else startDay(); },
   toggleSound:()=>{ if(!S){ S=newState(); } S.settings.sound=!S.settings.sound; if(S.ten){ showMenu(); } else screenTitle(); },
   toggleMusic:()=>{ S.settings.music = !musicOn(); if(musicOn()){ ensureAC(); MUS.cur=null; music(MUS.want||"village"); } else musicStop(); showMenu(); },

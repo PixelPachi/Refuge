@@ -10,7 +10,7 @@ Toutes les constantes sont globales (scripts classiques), donc l'ordre de charge
 | `css/style.css` | Tout le style (écrans, cartes, Labyrinthe, registre…) |
 | `js/assets.js` | **Généré** par `tools/genassets.py` : liste des illustrations de `assets/art` (`ART_FILES`) |
 | `js/items.js` | **Généré** par `tools/genitems.py` : icônes d'objets en data URI (`ITEM_ICONS`, `itemSrc()`) |
-| `js/00-tables.js` | Déclaration des tables remplies par les saisons : `CL`, `TALK`, `WIPE`, `LETTERS`, `REGULARS`, `ROOM_SAY`, `ROOM_KW`, `BOSS`, `LEGEND_CARD`, `CLIENT_CARD`, et `CARDS` (cartes communes) |
+| `js/00-tables.js` | `mapStd()` (plan de Labyrinthe standard à 11 salles) et déclaration des tables remplies par les saisons : `CL`, `TALK`, `WIPE`, `LETTERS`, `REGULARS`, `ROOM_SAY`, `ROOM_KW`, `BOSS`, `LEGEND_CARD`, `CLIENT_CARD`, et `CARDS` (cartes communes) |
 | `js/01-base.js` | Auras, talents, Tenanciers, co-gérants, gelées (`ESS`), **ingrédients** (`ING`, `SEASON_NEW`), émotions, `CLIENT_ORDER` |
 | `js/saisons/saisonN.js` | **Tout ce qui concerne chaque âme**, client par client : fiche, conversations, torchon, lettre, visite de jour, salles, ombre finale, cartes, effets du poste et de l'artefact |
 | `js/02-village.js` | Villageois de jour, commandes, bibelots, questions, présages, commandes de la Faille |
@@ -22,8 +22,8 @@ Toutes les constantes sont globales (scripts classiques), donc l'ordre de charge
 | `js/08-nuit.js` | Nuit : file des âmes, comptoir, préparation et effets d'un verre, fin de service, récap, poste de Cadoizo |
 | `js/09-labyrinthe.js` | Aube : Labyrinthe salle par salle, carte, images des salles (`roomSrc`) |
 | `js/10-combat.js` | Deck building : effets des cartes, combats, reliques, récompenses |
-| `js/11-saison.js` | Pourboire d'Or et Miaouss, Grand Écho (finale), Suicune, fin de saison, début de saison suivante (`LAST_SEASON`) |
-| `js/12-registre.js` | Le Grand Registre (livre) et le menu |
+| `js/11-saison.js` | Pourboire d'Or et Miaouss, Grand Écho (finale) et Grands Regrets par saison (`FINALE_MAPS` : Suicune en 4, Mewtwo en 6), fin de saison, début de saison suivante (`LAST_SEASON`) |
+| `js/12-registre.js` | Le Grand Registre (livre), le menu, le code de sauvegarde (copier / charger) et la confirmation de nouvelle partie |
 | `js/13-actions.js` | Table `ACT` (boutons `data-act`) et démarrage du jeu |
 
 ## Ajouter une âme (checklist)
@@ -46,10 +46,15 @@ Dans `ING` (`js/01-base.js`) avec `season:N` et une fonction `fx:x=>({ouv,ten,ha
 Déposer le fichier `.webp` dans `assets/art/` puis `python3 tools/genassets.py`. Noms attendus :
 `dj-<client>-<salle>` (salles 2:1), `card-<carte>` (320×480, bas calme pour le texte), `relic-<clé>` (128×128 détouré).
 
+## Publier
+
+Le jeu est publié sur GitHub Pages : https://pixelpachi.github.io/Refuge/ (dépôt PixelPachi/Refuge, branche `main`).
+Copier le projet dans le clone du dépôt, committer, pousser ; la page se met à jour en une ou deux minutes.
+
 ## Vérifications avant publication
 
 `node --check` sur chaque fichier js, puis les tests : audit des boutons, bot qui joue toutes les saisons, glisser-viser des cartes.
-Limite : 512 fichiers par version de l'artifact (d'où les icônes d'objets intégrées dans `js/items.js` et les sprites chromatiques chargés en ligne).
+Les sprites chromatiques (rares) sont chargés depuis PokeAPI en ligne.
 
 ## Historique
 

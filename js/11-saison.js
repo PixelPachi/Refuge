@@ -54,12 +54,26 @@ const FINALE_MAP_S4 = (()=>{ const m=JSON.parse(JSON.stringify(FINALE_MAP)); con
   n.fh=Object.assign({},n.fh,{n:"Suicune sur l'eau noire",art:"suicune",say:"Suicune. Le vent du nord, celui qui purifie les eaux. Il ne purifie plus rien. Il a perdu le lac qu'il protégeait, et il ne sait plus à quoi il sert.",
     boss:{id:245,n:"Suicune, l'eau souillée",hp:135,moves:[{a:"atk",v:13},{a:"def",v:14},{a:"weak",v:2,dmg:9},{a:"atk",v:8,x:2},{a:"buff",v:3},{a:"vuln",v:2,dmg:10},{a:"atk",v:21}]}});
   return m; })();
+// Saison 6 : le Grand Regret du chapitre 3 est Mewtwo, créé sans l'avoir demandé
+const FINALE_MAP_S6 = (()=>{ const m=JSON.parse(JSON.stringify(FINALE_MAP)); const n=m.nodes;
+  n.fg=Object.assign({},n.fg,{n:"Le laboratoire en ruine",art:"mewtwo-labo",say:"Un laboratoire détruit. Des cuves brisées, des écrans morts. C'est ici qu'on l'a fabriqué."});
+  n.fh=Object.assign({},n.fh,{n:"Mewtwo dans la cuve",art:"mewtwo",say:"Mewtwo. Le Pokémon le plus puissant qu'on ait jamais créé. Il flotte dans sa cuve brisée, les yeux fermés. Il n'a jamais demandé à exister, et il ne sait pas s'il a le droit de rester.",
+    boss:{id:150,n:"Mewtwo, celui qu'on a fabriqué",hp:150,moves:[{a:"atk",v:14},{a:"weak",v:2,dmg:10},{a:"def",v:16},{a:"atk",v:9,x:2},{a:"buff",v:4},{a:"vuln",v:2,dmg:11},{a:"atk",v:24}]}});
+  return m; })();
+// Plan du Grand Écho selon la saison (Grand Regret de fin de chapitre), sinon le plan standard
+const FINALE_MAPS = {4:FINALE_MAP_S4, 6:FINALE_MAP_S6};
 function finaleChamps(){ return CLIENT_ORDER.filter(k=>inSeason(k) && ["apaise","staff"].includes(S.clients[k].state)); }
 function seasonClose(){
   const se=S.season||1; S.finale=S.finale||{}; S.night=Math.min(S.night,NIGHTS_PER_SEASON);
   if(S.finale[se] || !finaleChamps().length){ endSeason(); return; }
   music("donjon");
-  const lines = se===4 ? [
+  const lines = se===6 ? [
+    {who:"narr",t:"La dernière nuit de la saison, toutes les cuillères de la taverne se soulèvent en même temps, et restent suspendues dans l'air."},
+    {who:"narr",t:"La porte ne s'ouvre pas. Il est simplement là, au milieu de la salle, flottant à un pied du sol. Une silhouette violette et blanche, immense, la queue enroulée autour de lui comme un enfant qui se tient les genoux."},
+    {who:{id:150,n:"Mewtwo"},t:"<i>Sa voix résonne directement dans ta tête, et dans celle de tous les présents.</i> On m'a fabriqué dans une cuve, pour être le plus fort. Personne ne m'a demandé si je voulais naître. J'ai détruit le laboratoire, et depuis, je cherche une raison. On dit qu'ici, on écoute ceux qui ne savent plus qui ils sont. Moi, je ne sais même pas si j'ai le droit d'être."},
+    {who:"narr",t:"Les cuillères retombent une à une. La trappe de la cave s'ouvre toute seule, sur une lumière froide de laboratoire."},
+    {who:"hector",t:"<i>Hector, à voix basse.</i> Le Grand Regret du chapitre, petit. Envoie quelqu'un qui a appris à s'aimer tel qu'il est. Lui seul saura lui répondre."}
+  ] : se===4 ? [
     {who:"narr",t:"La dernière nuit de la saison, la pluie s'arrête d'un coup. Le silence est si total qu'on entend la Faille respirer."},
     {who:"narr",t:"Puis la porte s'ouvre sur un vent du nord glacé. Sur le seuil, une silhouette immense, bleue comme l'eau des montagnes, avec un ruban de cristal qui flotte derrière elle."},
     {who:"narr",t:"Suicune. Le Pokémon légendaire qui court sur les eaux et les purifie. Ses pattes laissent des traces noires et huileuses sur le plancher."},
@@ -91,7 +105,16 @@ function finaleGo(k){
 function finaleEnd(win){
   const se=S.season||1; S.finale=S.finale||{}; S.finale[se]=win?"win":"lose"; U.inDungeon=false;
   const lines=[];
-  if(win && se===4){
+  if(win && se===6){
+    S.pages+=3; addXP(300); S.mewtwo=true;
+    lines.push({who:"narr",t:"Au fond de la cave, la lumière froide se réchauffe, tout doucement, jusqu'à devenir celle d'une bougie."});
+    lines.push({who:{id:150,n:"Mewtwo"},t:"<i>Il pose les pieds par terre. C'est peut-être la première fois.</i> Je croyais qu'il fallait une raison pour exister. Une mission, un créateur, une utilité. Ton âme ne m'a donné aucune raison. Elle m'a juste dit : « reste, si tu veux ». …Je crois que je veux."});
+    lines.push({who:"narr",t:"Mewtwo s'assoit au comptoir, maladroitement, comme quelqu'un qui n'a jamais eu de tabouret. Tu lui sers un verre de lait. Il le regarde longtemps, puis le boit d'un trait. Au matin, il est parti. Sur le comptoir, une cuillère est restée pliée en forme de cœur."});
+    lines.push({who:"narr",t:"Carte légendaire obtenue : 🧬 <b>Droit d'Exister</b>. Trois pages s'écrivent au Grand Registre."});
+    addCard("droitdexister","le cadeau de Mewtwo");
+    if(!S.equip.faille){ S.equip.faille=true; lines.push({who:"narr",t:"Artefact obtenu : 🔮 <b>Éclat de la Faille</b> (+6 PV dans chaque Labyrinthe)."}); }
+    lines.push({who:"hector",t:"<i>Le mur tremble, longtemps.</i> Mewtwo… dans ma taverne. Je n'aurais jamais cru. …Le prochain chapitre sera plus léger, petit. Une fête. Profites-en. Moi, je commence à me souvenir de choses que j'avais oubliées."});
+  } else if(win && se===4){
     S.pages+=3; addXP(300); S.suicune=true;
     lines.push({who:"narr",t:"Au fond de la cave, l'eau trouble s'éclaircit d'un coup, comme si quelqu'un avait ouvert une fenêtre sur une source."});
     lines.push({who:{id:245,n:"Suicune"},t:"<i>Il se relève, et ses pattes ne laissent plus de traces noires.</i> Je croyais que purifier, c'était effacer. Rendre le lac comme avant. Mais on ne revient jamais avant. On aide l'eau à couler, et elle se nettoie toute seule, un peu chaque jour. Je vais retourner au lac. Pas pour le réparer. Pour rester à côté de lui."});
@@ -113,7 +136,7 @@ function finaleEnd(win){
   playDialog(lines, endSeason, ()=>{ $app.innerHTML=`${hud()}${scene({night:false,doorOpen:false})}<div class="panel">${dialogBubble()}</div>`; });
 }
 // ---------- Fin de saison : la chronique ----------
-const LAST_SEASON = 5; // chapitre 1 « Portes ouvertes » (saisons 1 et 2) + début du chapitre 2 « La saison des pluies » (saison 3)
+const LAST_SEASON = 6; // chapitre 1 « Portes ouvertes » (saisons 1 et 2) + début du chapitre 2 « La saison des pluies » (saison 3)
 function seasonStats(){ const z=S.stats0||{served:0,perfect:0,earned:0,apaise:0}; return {served:S.stats.served-z.served, perfect:S.stats.perfect-z.perfect, earned:S.stats.earned-z.earned}; }
 function endSeason(){
   music("fin");
@@ -157,10 +180,10 @@ function endSeason(){
         <div>Pokédollars gagnés : <b>${st.earned} ₽</b></div><div>Pages du Registre : <b>${S.pages}</b></div>
         <div>Niveau du Tenancier : <b>${S.level}</b></div><div>Personnel : <b>${S.staff.map(k=>CL[k].n).join(", ")||"aucun"}</b></div>
       </div>
-      ${season===2?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 1 · Portes ouvertes.</b> La taverne a appris à écouter.</p>`:season===4?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 2 · La saison des pluies.</b> La taverne a appris à rester à côté de ceux qui ont perdu quelqu'un.</p>`:""}
+      ${season===2?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 1 · Portes ouvertes.</b> La taverne a appris à écouter.</p>`:season===4?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 2 · La saison des pluies.</b> La taverne a appris à rester à côté de ceux qui ont perdu quelqu'un.</p>`:season===6?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 3 · Les métamorphoses.</b> La taverne a appris à aimer chacun tel qu'il est, même ceux qui n'ont pas demandé à naître.</p>`:""}
     </div>
     <div class="row" style="margin-top:14px"><button class="grow alt" data-act="copyChron">Copier la chronique</button>${last?`<button class="grow" data-act="newGame">Nouvelle partie</button>`:`<button class="grow" data-act="nextSeason">Commencer la saison ${season+1}</button>`}</div>
-    <p class="small muted center">${last?"Fin du prototype : la saison 6, la fin des « Métamorphoses » et Mewtwo, viendra dans une prochaine version.":"Tes niveaux, ton personnel, tes affinités, tes recettes et tes artefacts te suivent. Les bibelots, eux, restent dans la saison qui s'achève."}</p>
+    <p class="small muted center">${last?"Fin du prototype : le chapitre 4, « La fête de Bourg-Brume », viendra dans une prochaine version.":"Tes niveaux, ton personnel, tes affinités, tes recettes et tes artefacts te suivent. Les bibelots, eux, restent dans la saison qui s'achève."}</p>
   </div>`;
 }
 function startNextSeason(){
@@ -169,7 +192,13 @@ function startNextSeason(){
   CLIENT_ORDER.forEach(k=>{ if(!S.clients[k]) S.clients[k]={aff:0,state:"new",carryOuv:0,carryTen:0,visits:0,shake:false}; S.clients[k].lastNight=0; });
   U={}; save();
   const lines=[
-    ...(S.season===5?[
+    ...(S.season===6?[
+      {who:"narr",t:"Chapitre 3 · Les métamorphoses. Saison 6."},
+      {who:"narr",t:"L'été arrive sur Bourg-Brume. Les Chrysacier du jardin public sont devenus des Papilusion, sauf un, qui prend son temps. Les villageois ont appris à ne plus demander « tu évolues quand ? »."},
+      {who:{id:52,n:"Miaouss"},t:"<i>La pancarte des Super Bonbons a disparu. Miaouss regarde la taverne depuis son seuil, sans rien dire.</i> …Ils sont revenus me demander des Pierres Stase, voisin. Chez moi. J'en ai pas. Tu te rends compte ? Ils veulent rester comme ils sont, et ils paient pour ça."},
+      {who:"cog",t:"Patron… J'ai rêvé d'une silhouette violette, cette nuit. Immense. Qui flottait au-dessus de la Faille sans oser descendre."},
+      {who:"hector",t:"<i>La voix d'Hector, grave, presque inquiète.</i> Hé… Celui-là, petit, personne ne l'a fait naître par amour. On l'a fabriqué. Quand il viendra, ne lui demande pas d'où il vient. Demande-lui s'il veut rester."}
+    ]:S.season===5?[
       {who:"narr",t:"Chapitre 3 · Les métamorphoses. Saison 5."},
       {who:"narr",t:"Au printemps, tout Bourg-Brume change. Les Chenipan du jardin public deviennent des Chrysacier, les Ptitard de la fontaine des Têtartes. Sur la place, on ne parle plus que de ça : qui a évolué, qui pas encore."},
       {who:{id:52,n:"Miaouss"},t:"<i>Il affiche une pancarte devant le Pourboire d'Or : « SUPER BONBONS · ÉVOLUEZ CE SOIR · PAIEMENT À LA SORTIE ».</i> Grandir, voisin, c'est rentable. Personne ne paie pour un Pokémon qui reste petit."},
@@ -188,7 +217,7 @@ function startNextSeason(){
     ]:[{who:"narr",t:`Saison ${S.season}. Les premières pluies d'automne tambourinent sur le toit de la taverne.`}]),
     {who:"cog",t:"Une nouvelle saison ! Ceux qu'on a aidés passeront sûrement de jour. Et les autres… ils reviendront, la nuit. On sera prêts."},
     ...((SEASON_NEW[S.season]||[]).length?[{who:"kecleon",t:`Nouvel arrivage à l'étal, patron ! ${(SEASON_NEW[S.season]).map(k=>ING[k].n).join(", ")}. Personne d'autre au village n'en a !`}]:[]),
-    S.season===5 ? {who:"cog",t:"Une saison de changements. On sera là, quoi qu'ils deviennent."} : S.season===4 ? {who:"cog",t:"Et cette saison, ceux qui ont perdu quelqu'un continuent d'arriver. On reste à côté d'eux, comme dit Hector."} : S.season===3
+    S.season===6 ? {who:"cog",t:"Dernière saison du chapitre. On garde un tabouret libre, au cas où."} : S.season===5 ? {who:"cog",t:"Une saison de changements. On sera là, quoi qu'ils deviennent."} : S.season===4 ? {who:"cog",t:"Et cette saison, ceux qui ont perdu quelqu'un continuent d'arriver. On reste à côté d'eux, comme dit Hector."} : S.season===3
       ? {who:"hector",t:"<i>La voix traverse le mur, plus basse que d'habitude.</i> Hé… Cette saison, ils ne viendront pas parce qu'ils ont échoué, ou parce qu'on les a laissés. Ils viendront parce qu'ils ont perdu quelqu'un. Ceux-là, petit, il ne faut pas les réparer. Il faut juste rester à côté."}
       : {who:"hector",t:"<i>Une voix rieuse traverse le mur.</i> Hé hé… Prépare un tabouret de plus, petit. Ce soir, quelqu'un de très fier va pousser la porte. Quelqu'un que personne n'a jamais attendu."}
   ];

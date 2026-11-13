@@ -138,8 +138,33 @@ function showMenu(){
       <button data-act="toggleMusic">Musique : ${musicOn()?"activée":"coupée"}</button>
       <button data-act="toggleSound">Cris et bruitages : ${S.settings.sound?"activés":"coupés"}</button>
       <button data-act="toggleAssist2">Mode assisté : ${S.settings.assist?"activé":"désactivé"}</button>
+      <button class="alt" data-act="saveCodeOpen">Copier ma sauvegarde</button>
       <button class="alt" data-act="toTitle">Retour au titre</button>
       <button class="ghost" data-act="closeModal">Fermer</button>
     </div>
-    <p class="small muted">La partie est sauvegardée au début de chaque journée, sur cet appareil.</p>`);
+    <p class="small muted">La partie est sauvegardée au début de chaque journée, sur cet appareil. Pour la garder ailleurs ou la continuer sur un autre appareil, copie ta sauvegarde.</p>`);
+}
+function saveCodeModal(){
+  const code=saveToCode();
+  openModal(`<h3>💾 Ma sauvegarde</h3><p class="small muted">Garde ce code (dans tes notes, par message…). Sur un autre appareil : écran titre → « Charger une sauvegarde », puis colle-le.</p>
+    <textarea class="savecode" readonly onclick="this.select()">${code}</textarea>
+    <div class="answers"><button data-act="saveCodeCopy">Copier le code</button><button class="alt" data-act="closeModal">Fermer</button></div>`);
+}
+function saveCodeCopy(){
+  const t=document.querySelector(".savecode"); if(!t) return;
+  t.select(); try{ navigator.clipboard.writeText(t.value).then(()=>toast("Code copié !"),()=>{ document.execCommand("copy"); toast("Code copié !"); }); }catch(e){ try{ document.execCommand("copy"); toast("Code copié !"); }catch(e2){ toast("Sélectionne le code et copie-le à la main."); } }
+}
+function loadCodeModal(err){
+  openModal(`<h3>📥 Charger une sauvegarde</h3><p class="small muted">Colle ici le code copié depuis le menu du jeu. Il remplacera la partie de cet appareil.</p>
+    <textarea class="savecode" id="loadcode" placeholder="REFUGE1:…"></textarea>${err?`<p class="small" style="color:var(--bad)">${err}</p>`:""}
+    <div class="answers"><button data-act="loadCodeGo">Charger</button><button class="alt" data-act="closeModal">Annuler</button></div>`);
+}
+function loadCodeGo(){
+  const el=document.getElementById("loadcode"), o=codeToSave(el&&el.value);
+  if(!o){ loadCodeModal("Ce code ne ressemble pas à une sauvegarde du Refuge. Vérifie qu'il est complet."); return; }
+  S=o; save(); closeModal(); toast("Sauvegarde chargée !"); screenTitle();
+}
+function newGameAsk(){
+  openModal(`<h3>Nouvelle partie ?</h3><p class="small">Une partie est déjà en cours sur cet appareil. En commencer une nouvelle l'<b>effacera</b>.</p><p class="small muted">Astuce : copie d'abord ta sauvegarde depuis le menu du jeu si tu veux la garder.</p>
+    <div class="answers"><button data-act="newGame">Effacer et recommencer</button><button class="alt" data-act="closeModal">Annuler</button></div>`);
 }

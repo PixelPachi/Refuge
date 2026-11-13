@@ -102,10 +102,15 @@ const ING = {
   superbonbon:{n:"Super Bonbon",cat:"garn",price:50,c:"#5a8ad8",item:"rare-candy",season:5,d:"Pousse à grandir : +1 Ouverture, mais +1 Tension (+2 pour l'Évolution manquée)",
     fx:x=>({ouv:1,ten:x.def.family==="Évolution manquée"?2:1,note:"Super Bonbon : ça pousse à grandir… peut-être trop vite."})},
   poudremetal:{n:"Poudre Métal",cat:"garn",price:45,c:"#b8b8c8",item:"metal-powder",season:5,d:"Garde la forme : +1 Ouverture si le client s'est déjà confié au moins une fois",
-    fx:x=>x.cur&&x.cur.stage>=1?{ouv:1,note:"Poudre Métal : il se sent assez solide pour continuer."}:{}}
+    fx:x=>x.cur&&x.cur.stage>=1?{ouv:1,note:"Poudre Métal : il se sent assez solide pour continuer."}:{}},
+  // --- nouveautés de la saison 6
+  baieprine:{n:"Baie Prine",cat:"baie",price:55,c:"#90d870",item:"lum-berry",season:6,d:"Guérit un peu de tout : efface la gueule de bois, et -1 Tension si le client est très tendu (3 ou plus)",
+    fx:x=>({hang:-2,ten:x.cur&&x.cur.ten>=3?-1:0,note:"Baie Prine : un peu de tout qui va mieux."})},
+  eaumystique:{n:"Eau Mystique",cat:"garn",price:50,c:"#5ab0e8",item:"mystic-water",season:6,d:"Une goutte du large : +1 Ouverture pour une âme qui revient (2e visite ou plus)",
+    fx:x=>S.clients[x.k]&&S.clients[x.k].visits>=2?{ouv:1,note:"Eau Mystique : comme une vague familière."}:{}}
 };
 function ingOk(k){ return (ING[k].season||1) <= ((typeof S!=="undefined"&&S&&S.season)||1); }
-const SEASON_NEW = {2:["the","pecha","mepo","biscuit"],3:["jusbaie","pomroz","glace"],4:["grena","coeursucre"],5:["pierrestase","superbonbon","poudremetal"]};
+const SEASON_NEW = {2:["the","pecha","mepo","biscuit"],3:["jusbaie","pomroz","glace"],4:["grena","coeursucre"],5:["pierrestase","superbonbon","poudremetal"],6:["baieprine","eaumystique"]};
 const BASES = ["eau","lait","soda","limonade","liqueur","the"];
 const CRUSH = k => ING[k] && (ING[k].cat==="baie" || ING[k].cat==="fruit");
 const EMO = {
@@ -118,4 +123,4 @@ const COUNTERS = {joie:["colere","tristesse"],nostalgie:["peur","tristesse"],col
 
 
 // Ordre d'arrivée des âmes (toutes saisons)
-const CLIENT_ORDER = ["machopeur", "ponchiot", "magicarpe", "psykokwak", "rondoudou", "leveinard", "ronflex", "tiplouf", "canarticho", "goupix", "hypotrempe", "osselait", "lokhlass", "kangourex", "lucario", "absol", "granivol", "apireine", "metamorph", "insecateur", "kadabra", "chrysacier"];
+const CLIENT_ORDER = ["machopeur", "ponchiot", "magicarpe", "psykokwak", "rondoudou", "leveinard", "ronflex", "tiplouf", "canarticho", "goupix", "hypotrempe", "osselait", "lokhlass", "kangourex", "lucario", "absol", "granivol", "apireine", "metamorph", "insecateur", "kadabra", "chrysacier", "ramoloss", "embrylex", "parasect"];

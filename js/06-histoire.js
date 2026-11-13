@@ -6,9 +6,10 @@ function screenTitle(){
     <div style="width:110px;height:110px">${sprite(HECTOR.id,"Hector",HECTOR.c,{anim:true})}</div>
     <h1>Tavern Keeper's Ledger</h1>
     <h2>Le Refuge des Âmes Égarées</h2>
-    <p class="muted small" style="max-width:320px">Prototype jouable v0.12 · une saison de ${NIGHTS_PER_SEASON} nuits avec Machopeur, Ponchiot, Magicarpe, Rondoudou et Leveinard.</p>
-    <button data-act="newGame" style="width:240px">Nouvelle partie</button>
+    <p class="muted small" style="max-width:320px">Version 0.6 · ${LAST_SEASON} saisons de ${NIGHTS_PER_SEASON} nuits, ${CLIENT_ORDER.length} âmes à écouter, 3 chapitres.</p>
+    <button data-act="${sv&&sv.ten?"newGameAsk":"newGame"}" style="width:240px">Nouvelle partie</button>
     ${sv&&sv.ten&&!sv.seasonOver?`<button class="alt" data-act="continue" style="width:240px">Continuer (nuit ${sv.night})</button>`:""}
+    <button class="ghost sm" data-act="loadCodeOpen">Charger une sauvegarde</button>
     <button class="ghost sm" data-act="toggleSound">Son : ${(S?S.settings.sound:true)?"activé":"coupé"}</button>
     <div class="small muted">Touche l'écran pour lancer la musique.</div>
     <p class="muted" style="font-size:11px;max-width:330px">Projet de fan non commercial. Pokémon appartient à Nintendo, Game Freak et The Pokémon Company. Sprites et cris : PokeAPI.</p>

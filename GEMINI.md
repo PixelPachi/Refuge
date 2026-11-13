@@ -32,9 +32,30 @@ Après chaque lot : déposer les `.webp` dans `assets/art/` puis `python3 tools/
 - Cartes : `card-armurecoque`, `card-premierenvol` (légendaire : un Papilusion aux ailes un peu de travers qui s'envole au soleil, six autres l'attendent)
 - Icône : `relic-coque` (une coque verte de chrysalide fissurée, lumière dorée)
 
+## À faire — Saison 6 · Les métamorphoses (fin du chapitre)
+
+### Ramoloss (`dj-ramoloss-*`)
+- a La rivière de pêche · b La queue qui traîne · h Le courant trop rapide · c Le ponton de bois · i La morsure de Clac · d La berge au soleil · j Les mots qui arrivent trop tard · k Les années à deux · l L'eau calme du soir · f Le matin où Clac a lâché · g **Cœur** : le jour où il est redevenu Ramoloss (silhouette dorée d'un Flagadoss avec un Kokiyas sur la queue)
+- Cartes : `card-flemme` (Ramoloss qui fait la sieste au bord de l'eau), `card-lenteur` (légendaire : Ramoloss qui pêche, un petit Kokiyas accroché à la queue, lumière dorée)
+- Icône : `relic-marque` (une canne à pêche de bois avec un petit coquillage)
+
+### Embrylex (`dj-embrylex-*`)
+- a La vallée des Tyranocif · b La vallée qui ne tremble pas · h La montagne à avaler · c Le chemin de la carrière · i La première pierre ronde · d La grotte aux cristaux · j Le sac découvert · k Sur l'épaule de papa · l Le ruisseau aux galets · f Les pas qui font trembler la vallée · g **Cœur** : le jour où papa a dit « honte » (silhouette dorée d'un Tyranocif qui tend une pierre noire étoilée)
+- Cartes : `card-jetpierres`, `card-collection` (légendaire : Embrylex devant sa collection de pierres brillantes alignées, un grand Tyranocif penché sur elles)
+- Icône : `relic-caillou` (une pierre ronde avec une ligne bleue brillante)
+
+### Parasect (`dj-parasect-*`)
+- a La forêt humide · b La comptine oubliée · h Les spores qui recouvrent tout · c Le sous-bois sans soleil · i Les promenades au soleil · d La clairière tiède · j « Ce n'est plus qu'un champignon » · k La comptine à deux voix · l La flaque de lumière · f Le champignon qui grandit · g **Cœur** : le jour où il ne savait plus qui pensait (un petit Paras lumineux sous un grand champignon, au soleil)
+- Cartes : `card-spore`, `card-deuxvoix` (légendaire : Parasect qui marche vers un rayon de soleil, son grand champignon penché qui suit)
+- Icône : `relic-spore` (un petit champignon rouge à pois qui libère des spores dorées)
+
+### Mewtwo — Grand Regret du chapitre 3
+- `dj-mewtwo-labo` : un laboratoire en ruine la nuit, cuves brisées, écrans éteints, câbles, lumière froide verte
+- `dj-mewtwo` : Mewtwo flottant les yeux fermés dans une cuve de verre brisée, lumière violette, très mélancolique
+- Carte : `card-droitdexister` (légendaire : Mewtwo assis maladroitement au comptoir d'une taverne, un verre de lait, une cuillère pliée en cœur)
+
 ## Plus tard (optionnel)
 - Icônes des 8 bibelots de saison : Tasse ébréchée d'Hector, Clochette de la Faille, Torchon brodé, Lanterne de poche, Bocal à pourboires, Carnet de notes, Sablier de sable fin, Bougie parfumée.
-- Saison 6 (Mewtwo) : à lister quand la saison sera écrite.
 
 ## Déjà fait
 Saisons 1 à 4 complètes (salles, cartes, artefacts), cadres de cartes normaux et légendaires, Pourboire d'Or (façade et salle), lac de Suicune et Suicune.

@@ -3,24 +3,6 @@
 // Tout ce qui concerne chaque âme de la saison est regroupé ici, client par client.
 // Images Gemini à faire : voir GEMINI.md (les salles utilisent le décor générique en attendant).
 
-// Plan de Labyrinthe commun aux âmes de la saison (11 salles) : seuls les noms changent.
-function mapS5(n, opts={}){
-  const N=(id,o)=>Object.assign({},o,{n:n[id]});
-  return {start:"a",nodes:{
-    a:N("a",{t:"entree",x:50,y:6,nx:["b","h"]}),
-    b:N("b",{t:"echo",e:opts.eb||"tristesse",dmg:1,x:30,y:18,nx:["c"]}),
-    h:N("h",{t:"echo",e:opts.eh||"peur",dmg:1,x:72,y:18,nx:["c","i"]}),
-    c:N("c",{t:"carrefour",x:45,y:32,nx:["d","j"]}),
-    i:N("i",{t:"enigme",need:"joie",x:84,y:34,nx:["j"]}),
-    d:N("d",{t:"sanctuaire",x:20,y:46,nx:["k"]}),
-    j:N("j",{t:"echo",e:opts.ej||"colere",dmg:1,x:64,y:48,nx:["k","l"]}),
-    k:N("k",{t:"enigme",need:"nostalgie",x:30,y:62,nx:["f"]}),
-    l:N("l",{t:"sanctuaire",x:78,y:64,nx:["f"]}),
-    f:Object.assign(N("f",{t:"echo",e:opts.ef||"peur",dmg:2,x:50,y:80,nx:["g"]}), opts.foe?{foe:opts.foe}:{}),
-    g:N("g",{t:"coeur",key:opts.key||"nostalgie",x:50,y:94,nx:[]})
-  }};
-}
-
 // =====================================================================
 // MÉTAMORPH  (metamorph)
 // =====================================================================
@@ -46,7 +28,7 @@ CL.metamorph = {
     staff:{n:"Sosie d'accueil",d:"Les âmes qui viennent pour la première fois arrivent avec +1 Ouverture",wage:25},
     staffFx:{arrive(c){ if(S.clients[c.k] && S.clients[c.k].visits===1) c.ouv++; }},
     cogHint:"Il ne sait plus ce qu'il aime : ne lui impose rien de fort, et surtout pas de Super Bonbon, il croirait qu'on veut le changer. Une Gelée Blanche, et du simple : Lait Meumeu, Pierre Stase, Baie Mago.",
-    map:mapS5({a:"Le chapiteau vide",b:"Les rires du public",h:"Mille formes à la seconde",c:"Les coulisses aux miroirs",i:"Le premier soir sur la piste",d:"La caisse où il dormait",j:"Les noms criés par la foule",k:"Le visage effacé",l:"La flaque au clair de lune",f:"Le miroir qui ne renvoie rien",g:"La nuit où il a oublié son visage"},{eb:"tristesse",eh:"peur",ej:"colere",ef:"peur",key:"joie"})
+    map:mapStd({a:"Le chapiteau vide",b:"Les rires du public",h:"Mille formes à la seconde",c:"Les coulisses aux miroirs",i:"Le premier soir sur la piste",d:"La caisse où il dormait",j:"Les noms criés par la foule",k:"Le visage effacé",l:"La flaque au clair de lune",f:"Le miroir qui ne renvoie rien",g:"La nuit où il a oublié son visage"},{eb:"tristesse",eh:"peur",ej:"colere",ef:"peur",key:"joie"})
 };
 TALK.metamorph = [
     {t:"<i>Il prend ta forme, essuie un verre exactement comme toi, puis redevient flaque en riant.</i> Pardon ! Tu as une jolie façon de tenir le torchon. Je voulais voir ce que ça faisait."},
@@ -91,7 +73,7 @@ CL.insecateur = {
     staff:{n:"Maître d'armes",d:"Les âmes de l'Évolution manquée arrivent avec 1 Tension de moins",wage:25},
     staffFx:{arrive(c,d){ if(d.family==="Évolution manquée") c.ten--; }},
     cogHint:"Il est fier et tient bien l'alcool, mais un Super Bonbon le vexerait : ça sent le rituel. Une seule Gelée Orange, et du net : Thé de Safrania, Menthe, Pomme Acide.",
-    map:mapS5({a:"La forêt des lames",b:"Le clan qui tourne le dos",h:"La pluie d'acier",c:"Le cercle du rituel",i:"La feuille coupée en deux",d:"La clairière de l'aube",j:"Les pinces qui claquent",k:"Les entraînements avec sa sœur",l:"Le ruisseau où il aiguisait ses lames",f:"Le rituel de l'acier",g:"Le jour où il a gardé ses lames"},{eb:"tristesse",eh:"peur",ej:"colere",ef:"colere",key:"joie",foe:{id:212,n:"Cizayox"}})
+    map:mapStd({a:"La forêt des lames",b:"Le clan qui tourne le dos",h:"La pluie d'acier",c:"Le cercle du rituel",i:"La feuille coupée en deux",d:"La clairière de l'aube",j:"Les pinces qui claquent",k:"Les entraînements avec sa sœur",l:"Le ruisseau où il aiguisait ses lames",f:"Le rituel de l'acier",g:"Le jour où il a gardé ses lames"},{eb:"tristesse",eh:"peur",ej:"colere",ef:"colere",key:"joie",foe:{id:212,n:"Cizayox"}})
 };
 TALK.insecateur = [
     {t:"<i>Il coupe une rondelle de citron si fine qu'on voit la bougie au travers.</i> Pour ton prochain verre. Gratuit. Les lames, ça sert aussi à ça."},
@@ -137,7 +119,7 @@ CL.kadabra = {
     staff:{n:"Liseur de pensées",d:"Les âmes très tendues (Tension 3 ou plus) arrivent avec +1 Ouverture",wage:30},
     staffFx:{arrive(c){ if(c.ten>=3) c.ouv++; }},
     cogHint:"Il entend tout, même nos pensées : reste calme et ne secoue pas les verres devant lui. Une Gelée Rose pour l'esprit, et du doux : Thé de Safrania, Miel, Poudre Métal.",
-    map:mapS5({a:"La chambre de Lise",b:"Le billet d'échange pâli",h:"Les cuillères qui tremblent",c:"Le centre d'échange",i:"La première pensée lue",d:"La bibliothèque silencieuse",j:"Les Alakazam des autres",k:"Les devoirs à deux",l:"Le jardin de l'école",f:"Le samedi où personne n'est venu",g:"La promesse oubliée"},{eb:"tristesse",eh:"peur",ej:"colere",ef:"tristesse",key:"joie",foe:{id:65,n:"Alakazam"}})
+    map:mapStd({a:"La chambre de Lise",b:"Le billet d'échange pâli",h:"Les cuillères qui tremblent",c:"Le centre d'échange",i:"La première pensée lue",d:"La bibliothèque silencieuse",j:"Les Alakazam des autres",k:"Les devoirs à deux",l:"Le jardin de l'école",f:"Le samedi où personne n'est venu",g:"La promesse oubliée"},{eb:"tristesse",eh:"peur",ej:"colere",ef:"tristesse",key:"joie",foe:{id:65,n:"Alakazam"}})
 };
 TALK.kadabra = [
     {t:"<i>Ta cuillère flotte jusqu'à toi, remuée toute seule dans ta tasse.</i> Pardon. Tu pensais très fort que ton café était trop chaud."},
@@ -183,7 +165,7 @@ CL.chrysacier = {
     staff:{n:"Veilleur patient",d:"Les âmes de l'Évolution manquée restent un échange de plus",wage:10},
     staffFx:{arrive(c,d){ if(d.family==="Évolution manquée") c.turns++; }},
     cogHint:"Il est si fragile qu'un verre un peu fort le fait se refermer. Une Gelée Ciel, légère, et du très doux : Lait Meumeu, Miel, Baie Pêcha. Jamais de Super Bonbon : il croirait qu'on le presse.",
-    map:mapS5({a:"L'arbre aux sept chenilles",b:"La coque froide",h:"Les battements d'ailes au loin",c:"La branche d'où ils sont partis",i:"La première fissure",d:"Le cocon de feuilles",j:"Les Papilusion qui appellent",k:"L'été des sept Chenipan",l:"Le rebord de fenêtre au soleil",f:"Le ciel où ils ont migré",g:"Le printemps où il est resté dedans"},{eb:"tristesse",eh:"peur",ej:"tristesse",ef:"peur",key:"joie",foe:{id:12,n:"Papilusion"}})
+    map:mapStd({a:"L'arbre aux sept chenilles",b:"La coque froide",h:"Les battements d'ailes au loin",c:"La branche d'où ils sont partis",i:"La première fissure",d:"Le cocon de feuilles",j:"Les Papilusion qui appellent",k:"L'été des sept Chenipan",l:"Le rebord de fenêtre au soleil",f:"Le ciel où ils ont migré",g:"Le printemps où il est resté dedans"},{eb:"tristesse",eh:"peur",ej:"tristesse",ef:"peur",key:"joie",foe:{id:12,n:"Papilusion"}})
 };
 TALK.chrysacier = [
     {t:"<i>Il fixe la flamme de la bougie.</i> Vous savez ce qu'il y a dans une coque ? Moi non plus. C'est ça le problème. Je ne sais pas ce que je suis en train de devenir."},

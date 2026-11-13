@@ -78,3 +78,23 @@ const CARDS = {
   souffle:{n:"Second souffle",c:1,t:"skill",heal:5,draw:1,r:"temp",i:"🌬️"},
   doute:{n:"Doute",c:1,t:"curse",unplayable:true,r:"temp",i:"🌫️",d:"Injouable. Encombre la main."}
 };
+
+// Plan de Labyrinthe standard (11 salles, depuis la saison 5) : on ne donne que les noms des salles.
+// n = {a:"…",b:"…",h,c,i,d,j,k,l,f,g}  ·  opts = {eb,eh,ej,ef : émotions des Échos, key : souvenir du Cœur, foe : ombre de la salle f}
+function mapStd(n, opts={}){
+  const N=(id,o)=>Object.assign({},o,{n:n[id]});
+  return {start:"a",nodes:{
+    a:N("a",{t:"entree",x:50,y:6,nx:["b","h"]}),
+    b:N("b",{t:"echo",e:opts.eb||"tristesse",dmg:1,x:30,y:18,nx:["c"]}),
+    h:N("h",{t:"echo",e:opts.eh||"peur",dmg:1,x:72,y:18,nx:["c","i"]}),
+    c:N("c",{t:"carrefour",x:45,y:32,nx:["d","j"]}),
+    i:N("i",{t:"enigme",need:"joie",x:84,y:34,nx:["j"]}),
+    d:N("d",{t:"sanctuaire",x:20,y:46,nx:["k"]}),
+    j:N("j",{t:"echo",e:opts.ej||"colere",dmg:1,x:64,y:48,nx:["k","l"]}),
+    k:N("k",{t:"enigme",need:"nostalgie",x:30,y:62,nx:["f"]}),
+    l:N("l",{t:"sanctuaire",x:78,y:64,nx:["f"]}),
+    f:Object.assign(N("f",{t:"echo",e:opts.ef||"peur",dmg:2,x:50,y:80,nx:["g"]}), opts.foe?{foe:opts.foe}:{}),
+    g:N("g",{t:"coeur",key:opts.key||"nostalgie",x:50,y:94,nx:[]})
+  }};
+}
+

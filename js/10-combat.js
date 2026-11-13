@@ -150,7 +150,7 @@ function runCards(x){
 function setupDungeon(){
   U.inDungeon=true; ensureDeck();
   const D=U.dawn, x=D.list[D.i], d=CL[x.k];
-  D.finale=!!x.finale; D.map = x.finale ? ((S.season||1)===4 ? FINALE_MAP_S4 : FINALE_MAP) : null;
+  D.finale=!!x.finale; D.map = x.finale ? (FINALE_MAPS[S.season||1] || FINALE_MAP) : null;
   const bon=runHPBonus(x);
   const maxhp = 40 + bon.reduce((a,b)=>a+(b.hp||0),0);
   Object.assign(D,{x, node:null, prev:null, visited:[], phase:"intro", out:null, bonuses:bon, seenTypes:{}, hp:maxhp, maxhp,

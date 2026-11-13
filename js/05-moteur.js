@@ -19,6 +19,13 @@ function initClients(){
 function save(){ try{ localStorage.setItem(SAVE_KEY, JSON.stringify(S)); }catch(e){} }
 function loadSave(){ try{ const r=localStorage.getItem(SAVE_KEY); return r?JSON.parse(r):null; }catch(e){ return null; } }
 function clearSave(){ try{ localStorage.removeItem(SAVE_KEY); }catch(e){} }
+// Code de sauvegarde : la partie en texte, pour la garder ou la passer d'un appareil à l'autre (aucun serveur)
+const SAVE_CODE_PREFIX = "REFUGE1:";
+function saveToCode(){ save(); const json=localStorage.getItem(SAVE_KEY)||JSON.stringify(S); return SAVE_CODE_PREFIX+btoa(unescape(encodeURIComponent(json))); }
+function codeToSave(code){
+  code=(code||"").trim().replace(/\s+/g,""); if(!code.startsWith(SAVE_CODE_PREFIX)) return null;
+  try{ const o=JSON.parse(decodeURIComponent(escape(atob(code.slice(SAVE_CODE_PREFIX.length))))); return (o && o.ten && o.clients) ? o : null; }catch(e){ return null; }
+}
 
 // ---------- Outils ----------
 const $app = document.getElementById("app");
