@@ -122,10 +122,15 @@ const ING = {
   runesort:{n:"Châtaigne Grillée",cat:"garn",price:55,c:"#8a5a38",season:9,d:"Un goût d'autrefois : +1 Ouverture pour les âmes de l'Inachevé",
     fx:x=>x.def.family==="Inachevé"?{ouv:1,note:"Châtaigne Grillée : un goût d'il y a très longtemps se réveille en lui."}:{}},
   runepurif:{n:"Tisane de Sauge",cat:"garn",price:50,c:"#98b088",season:9,d:"Apaise et purifie : -1 Tension, et -1 de plus si le client est très tendu (3 ou plus)",
-    fx:x=>({ten:x.cur&&x.cur.ten>=3?-2:-1,note:"Tisane de Sauge : l'air devient plus léger."})}
+    fx:x=>({ten:x.cur&&x.cur.ten>=3?-2:-1,note:"Tisane de Sauge : l'air devient plus léger."})},
+  // --- nouveautés de la saison 10
+  sable:{n:"Sablé au Beurre",cat:"garn",price:45,c:"#e8c880",item:"shalour-sable",season:10,d:"Fondant : +1 Ouverture pour les âmes silencieuses",
+    fx:x=>x.def.quiet?{ouv:1,note:"Sablé au Beurre : ça fond, et la parole aussi, un peu."}:{}},
+  muffin:{n:"Muffin du Matin",cat:"garn",price:50,c:"#c89058",season:10,d:"Goût de réveil : le client reste un échange de plus, et -1 Tension pour l'Inachevé",
+    fx:x=>({turns:1,ten:x.def.family==="Inachevé"?-1:0,note:"Muffin du Matin : un goût de réveil, de recommencement."})}
 };
 function ingOk(k){ return (ING[k].season||1) <= ((typeof S!=="undefined"&&S&&S.season)||1); }
-const SEASON_NEW = {2:["the","pecha","mepo","biscuit"],3:["jusbaie","pomroz","glace"],4:["grena","coeursucre"],5:["pierrestase","superbonbon","poudremetal"],6:["baieprine","eaumystique"],7:["bonbonfete","galette"],8:["malasada","craquiroc"],9:["runesort","runepurif"]};
+const SEASON_NEW = {2:["the","pecha","mepo","biscuit"],3:["jusbaie","pomroz","glace"],4:["grena","coeursucre"],5:["pierrestase","superbonbon","poudremetal"],6:["baieprine","eaumystique"],7:["bonbonfete","galette"],8:["malasada","craquiroc"],9:["runesort","runepurif"],10:["sable","muffin"]};
 const BASES = ["eau","lait","soda","limonade","liqueur","the"];
 const CRUSH = k => ING[k] && (ING[k].cat==="baie" || ING[k].cat==="fruit");
 const EMO = {
@@ -138,4 +143,4 @@ const COUNTERS = {joie:["colere","tristesse"],nostalgie:["peur","tristesse"],col
 
 
 // Ordre d'arrivée des âmes (toutes saisons)
-const CLIENT_ORDER = ["machopeur", "ponchiot", "magicarpe", "psykokwak", "rondoudou", "leveinard", "ronflex", "tiplouf", "canarticho", "goupix", "hypotrempe", "osselait", "lokhlass", "kangourex", "lucario", "absol", "granivol", "apireine", "metamorph", "insecateur", "kadabra", "chrysacier", "ramoloss", "embrylex", "parasect", "ecremeuh", "tropius", "arcanin", "branette", "kecleon", "mimiqui", "miaouss", "dracolosse", "spiritomb", "muciole", "demolosse"];
+const CLIENT_ORDER = ["machopeur", "ponchiot", "magicarpe", "psykokwak", "rondoudou", "leveinard", "ronflex", "tiplouf", "canarticho", "goupix", "hypotrempe", "osselait", "lokhlass", "kangourex", "lucario", "absol", "granivol", "apireine", "metamorph", "insecateur", "kadabra", "chrysacier", "ramoloss", "embrylex", "parasect", "ecremeuh", "tropius", "arcanin", "branette", "kecleon", "mimiqui", "miaouss", "dracolosse", "spiritomb", "muciole", "demolosse", "ptera", "jirachi", "noctali"];

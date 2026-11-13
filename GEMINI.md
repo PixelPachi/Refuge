@@ -147,6 +147,35 @@ Même méthode que les icônes d'artefacts (prompt ICP, fond vert, `tools/art.py
 - `ing-runesort` : Châtaigne Grillée (trois châtaignes grillées fendues, dans un cornet de papier)
 - `ing-runepurif` : Tisane de Sauge (une tasse fumante avec des feuilles de sauge)
 
+## À faire — Boissons préparées (nouvelles bases)
+Même style que les `drink-lait-*` existants (verre seul sur fond transparent). Le jeu les affiche dès que le fichier existe ; sinon, le verre dessiné en CSS.
+- Thé de Safrania : `drink-the` (tasse de thé ambré), `drink-the-rouge` (Thé à la Cerise), `drink-the-bleu` (Thé Bleu des Brumes), `drink-the-jaune` (Thé Citron-Sitrus), `drink-the-rose` (Thé Rose de Mago), `drink-the-vert` (Thé à la Menthe), `drink-the-miel` (Thé au Miel)
+- Jus de Baie : `drink-jusbaie` (grand verre de jus violet-rose), `drink-jusbaie-rouge` (Jus Rubis), `drink-jusbaie-bleu` (Jus des Baies Bleues), `drink-jusbaie-jaune` (Jus Soleil), `drink-jusbaie-rose` (Jus Douceur Rose), `drink-jusbaie-vert` (Jus Vert des Prés), `drink-jusbaie-miel` (Jus Doré au Miel)
+- Les ingrédients des saisons 2 à 10 colorent déjà le verre (Baie Pêcha → rose, Bonbon Fête → rouge, Galette → miel, etc.) : pas d'image en plus à prévoir.
+
+## À faire — Saison 10 · Le secret d'Hector (fin du chapitre 5)
+
+### Ptéra (`dj-ptera-*`)
+- a La forêt de fougères · b La goutte d'ambre · h Le grand froid · c Le ciel d'autrefois · i La nuée qui vole ensemble · d Le nid dans la falaise · j La vitre du musée · k Les cris des siens · l Les Roucool au-dessus des toits · f Le réveil dans la salle blanche · g **Cœur** : le matin du grand froid (un Ptéra figé dans une goutte d'ambre géante, forêt préhistorique sous la neige)
+- Cartes : `card-attaqueciel` (Ptéra en piqué au-dessus des fougères), `card-derniernuee` (légendaire : Ptéra qui vole au milieu d'une nuée de Roucool au coucher du soleil)
+- Icône : `relic-ambre` (un morceau d'ambre orange avec une bulle dedans)
+
+### Jirachi (`dj-jirachi-*`)
+- a Le champ sous les étoiles · b Les trois papiers · h Mille ans de sommeil · c Le ciel où il dort · i Les sept jours à jouer · d Le creux d'herbe tiède · j L'encre qui pâlit · k « Promis ? » « Promis. » · l Les enfants de Bourg-Brume · f Le réveil, mille ans plus tard · g **Cœur** : le septième soir (un petit garçon endormi dans l'herbe contre Jirachi, sous les étoiles)
+- Cartes : `card-voeu` (Jirachi qui tient un petit papier lumineux), `card-septjours` (légendaire : Jirachi et un enfant qui font des ricochets sur un étang au soleil)
+- Icône : `relic-etoile` (un petit papier à vœux plié, avec une étoile dorée)
+
+### Noctali (`dj-noctali-*`)
+- a L'atelier au clair de lune · b Le pinceau sec · h La nuit sans lui · c Le toit de l'atelier · i L'étoile ajoutée chaque nuit · d Le coussin près du chevalet · j Le marchand qui emporte la toile · k Augustin qui peint en silence · l La jeune Queulorior sur la place · f La nuit de pleine lune où il est parti · g **Cœur** : le coin de ciel qui manque (une toile nocturne inachevée, un coin blanc en haut à gauche, un Noctali assis devant)
+- Cartes : `card-feinte` (Noctali dont les anneaux brillent dans le noir), `card-coindeciel` (légendaire : Noctali qui trace un croissant de lune avec un pinceau dans la gueule)
+- Icône : `relic-pinceau` (un vieux pinceau à la pointe sèche, bleu nuit)
+
+### Giratina — Grand Regret du chapitre 5
+- `dj-giratina-monde` : le monde à l'envers (escaliers qui montent vers le bas, cascades vers le ciel, feuilles mortes qui flottent, lumière grise et violette)
+- `dj-giratina` : Giratina immense dans le monde à l'envers, un petit ruban rouge entre ses griffes, très mélancolique
+- Carte : `card-rubanlise` (légendaire : un ruban rouge posé sur le comptoir d'une vieille taverne, une moustache et un tablier en silhouette dorée derrière)
+- Icône d'ingrédient : `ing-muffin` (Muffin du Matin, un muffin doré encore chaud)
+
 ## Plus tard (optionnel)
 - Icônes des 8 bibelots de saison : Tasse ébréchée d'Hector, Clochette de la Faille, Torchon brodé, Lanterne de poche, Bocal à pourboires, Carnet de notes, Sablier de sable fin, Bougie parfumée.
 

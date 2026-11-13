@@ -127,8 +127,8 @@ TALK.muciole = [
 ];
 WIPE.muciole = ["<i>Sa lumière éclaire les verres pendant que tu essuies. Tu vois chaque trace. Il est très fier d'être utile.</i>","<i>Il clignote doucement, trois longs, deux courts, au rythme de ton torchon.</i>"];
 LETTERS.muciole = "« Hier soir, sur l'étang, une jeune Lumivole n'est pas venue au rendez-vous d'un jeune Muciole. Il allait partir. Je lui ai dit : va frapper. Il y est allé. Elle avait un rhume. Ils ont dansé le lendemain. Trois longs, deux courts. — M. »";
-REGULARS.muciole = {order:{base:"jusbaie",add:["miel"]},
-    line:"<i>Il entre en dessinant une étoile au-dessus de la porte.</i> Bonsoir ! Un Jus de Baie au miel. Je ne surveille plus la porte. Enfin, un peu. Par habitude.",
+REGULARS.muciole = {order:{base:"lait",add:["miel"]},
+    line:"<i>Il entre en dessinant une étoile au-dessus de la porte.</i> Bonsoir ! Un lait au miel, comme les soirs d'été. Je ne surveille plus la porte. Enfin, un peu. Par habitude.",
     ok:"<i>Il boit, la lumière tranquille.</i> Les jeunes de l'étang m'appellent « le vieux qui frappe aux portes ». J'aime bien. C'est mieux que « le vieux qui attend ».",
     ko:"<i>Sa lumière vacille, puis se reprend.</i> Pas tout à fait. Mais je ne repars pas fâché. Plus jamais fâché sans demander."};
 ROOM_SAY.muciole = {a:"L'étang. Le soleil se couche. Bientôt, les lumières.",b:"La fleur. Je l'avais cueillie au bord de l'eau. Elle a séché dans ma patte.",h:"La nuit. Sans elle. L'étang est si noir quand on est seul à briller.",c:"Les roseaux. On s'y cachait pour se faire peur, en riant.",i:"Nos lumières dans le ciel. Une étoile. Un cœur. Un mot.",d:"La feuille de nénuphar. Notre place.",j:"Le matin. Je suis parti sans frapper à sa porte.",k:"Trois longs, deux courts. « Je suis là. »",l:"Des jeunes qui dansent. Ils ne savent pas encore.",f:"Sa maison. Elle était à la fenêtre. Elle attendait. Moi.",g:"Le soir de la grande danse, où personne n'est venu."};

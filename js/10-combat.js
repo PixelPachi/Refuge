@@ -415,6 +415,7 @@ function winCombat(){
 function koCheck(){
   const D=U.dawn, C=D.combat; if(D.hp>0) return false;
   if(S.equip.collier && !D.collierUsed){ D.collierUsed=true; D.hp=10; C.log=(C.log?C.log+" · ":"")+"🏷️ Le Collier de Ponchiot brille : il se relève avec 10 PV !"; return false; }
+  if(C.wish){ C.wish=false; D.hp=11; C.log=(C.log?C.log+" · ":"")+"⭐ Le Papier à Vœux brille : il se relève avec 11 PV !"; return false; }
   loseRun(); return true;
 }
 const RELIC_EXTRA=[{key:"faille",n:"Éclat de la Faille",i:"🔮",d:"Le client descend avec +6 PV dans chaque Labyrinthe"}];

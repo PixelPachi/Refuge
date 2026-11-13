@@ -35,12 +35,16 @@ function preloadArt(done){
 }
 function artBg(k){ return ARTOK[k] ? `<img class="artbg" src="${artSrc(k)}" alt="">` : ""; }
 // Icône d'une boisson préparée : recette offerte ou boisson fétiche reconnue, sinon le verre de sa base.
-const FLAVOR = {ceriz:"rouge",figuy:"rouge",framby:"rouge",oran:"bleu",fraive:"bleu",sitrus:"jaune",mago:"rose",kika:"rose",wiki:"rose",menthe:"vert",pommeacide:"vert",miel:"miel",pommesucree:"miel",gateau:"miel"};
+const FLAVOR = {ceriz:"rouge",figuy:"rouge",framby:"rouge",oran:"bleu",fraive:"bleu",sitrus:"jaune",mago:"rose",kika:"rose",wiki:"rose",menthe:"vert",pommeacide:"vert",miel:"miel",pommesucree:"miel",gateau:"miel",
+  // ingrédients des saisons 2 à 10 : ils colorent le verre comme les anciens
+  pecha:"rose",grena:"rose",coeursucre:"rose",mepo:"rouge",pomroz:"rouge",bonbonfete:"rouge",pierrestase:"rouge",eaumystique:"bleu",glace:"bleu",baieprine:"vert",runepurif:"vert",plume:"jaune",galette:"miel",malasada:"miel",runesort:"miel",sable:"miel",muffin:"miel"};
 const DRINK_NAMES = {
   eau:{rouge:"Eau de Ceriz",bleu:"Eau Océane",jaune:"Eau Sitrus",rose:"Eau Rosée",vert:"Eau Fraîcheur Menthe",miel:"Eau Miellée"},
   lait:{rouge:"Lait Framboisé",bleu:"Lait Myrtille-Oran",jaune:"Lait Soleil",rose:"Lait Fraise-Mago",vert:"Lait à la Menthe",miel:"Lait Doux au Miel"},
   soda:{rouge:"Soda Cerise",bleu:"Soda des Abysses",jaune:"Soda Pétillant Sitrus",rose:"Soda Bonbon",vert:"Soda Givré",miel:"Soda Ambré"},
   limonade:{rouge:"Limonade Rubis",bleu:"Limonade Lagon",jaune:"Limonade Éclat",rose:"Limonade Rose",vert:"Limonade Mojito",miel:"Limonade Dorée"},
+  the:{rouge:"Thé à la Cerise",bleu:"Thé Bleu des Brumes",jaune:"Thé Citron-Sitrus",rose:"Thé Rose de Mago",vert:"Thé à la Menthe",miel:"Thé au Miel"},
+  jusbaie:{rouge:"Jus Rubis",bleu:"Jus des Baies Bleues",jaune:"Jus Soleil",rose:"Jus Douceur Rose",vert:"Jus Vert des Prés",miel:"Jus Doré au Miel"},
   liqueur:{rouge:"Liqueur Double Ceriz",bleu:"Liqueur Nuit Bleue",jaune:"Liqueur Sitrus Flambée",rose:"Liqueur de Mago",vert:"Liqueur Verte des Bois",miel:"Liqueur au Miel"}
 };
 function drinkFlavor(d){ const a=(d.add||[]).find(k=>FLAVOR[k]); return a?FLAVOR[a]:null; }

@@ -66,15 +66,27 @@ const FINALE_MAP_S8 = (()=>{ const m=JSON.parse(JSON.stringify(FINALE_MAP)); con
   n.fh=Object.assign({},n.fh,{n:"Ho-Oh au-dessus des cendres",art:"hooh",say:"Ho-Oh. L'oiseau de l'arc-en-ciel, celui qui veillait sur les fêtes des hommes. Il n'est jamais revenu depuis l'incendie. Il plane seul au-dessus des cendres, depuis des siècles.",
     boss:{id:250,n:"Ho-Oh, le ciel abandonné",hp:165,moves:[{a:"atk",v:15},{a:"burn",v:3,dmg:9},{a:"def",v:16},{a:"atk",v:9,x:2},{a:"buff",v:4},{a:"weak",v:2,dmg:11},{a:"atk",v:26}]}});
   return m; })();
+// Saison 10 : le Grand Regret du chapitre 5 est Giratina, le maître de la Faille, banni dans le monde à l'envers
+const FINALE_MAP_S10 = (()=>{ const m=JSON.parse(JSON.stringify(FINALE_MAP)); const n=m.nodes;
+  n.fg=Object.assign({},n.fg,{n:"Le monde à l'envers",art:"giratina-monde",say:"Des escaliers qui montent vers le bas, des cascades qui coulent vers le ciel. Le monde derrière la Faille. Ici, tous les regrets qu'elle a avalés flottent comme des feuilles mortes."});
+  n.fh=Object.assign({},n.fh,{n:"Giratina et le ruban rouge",art:"giratina",say:"Giratina. Le maître du monde à l'envers. Il a été banni ici, il y a si longtemps, pour sa colère. Depuis, il garde les regrets que la Faille lui envoie, pour ne pas être seul. Et entre ses griffes, un petit ruban rouge.",
+    boss:{id:487,n:"Giratina, le banni",hp:180,moves:[{a:"atk",v:16},{a:"weak",v:2,dmg:11},{a:"def",v:18},{a:"atk",v:10,x:2},{a:"vuln",v:2,dmg:12},{a:"buff",v:4},{a:"atk",v:28}]}});
+  return m; })();
 // Plan du Grand Écho selon la saison (Grand Regret de fin de chapitre), sinon le plan standard
-const FINALE_MAPS = {4:FINALE_MAP_S4, 6:FINALE_MAP_S6, 8:FINALE_MAP_S8};
+const FINALE_MAPS = {4:FINALE_MAP_S4, 6:FINALE_MAP_S6, 8:FINALE_MAP_S8, 10:FINALE_MAP_S10};
 function finaleChamps(){ return CLIENT_ORDER.filter(k=>inSeason(k) && ["apaise","staff"].includes(S.clients[k].state)); }
 function seasonClose(){
   const se=S.season||1; S.finale=S.finale||{}; S.night=Math.min(S.night,NIGHTS_PER_SEASON);
   if(S.finale[se]){ endSeason(); return; }
   music("donjon");
   const fete = CLIENT_ORDER.filter(k=>[7,8].includes(CL[k].season) && ["apaise","staff"].includes(S.clients[k].state)).map(k=>CL[k].n);
-  const lines = se===9 ? [
+  const lines = se===10 ? [
+    {who:"narr",t:"La dernière nuit de la saison, toutes les horloges de Bourg-Brume s'arrêtent en même temps. Dans la taverne, l'eau des verres coule vers le haut, goutte à goutte."},
+    {who:"narr",t:"La porte murée, derrière le portrait, se fend du haut en bas. Une ombre immense passe de l'autre côté, avec des ailes comme des griffes, et six pointes rouges qui luisent dans le noir."},
+    {who:{id:487,n:"Giratina"},t:"<i>Sa voix vient d'en dessous, comme si le plancher parlait.</i> Tavernier. Depuis cent ans, ton chagrin m'envoie des âmes. C'est ta Faille. Ton attente a ouvert une porte dans mon monde. Et parmi elles, il y en a une que tu n'as jamais su chercher. Tu la veux ? Viens la prendre. Moi, je n'ai qu'elles, dans mon monde à l'envers."},
+    {who:"hector",t:"<i>Hector, la voix brisée.</i> Lise… Elle est là-dessous ? Depuis tout ce temps ? Petit, je… je ne peux pas descendre. Je suis une ombre, je n'ai jamais pu passer la porte. Vas-y. Avec ton acolyte. Ramène-la. Je t'en supplie."},
+    {who:"cog",t:"On y va, patron. Pour Hector. Pour Lise. On n'a jamais laissé une âme dans le noir, on ne va pas commencer ce soir."}
+  ] : se===9 ? [
     {who:"narr",t:"La dernière nuit de la saison, le portrait d'Hector tombe du mur tout seul. Derrière, dans la pierre, une porte que personne n'avait jamais vue."},
     {who:"hector",t:"<i>Sa voix tremble.</i> Cette porte… c'est moi qui l'ai murée, il y a cent ans. L'ombre qui remonte de la Faille à chaque fin de saison, petit… celle avec mon sourire… Ce n'est pas un regret de tes clients. C'est le mien. C'est la part de moi qui attend encore, au fond."},
     {who:"cog",t:"Alors c'est son regret à lui qu'on va affronter, patron ? On ne va pas lui faire de mal, hein ?"},
@@ -182,7 +194,21 @@ function finaleEnd(win){
   const se=S.season||1; S.finale=S.finale||{}; S.finale[se]=win?"win":"lose"; U.inDungeon=false;
   delete CL._duo; if(S.clients) delete S.clients._duo;
   const lines=[];
-  if(win && se===9){
+  if(win && se===10){
+    S.pages+=4; addXP(400); S.lise=true;
+    lines.push({who:"narr",t:"Au fond du monde à l'envers, Giratina repose doucement ses ailes. Les escaliers se remettent à l'endroit, un par un."});
+    lines.push({who:{id:487,n:"Giratina"},t:"<i>Plus bas, presque humble.</i> On m'a banni pour ma colère. J'ai gardé les regrets des autres parce que c'était tout ce qu'on m'envoyait. Ton âme ne m'a pas combattu pour me les reprendre. Elle m'a demandé si j'avais froid. …Personne ne m'avait jamais demandé ça. Prends le ruban. Et laisse-moi la porte entrouverte. Juste un peu. Pour les soirs où je voudrai un verre."});
+    lines.push({who:"narr",t:"Par l'escalier de la cave monte une petite fille, avec un ruban rouge dans les cheveux. À chaque marche, elle a l'air plus vieille, puis plus jeune, comme si le temps ne savait pas quoi faire d'elle. Arrivée en haut, c'est une vieille dame aux yeux d'enfant."});
+    lines.push({who:{id:92,n:"Lise"},t:"<i>Elle regarde la salle, le comptoir, le portrait tombé.</i> Papa ? Le soir de la fête, je me suis perdue dans le brouillard. Une famille m'a recueillie, loin. J'ai grandi. Je suis revenue à Bourg-Brume, vieille. La taverne était fermée, on la disait hantée. Je n'ai jamais osé pousser la porte. Je laissais du lait chaud sur ma fenêtre, pour un petit chat des rues, en me disant que toi aussi, tu aurais fait ça."});
+    lines.push({who:"hector",t:"<i>Hector apparaît, tout entier, sans violet, avec sa moustache et son tablier. Il ne dit rien. Il ouvre les bras.</i> …Pardon, ma Lise. Pour les mots durs. J'aurais dû courir après toi. Je t'ai attendue au lieu de te chercher."});
+    lines.push({who:{id:92,n:"Lise"},t:"Moi aussi, je t'ai attendu. On s'est attendus, papa. C'est fini, maintenant."});
+    lines.push({who:"narr",t:"Ils restent longtemps serrés l'un contre l'autre, au milieu de la taverne. Puis Lise s'efface doucement, comme une bougie qu'on souffle. Sur le comptoir, son ruban rouge est resté."});
+    lines.push({who:"narr",t:"Carte légendaire obtenue : 🎀 <b>Le Ruban de Lise</b>. Quatre pages s'écrivent au Grand Registre."});
+    addCard("rubanlise","le cadeau de Lise");
+    if(!S.equip.faille){ S.equip.faille=true; lines.push({who:"narr",t:"Artefact obtenu : 🔮 <b>Éclat de la Faille</b> (+6 PV dans chaque Labyrinthe)."}); }
+    lines.push({who:"hector",t:"<i>Hector, la voix légère, presque un rire.</i> Je pourrais partir, maintenant, petit. Je le sens. Mais tu sais quoi ? Je crois que je vais rester encore un peu. Il y a une Faille à surveiller, un Giratina qui veut un verre de temps en temps, et un tavernier qui a encore beaucoup à apprendre. Hé hé."});
+    if(S.clients.miaouss && ["apaise","staff"].includes(S.clients.miaouss.state)) lines.push({who:{id:52,n:"Miaouss"},t:"<i>Le lendemain matin, Miaouss trouve le ruban rouge accroché à sa petite fenêtre aux bols de lait. Il le regarde longtemps.</i> …Elle s'appelait Lise. Je ne l'ai jamais su. Merci, voisin."});
+  } else if(win && se===9){
     S.pages+=2; addXP(250); S.hectorMem=1;
     lines.push({who:"narr",t:"Au fond de la cave, l'ombre au sourire d'Hector cesse de se débattre. Elle s'assoit sur la dernière marche, comme un vieil homme fatigué, et regarde vers la porte murée."});
     lines.push({who:"hector",t:"<i>Hector apparaît en entier, pour la première fois, debout dans la cave. Il regarde son ombre longtemps.</i> Je me souviens, maintenant. Pas de tout. D'une petite fille, avec un ruban rouge, qui courait entre les tables. Ma fille. Lise. Elle avait sept ans."});
@@ -231,7 +257,7 @@ function finaleEnd(win){
   playDialog(lines, endSeason, ()=>{ $app.innerHTML=`${hud()}${scene({night:false,doorOpen:false})}<div class="panel">${dialogBubble()}</div>`; });
 }
 // ---------- Fin de saison : la chronique ----------
-const LAST_SEASON = 9; // chapitre 1 « Portes ouvertes » (saisons 1 et 2) + début du chapitre 2 « La saison des pluies » (saison 3)
+const LAST_SEASON = 10; // chapitre 1 « Portes ouvertes » (saisons 1 et 2) + début du chapitre 2 « La saison des pluies » (saison 3)
 function seasonStats(){ const z=S.stats0||{served:0,perfect:0,earned:0,apaise:0}; return {served:S.stats.served-z.served, perfect:S.stats.perfect-z.perfect, earned:S.stats.earned-z.earned}; }
 function endSeason(){
   music("fin");
@@ -275,10 +301,10 @@ function endSeason(){
         <div>Pokédollars gagnés : <b>${st.earned} ₽</b></div><div>Pages du Registre : <b>${S.pages}</b></div>
         <div>Niveau du Tenancier : <b>${S.level}</b></div><div>Personnel : <b>${S.staff.map(k=>CL[k].n).join(", ")||"aucun"}</b></div>
       </div>
-      ${season===2?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 1 · Portes ouvertes.</b> La taverne a appris à écouter.</p>`:season===4?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 2 · La saison des pluies.</b> La taverne a appris à rester à côté de ceux qui ont perdu quelqu'un.</p>`:season===8?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 4 · La fête de Bourg-Brume.</b> La taverne a appris à rendre les solitaires à la ville.</p>`:season===6?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 3 · Les métamorphoses.</b> La taverne a appris à aimer chacun tel qu'il est, même ceux qui n'ont pas demandé à naître.</p>`:""}
+      ${season===2?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 1 · Portes ouvertes.</b> La taverne a appris à écouter.</p>`:season===4?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 2 · La saison des pluies.</b> La taverne a appris à rester à côté de ceux qui ont perdu quelqu'un.</p>`:season===10?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 5 · Le secret d'Hector.</b> La taverne a appris qu'il n'est jamais trop tard pour revenir.</p>`:season===8?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 4 · La fête de Bourg-Brume.</b> La taverne a appris à rendre les solitaires à la ville.</p>`:season===6?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 3 · Les métamorphoses.</b> La taverne a appris à aimer chacun tel qu'il est, même ceux qui n'ont pas demandé à naître.</p>`:""}
     </div>
     <div class="row" style="margin-top:14px"><button class="grow alt" data-act="copyChron">Copier la chronique</button>${last?`<button class="grow" data-act="newGame">Nouvelle partie</button>`:`<button class="grow" data-act="nextSeason">Commencer la saison ${season+1}</button>`}</div>
-    <p class="small muted center">${last?"Fin du prototype : la saison 10, où Hector dit enfin qui il attendait, et où le maître de la Faille vient le chercher, viendra dans une prochaine version.":"Tes niveaux, ton personnel, tes affinités, tes recettes et tes artefacts te suivent. Les bibelots, eux, restent dans la saison qui s'achève."}</p>
+    <p class="small muted center">${last?"Fin du prototype : les cinq premiers chapitres sont terminés. La suite de l'histoire de la taverne viendra dans une prochaine version.":"Tes niveaux, ton personnel, tes affinités, tes recettes et tes artefacts te suivent. Les bibelots, eux, restent dans la saison qui s'achève."}</p>
   </div>`;
 }
 function startNextSeason(){
@@ -287,7 +313,14 @@ function startNextSeason(){
   CLIENT_ORDER.forEach(k=>{ if(!S.clients[k]) S.clients[k]={aff:0,state:"new",carryOuv:0,carryTen:0,visits:0,shake:false}; S.clients[k].lastNight=0; });
   U={}; save();
   const lines=[
-    ...(S.season===9?[
+    ...(S.season===10?[
+      {who:"narr",t:"Chapitre 5 · Le secret d'Hector. Saison 10."},
+      {who:"narr",t:"L'hiver tombe sur Bourg-Brume, plus tôt que d'habitude. La porte murée de la cave ne tremble plus : elle respire. Certaines nuits, une odeur de feuilles mortes en sort, et on entend des pas qui montent sans jamais arriver."},
+      {who:"hector",t:"<i>La voix d'Hector, plus claire depuis qu'il a retrouvé son ombre.</i> Lise, petit. Je n'arrête pas d'y penser. Où est-elle allée, ce soir-là ? Je n'ai jamais cherché. J'ai attendu. C'est ça, mon vrai regret. Pas qu'elle soit partie. Que je ne sois jamais allé la chercher."},
+      {who:{id:52,n:"Miaouss"},t:"<i>Miaouss passe la tête par la porte, un chaton sur l'épaule.</i> Dis, voisin. La vieille dame qui me laissait du lait sur sa fenêtre, quand j'étais petit… Elle avait un ruban rouge, tout délavé, noué à son poignet. Elle regardait toujours ta taverne, de loin. Je viens d'y repenser. Je ne sais pas pourquoi."},
+      {who:"hector",t:"<i>Un très long silence.</i> …Un ruban rouge."},
+      {who:"cog",t:"Patron. Cette saison, on écoute ceux qui n'ont pas fini. Et à la fin, on va finir l'histoire d'Hector. Je le sens."}
+    ]:S.season===9?[
       {who:"narr",t:"Chapitre 5 · Le secret d'Hector. Saison 9."},
       {who:"narr",t:"L'automne revient sur Bourg-Brume. Depuis la fête, quelque chose a changé dans la taverne : la nuit, on entend des pas dans la cave, et le vieux portrait au-dessus de la cheminée, celui qu'on ne regardait plus, semble sourire un peu."},
       {who:"hector",t:"<i>La voix d'Hector, pour la première fois sans un rire.</i> Petit… Assieds-toi. Ce portrait, au-dessus de la cheminée. L'homme à la moustache, avec le tablier. C'est moi. Avant. Quand j'avais encore une ombre, et pas une ombre à la place de moi."},
@@ -333,7 +366,7 @@ function startNextSeason(){
     ]:[{who:"narr",t:`Saison ${S.season}. Les premières pluies d'automne tambourinent sur le toit de la taverne.`}]),
     {who:"cog",t:"Une nouvelle saison ! Ceux qu'on a aidés passeront sûrement de jour. Et les autres… ils reviendront, la nuit. On sera prêts."},
     ...((SEASON_NEW[S.season]||[]).length?[{who:"kecleon",t:`Nouvel arrivage à l'étal, patron ! ${(SEASON_NEW[S.season]).map(k=>ING[k].n).join(", ")}. Personne d'autre au village n'en a !`}]:[]),
-    S.season===9 ? {who:"cog",t:"Une saison pour ceux qui n'ont pas fini quelque chose. On va les aider à finir, patron. Et Hector aussi, peut-être."} : S.season===8 ? {who:"cog",t:"Dernière saison du chapitre. Et à la fin, la fête ! On aura un stand, patron. Un vrai."} : S.season===7 ? {who:"cog",t:"Une saison pour ceux qui sont seuls. On leur gardera une place à la fête."} : S.season===6 ? {who:"cog",t:"Dernière saison du chapitre. On garde un tabouret libre, au cas où."} : S.season===5 ? {who:"cog",t:"Une saison de changements. On sera là, quoi qu'ils deviennent."} : S.season===4 ? {who:"cog",t:"Et cette saison, ceux qui ont perdu quelqu'un continuent d'arriver. On reste à côté d'eux, comme dit Hector."} : S.season===3
+    S.season===10 ? {who:"cog",t:"Dernière saison du chapitre. On garde la porte de la cave à l'œil."} : S.season===9 ? {who:"cog",t:"Une saison pour ceux qui n'ont pas fini quelque chose. On va les aider à finir, patron. Et Hector aussi, peut-être."} : S.season===8 ? {who:"cog",t:"Dernière saison du chapitre. Et à la fin, la fête ! On aura un stand, patron. Un vrai."} : S.season===7 ? {who:"cog",t:"Une saison pour ceux qui sont seuls. On leur gardera une place à la fête."} : S.season===6 ? {who:"cog",t:"Dernière saison du chapitre. On garde un tabouret libre, au cas où."} : S.season===5 ? {who:"cog",t:"Une saison de changements. On sera là, quoi qu'ils deviennent."} : S.season===4 ? {who:"cog",t:"Et cette saison, ceux qui ont perdu quelqu'un continuent d'arriver. On reste à côté d'eux, comme dit Hector."} : S.season===3
       ? {who:"hector",t:"<i>La voix traverse le mur, plus basse que d'habitude.</i> Hé… Cette saison, ils ne viendront pas parce qu'ils ont échoué, ou parce qu'on les a laissés. Ils viendront parce qu'ils ont perdu quelqu'un. Ceux-là, petit, il ne faut pas les réparer. Il faut juste rester à côté."}
       : {who:"hector",t:"<i>Une voix rieuse traverse le mur.</i> Hé hé… Prépare un tabouret de plus, petit. Ce soir, quelqu'un de très fier va pousser la porte. Quelqu'un que personne n'a jamais attendu."}
   ];
