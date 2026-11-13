@@ -419,6 +419,7 @@ function winCombat(){
   jingle("apaise");
   if(!C.hurtAll && !D.finale) scInc("flawless");
   if(C.en.boss && !D.finale) scInc("boss");
+  if(S.equip.coiffe){ const h=Math.min(4,D.maxhp-D.hp); D.hp+=h; if(h) D.relicMsg=(D.relicMsg?D.relicMsg+' · ':'')+`🩺 Coiffe de papier : +${h} PV`; }
   if(S.equip.ecaille && !C.en.boss){ const h=Math.min(5,D.maxhp-D.hp); D.hp+=h; D.relicMsg=h?`✨ Écaille brillante : +${h} PV`:null; }
   if(C.en.boss){ D.out="apaise"; D.phase="bosswin"; renderDungeon(); return; }
   D.reward = randomCards(3,{commune:5,peu:4,rare:1}).concat(Math.random()<0.5?["courage"]:["souffle"]).slice(0,3);

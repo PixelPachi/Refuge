@@ -80,7 +80,12 @@ function seasonClose(){
   if(S.finale[se]){ endSeason(); return; }
   music("donjon");
   const fete = CLIENT_ORDER.filter(k=>[7,8].includes(CL[k].season) && ["apaise","staff"].includes(S.clients[k].state)).map(k=>CL[k].n);
-  const lines = se===10 ? [
+  const lines = se===11 ? [
+    {who:"narr",t:"La dernière nuit de la saison, la porte de la cave s'ouvre en grand, toute seule. Les regrets de la saison remontent, comme chaque fois."},
+    {who:{id:487,n:"Giratina"},t:"<i>Une voix grave monte de la cave, presque gênée.</i> Tavernier. La Faille déborde, comme à chaque printemps. Je ne peux pas tout retenir de mon côté. Descends, avec ton acolyte. Je tiendrai les escaliers à l'endroit pour toi."},
+    {who:"hector",t:"<i>Hector se lève, hésite, puis se rassoit.</i> Je… je devrais venir avec vous. Non. Pas encore. Vas-y, petit. Je garde le comptoir."},
+    {who:"cog",t:"On y va, patron. Même si on a peur. Surtout si on a peur, cette saison."}
+  ] : se===10 ? [
     {who:"narr",t:"La dernière nuit de la saison, toutes les horloges de Bourg-Brume s'arrêtent en même temps. Dans la taverne, l'eau des verres coule vers le haut, goutte à goutte."},
     {who:"narr",t:"La porte murée, derrière le portrait, se fend du haut en bas. Une ombre immense passe de l'autre côté, avec des ailes comme des griffes, et six pointes rouges qui luisent dans le noir."},
     {who:{id:487,n:"Giratina"},t:"<i>Sa voix vient d'en dessous, comme si le plancher parlait.</i> Tavernier. Depuis cent ans, ton chagrin m'envoie des âmes. C'est ta Faille. Ton attente a ouvert une porte dans mon monde. Et parmi elles, il y en a une que tu n'as jamais su chercher. Tu la veux ? Viens la prendre. Moi, je n'ai qu'elles, dans mon monde à l'envers."},
@@ -244,6 +249,12 @@ function finaleEnd(win){
     addCard("aurorepure","le cadeau de Suicune");
     if(!S.equip.faille){ S.equip.faille=true; lines.push({who:"narr",t:"Artefact obtenu : 🔮 <b>Éclat de la Faille</b> (+6 PV dans chaque Labyrinthe)."}); }
     lines.push({who:"hector",t:"<i>Le mur tremble.</i> Un légendaire, petit. Tu as écouté un légendaire. …Le chapitre se ferme. Le prochain sera plus étrange. Hé hé."});
+  } else if(win && se===11){
+    S.pages+=2; addXP(250);
+    lines.push({who:"narr",t:"Au fond de la cave, la lumière redevient calme. Giratina replie ses ailes sur les dernières marches, comme un gros chat qui garde une porte."});
+    if(!S.equip.faille){ S.equip.faille=true; lines.push({who:"narr",t:"Artefact obtenu : 🔮 <b>Éclat de la Faille</b> (+6 PV dans chaque Labyrinthe)."}); }
+    lines.push({who:"narr",t:"Deux pages s'écrivent au Grand Registre."});
+    lines.push({who:"hector",t:"<i>Hector t'attend en haut de l'escalier, et pose la main sur ton épaule. Elle est presque chaude.</i> Tu es descendu sans moi, et tu es remonté. Bien. …La prochaine fois, petit, je crois que j'essaierai de descendre aussi. Une marche. Juste une."});
   } else if(win){
     S.pages+=2; addXP(200);
     lines.push({who:"narr",t:"Au fond de la cave, la lumière redevient violette, calme. La trappe se referme doucement, comme on borde quelqu'un."});
@@ -257,7 +268,7 @@ function finaleEnd(win){
   playDialog(lines, endSeason, ()=>{ $app.innerHTML=`${hud()}${scene({night:false,doorOpen:false})}<div class="panel">${dialogBubble()}</div>`; });
 }
 // ---------- Fin de saison : la chronique ----------
-const LAST_SEASON = 10; // chapitre 1 « Portes ouvertes » (saisons 1 et 2) + début du chapitre 2 « La saison des pluies » (saison 3)
+const LAST_SEASON = 11; // chapitre 1 « Portes ouvertes » (saisons 1 et 2) + début du chapitre 2 « La saison des pluies » (saison 3)
 function seasonStats(){ const z=S.stats0||{served:0,perfect:0,earned:0,apaise:0}; return {served:S.stats.served-z.served, perfect:S.stats.perfect-z.perfect, earned:S.stats.earned-z.earned}; }
 function endSeason(){
   music("fin");
@@ -282,7 +293,7 @@ function endSeason(){
   $app.innerHTML = `<div class="pad fade scroll" style="flex:1">
     <div class="parch" id="chron">
       <h2>Chronique de la saison ${season}</h2>
-      <div class="center small">${season===2?"Chapitre 1 · Portes ouvertes · ":season===3||season===4?"Chapitre 2 · La saison des pluies · ":season===5||season===6?"Chapitre 3 · Les métamorphoses · ":season===7||season===8?"Chapitre 4 · La fête de Bourg-Brume · ":season===9||season===10?"Chapitre 5 · Le secret d'Hector · ":""}La taverne · Bourg-Brume</div>
+      <div class="center small">${season===2?"Chapitre 1 · Portes ouvertes · ":season===3||season===4?"Chapitre 2 · La saison des pluies · ":season===5||season===6?"Chapitre 3 · Les métamorphoses · ":season===7||season===8?"Chapitre 4 · La fête de Bourg-Brume · ":season===9||season===10?"Chapitre 5 · Le secret d'Hector · ":season===11||season===12?"Chapitre 6 · Les premiers pas · ":""}La taverne · Bourg-Brume</div>
       <div class="souls">
         <div class="soul">${sprite(S.ten.id,S.ten.n,S.ten.c,{shiny:S.shiny})}</div>
         <div class="soul">${sprite(cog().id,cog().n,cog().c)}</div>
@@ -304,7 +315,7 @@ function endSeason(){
       ${season===2?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 1 · Portes ouvertes.</b> La taverne a appris à écouter.</p>`:season===4?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 2 · La saison des pluies.</b> La taverne a appris à rester à côté de ceux qui ont perdu quelqu'un.</p>`:season===10?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 5 · Le secret d'Hector.</b> La taverne a appris qu'il n'est jamais trop tard pour revenir.</p>`:season===8?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 4 · La fête de Bourg-Brume.</b> La taverne a appris à rendre les solitaires à la ville.</p>`:season===6?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 3 · Les métamorphoses.</b> La taverne a appris à aimer chacun tel qu'il est, même ceux qui n'ont pas demandé à naître.</p>`:""}
     </div>
     <div class="row" style="margin-top:14px"><button class="grow alt" data-act="copyChron">Copier la chronique</button>${last?`<button class="grow" data-act="newGame">Nouvelle partie</button>`:`<button class="grow" data-act="nextSeason">Commencer la saison ${season+1}</button>`}</div>
-    <p class="small muted center">${last?"Fin du prototype : les cinq premiers chapitres sont terminés. La suite de l'histoire de la taverne viendra dans une prochaine version.":"Tes niveaux, ton personnel, tes affinités, tes recettes et tes artefacts te suivent. Les bibelots, eux, restent dans la saison qui s'achève."}</p>
+    <p class="small muted center">${last?"Fin du prototype : la saison 12, fin du chapitre 6, viendra dans une prochaine version.":"Tes niveaux, ton personnel, tes affinités, tes recettes et tes artefacts te suivent. Les bibelots, eux, restent dans la saison qui s'achève."}</p>
   </div>`;
 }
 function startNextSeason(){
@@ -313,7 +324,13 @@ function startNextSeason(){
   CLIENT_ORDER.forEach(k=>{ if(!S.clients[k]) S.clients[k]={aff:0,state:"new",carryOuv:0,carryTen:0,visits:0,shake:false}; S.clients[k].lastNight=0; });
   U={}; save();
   const lines=[
-    ...(S.season===10?[
+    ...(S.season===11?[
+      {who:"narr",t:"Chapitre 6 · Les premiers pas. Saison 11."},
+      {who:"narr",t:"Le printemps revient sur Bourg-Brume. Le ruban rouge de Lise est accroché au-dessus du comptoir. La porte de la cave reste entrouverte, juste un peu, comme Giratina l'a demandé."},
+      {who:"hector",t:"<i>Hector est assis au bout du comptoir, presque solide, sa moustache bien peignée.</i> Tu sais ce qui est drôle, petit ? Pendant cent ans, j'ai attendu au lieu d'agir. Et maintenant que je pourrais partir, je n'ose pas. Je reste sur le seuil. Comme un débutant."},
+      {who:"cog",t:"Patron, il y avait un œuf sur le paillasson ce matin. Avec un mot : « Pour la taverne. » Je l'ai mis sur un tabouret, près du poêle. Il bouge un peu."},
+      {who:"hector",t:"Cette saison, ils viendront parce qu'ils n'osent pas commencer. Le premier pas, petit. Le plus dur. Ne les pousse pas. Tends-leur la main, c'est tout. Et si tu en as une de libre… tends-la-moi aussi, un jour."}
+    ]:S.season===10?[
       {who:"narr",t:"Chapitre 5 · Le secret d'Hector. Saison 10."},
       {who:"narr",t:"L'hiver tombe sur Bourg-Brume, plus tôt que d'habitude. La porte murée de la cave ne tremble plus : elle respire. Certaines nuits, une odeur de feuilles mortes en sort, et on entend des pas qui montent sans jamais arriver."},
       {who:"hector",t:"<i>La voix d'Hector, plus claire depuis qu'il a retrouvé son ombre.</i> Lise, petit. Je n'arrête pas d'y penser. Où est-elle allée, ce soir-là ? Je n'ai jamais cherché. J'ai attendu. C'est ça, mon vrai regret. Pas qu'elle soit partie. Que je ne sois jamais allé la chercher."},
@@ -366,7 +383,7 @@ function startNextSeason(){
     ]:[{who:"narr",t:`Saison ${S.season}. Les premières pluies d'automne tambourinent sur le toit de la taverne.`}]),
     {who:"cog",t:"Une nouvelle saison ! Ceux qu'on a aidés passeront sûrement de jour. Et les autres… ils reviendront, la nuit. On sera prêts."},
     ...((SEASON_NEW[S.season]||[]).length?[{who:"kecleon",t:`Nouvel arrivage à l'étal, patron ! ${(SEASON_NEW[S.season]).map(k=>ING[k].n).join(", ")}. Personne d'autre au village n'en a !`}]:[]),
-    S.season===10 ? {who:"cog",t:"Dernière saison du chapitre. On garde la porte de la cave à l'œil."} : S.season===9 ? {who:"cog",t:"Une saison pour ceux qui n'ont pas fini quelque chose. On va les aider à finir, patron. Et Hector aussi, peut-être."} : S.season===8 ? {who:"cog",t:"Dernière saison du chapitre. Et à la fin, la fête ! On aura un stand, patron. Un vrai."} : S.season===7 ? {who:"cog",t:"Une saison pour ceux qui sont seuls. On leur gardera une place à la fête."} : S.season===6 ? {who:"cog",t:"Dernière saison du chapitre. On garde un tabouret libre, au cas où."} : S.season===5 ? {who:"cog",t:"Une saison de changements. On sera là, quoi qu'ils deviennent."} : S.season===4 ? {who:"cog",t:"Et cette saison, ceux qui ont perdu quelqu'un continuent d'arriver. On reste à côté d'eux, comme dit Hector."} : S.season===3
+    S.season===11 ? {who:"cog",t:"Une saison pour ceux qui restent sur le pas de la porte. On leur garde la porte ouverte."} : S.season===10 ? {who:"cog",t:"Dernière saison du chapitre. On garde la porte de la cave à l'œil."} : S.season===9 ? {who:"cog",t:"Une saison pour ceux qui n'ont pas fini quelque chose. On va les aider à finir, patron. Et Hector aussi, peut-être."} : S.season===8 ? {who:"cog",t:"Dernière saison du chapitre. Et à la fin, la fête ! On aura un stand, patron. Un vrai."} : S.season===7 ? {who:"cog",t:"Une saison pour ceux qui sont seuls. On leur gardera une place à la fête."} : S.season===6 ? {who:"cog",t:"Dernière saison du chapitre. On garde un tabouret libre, au cas où."} : S.season===5 ? {who:"cog",t:"Une saison de changements. On sera là, quoi qu'ils deviennent."} : S.season===4 ? {who:"cog",t:"Et cette saison, ceux qui ont perdu quelqu'un continuent d'arriver. On reste à côté d'eux, comme dit Hector."} : S.season===3
       ? {who:"hector",t:"<i>La voix traverse le mur, plus basse que d'habitude.</i> Hé… Cette saison, ils ne viendront pas parce qu'ils ont échoué, ou parce qu'on les a laissés. Ils viendront parce qu'ils ont perdu quelqu'un. Ceux-là, petit, il ne faut pas les réparer. Il faut juste rester à côté."}
       : {who:"hector",t:"<i>Une voix rieuse traverse le mur.</i> Hé hé… Prépare un tabouret de plus, petit. Ce soir, quelqu'un de très fier va pousser la porte. Quelqu'un que personne n'a jamais attendu."}
   ];

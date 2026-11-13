@@ -176,6 +176,23 @@ Même style que les `drink-lait-*` existants (verre seul sur fond transparent). 
 - Carte : `card-rubanlise` (légendaire : un ruban rouge posé sur le comptoir d'une vieille taverne, une moustache et un tablier en silhouette dorée derrière)
 - Icône d'ingrédient : `ing-muffin` (Muffin du Matin, un muffin doré encore chaud)
 
+## À faire — Saison 11 · Les premiers pas (chapitre 6)
+
+### Togepi (`dj-togepi-*`)
+- a L'intérieur de la coquille · b La fente dans la coquille · h Le bruit du dehors · c Le paillasson de la taverne · i Les rires à travers la coquille · d Le coin tiède du tabouret · j Les autres Togepi déjà sortis · k La main qui l'a posé là · l La cour de l'école · f Trois saisons sans éclore · g **Cœur** : le matin où il aurait dû éclore (un œuf à pois sur un paillasson, au petit matin, une lumière chaude derrière la porte)
+- Cartes : `card-charme` (Togepi qui sort la tête de sa coquille avec un grand sourire), `card-premierpas` (légendaire : Togepi qui fait son premier pas hors de la coquille, un bout de coquille sur la tête)
+- Icône : `relic-coquille` (un éclat de coquille d'œuf blanc à pois rouges et bleus)
+
+### Ptiravi (`dj-ptiravi-*`)
+- a La porte du Centre Pokémon · b Le caillou dans la poche · h La salle d'examen vide · c Les fiches de révision · i La patte du Rattata · d La chambre aux livres · j La coiffe aux trois marques · k Les Leveinard qui offrent leur œuf · l Le premier patient · f La troisième fois devant la porte · g **Cœur** : le premier jour où elle a fait demi-tour (une petite Ptiravi de dos devant la grande porte blanche d'un Centre Pokémon)
+- Cartes : `card-lancerdoux` (Ptiravi qui pose un pansement sur un petit Pokémon), `card-oeufsoin` (légendaire : Ptiravi qui tend un œuf lumineux à un Roucool blessé)
+- Icône : `relic-coiffe` (une coiffe d'infirmière en papier plié, avec une croix rose)
+
+### Relicanth (`dj-relicanth-*`)
+- a Les abysses · b Les fossiles des autres · h Le noir sans fin · c La remontée · i Les étoiles, enfin · d Le creux de roche · j Ceux qui ont changé · k La lueur, très haut · l La plage au lever du jour · f Cent millions d'années à attendre · g **Cœur** : le jour où il s'est dit « demain » (un vieux poisson de pierre au fond de l'océan noir, regardant une lueur lointaine)
+- Cartes : `card-fracasroc` (Relicanth qui fonce tête la première), `card-jamaistroptard` (légendaire : Relicanth sur une plage la nuit, sous un ciel plein d'étoiles)
+- Icône : `relic-ecaillefossile` (une écaille grise avec des traces de coquillages fossiles)
+
 ## Plus tard (optionnel)
 - Icônes des 8 bibelots de saison : Tasse ébréchée d'Hector, Clochette de la Faille, Torchon brodé, Lanterne de poche, Bocal à pourboires, Carnet de notes, Sablier de sable fin, Bougie parfumée.
 
