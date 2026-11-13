@@ -73,11 +73,11 @@ const ING = {
   pommesucree:{n:"Pomme Sucrée",cat:"fruit",price:70,c:"#e8c048",item:"sweet-apple",d:"Nostalgie douce : touche ceux qui ont perdu quelqu'un"},
   pommeacide:{n:"Pomme Acidulée",cat:"fruit",price:70,c:"#9ac838",item:"tart-apple",d:"Pique l'orgueil : relève ceux qui ont perdu"},
   menthe:{n:"Feuille Menthe",cat:"garn",price:25,c:"#58b868",d:"Rafraîchit et apaise"},
-  plume:{n:"Plume Envol",cat:"garn",price:35,c:"#e8e8f8",item:"pretty-wing",d:"Délie la langue"},
+  plume:{n:"Gingembre Confit",cat:"garn",price:35,c:"#e8c070",d:"Piquant et sucré : délie la langue"},
   miel:{n:"Miel",cat:"garn",price:60,c:"#f0a830",item:"honey",d:"Adoucit un verre fort"},
   petitchampi:{n:"Petit Champi",cat:"garn",price:35,c:"#c89868",item:"tiny-mushroom",d:"Rassasie : le client reste un peu plus"},
   grochampi:{n:"Gros Champi",cat:"garn",price:90,c:"#a86838",item:"big-mushroom",d:"Très nourrissant : le client reste plus longtemps"},
-  poudre:{n:"Poudre Éclat",cat:"garn",price:100,c:"#f8e8a0",item:"stardust",d:"Euphorie : risqué"},
+  poudre:{n:"Sucre Pétillant",cat:"garn",price:100,c:"#f8e8a0",d:"Ça pétille sous la langue : euphorie, mais risqué"},
   gateau:{n:"Vieux Gâteau",cat:"garn",price:250,c:"#c8905a",item:"old-gateau",d:"Fait tout oublier… même la colère"},
   // --- nouveautés de la saison 2 (chaque nouvelle saison, Kecleon reçoit 2 à 4 ingrédients de plus)
   the:{n:"Thé de Safrania",cat:"base",force:0,price:35,sell:55,c:"#c89a5a",season:2,d:"Infusion chaude : fait baisser la Tension, sans délier la langue"},
@@ -97,12 +97,12 @@ const ING = {
   coeursucre:{n:"Cœur Sucré",cat:"garn",price:65,c:"#f06090",item:"sweet-heart",season:4,d:"Attention touchante : +1 Ouverture si le client a déjà 2 cœurs d'affinité ou plus",
     fx:x=>S.clients[x.k]&&S.clients[x.k].aff>=2?{ouv:1,note:"Cœur Sucré : une attention qui touche."}:{}},
   // --- nouveautés de la saison 5 (Les métamorphoses)
-  pierrestase:{n:"Pierre Stase",cat:"garn",price:60,c:"#9a9a8a",item:"everstone",season:5,d:"Rester soi-même est permis : -2 Tension pour les âmes de l'Évolution manquée",
-    fx:x=>x.def.family==="Évolution manquée"?{ten:-2,note:"Pierre Stase : rester soi-même, c'est permis."}:{}},
+  pierrestase:{n:"Confiture d'Antan",cat:"garn",price:60,c:"#b04860",season:5,d:"Le même goût depuis toujours : rester soi-même est permis, -2 Tension pour les âmes de l'Évolution manquée",
+    fx:x=>x.def.family==="Évolution manquée"?{ten:-2,note:"Confiture d'Antan : le même goût depuis toujours. Rester soi-même, c'est permis."}:{}},
   superbonbon:{n:"Super Bonbon",cat:"garn",price:50,c:"#5a8ad8",item:"rare-candy",season:5,d:"Pousse à grandir : +1 Ouverture, mais +1 Tension (+2 pour l'Évolution manquée)",
     fx:x=>({ouv:1,ten:x.def.family==="Évolution manquée"?2:1,note:"Super Bonbon : ça pousse à grandir… peut-être trop vite."})},
-  poudremetal:{n:"Poudre Métal",cat:"garn",price:45,c:"#b8b8c8",item:"metal-powder",season:5,d:"Garde la forme : +1 Ouverture si le client s'est déjà confié au moins une fois",
-    fx:x=>x.cur&&x.cur.stage>=1?{ouv:1,note:"Poudre Métal : il se sent assez solide pour continuer."}:{}},
+  poudremetal:{n:"Flocons d'Avoine",cat:"garn",price:45,c:"#d8c8a0",season:5,d:"Tient au corps : +1 Ouverture si le client s'est déjà confié au moins une fois",
+    fx:x=>x.cur&&x.cur.stage>=1?{ouv:1,note:"Flocons d'Avoine : il se sent assez solide pour continuer."}:{}},
   // --- nouveautés de la saison 6
   baieprine:{n:"Baie Prine",cat:"baie",price:55,c:"#90d870",item:"lum-berry",season:6,d:"Guérit un peu de tout : efface la gueule de bois, et -1 Tension si le client est très tendu (3 ou plus)",
     fx:x=>({hang:-2,ten:x.cur&&x.cur.ten>=3?-1:0,note:"Baie Prine : un peu de tout qui va mieux."})},
@@ -119,10 +119,10 @@ const ING = {
   craquiroc:{n:"Craquiroc",cat:"garn",price:40,c:"#a89070",item:"pewter-crunchies",season:8,d:"Croquant et rassurant : -1 Tension pour tout le monde",
     fx:()=>({ten:-1,note:"Craquiroc : ça croque, ça rassure."})},
   // --- nouveautés de la saison 9 (Le secret d'Hector)
-  runesort:{n:"Rune Sort",cat:"garn",price:55,c:"#8a68b8",item:"spell-tag",season:9,d:"Parle aux fantômes : +1 Ouverture pour les âmes de l'Inachevé",
-    fx:x=>x.def.family==="Inachevé"?{ouv:1,note:"Rune Sort : quelque chose d'ancien se réveille en lui."}:{}},
-  runepurif:{n:"Rune Purif",cat:"garn",price:50,c:"#e8e0c0",item:"cleanse-tag",season:9,d:"Chasse les ombres : -1 Tension, et -1 de plus si le client est très tendu (3 ou plus)",
-    fx:x=>({ten:x.cur&&x.cur.ten>=3?-2:-1,note:"Rune Purif : l'air devient plus léger."})}
+  runesort:{n:"Châtaigne Grillée",cat:"garn",price:55,c:"#8a5a38",season:9,d:"Un goût d'autrefois : +1 Ouverture pour les âmes de l'Inachevé",
+    fx:x=>x.def.family==="Inachevé"?{ouv:1,note:"Châtaigne Grillée : un goût d'il y a très longtemps se réveille en lui."}:{}},
+  runepurif:{n:"Tisane de Sauge",cat:"garn",price:50,c:"#98b088",season:9,d:"Apaise et purifie : -1 Tension, et -1 de plus si le client est très tendu (3 ou plus)",
+    fx:x=>({ten:x.cur&&x.cur.ten>=3?-2:-1,note:"Tisane de Sauge : l'air devient plus léger."})}
 };
 function ingOk(k){ return (ING[k].season||1) <= ((typeof S!=="undefined"&&S&&S.season)||1); }
 const SEASON_NEW = {2:["the","pecha","mepo","biscuit"],3:["jusbaie","pomroz","glace"],4:["grena","coeursucre"],5:["pierrestase","superbonbon","poudremetal"],6:["baieprine","eaumystique"],7:["bonbonfete","galette"],8:["malasada","craquiroc"],9:["runesort","runepurif"]};

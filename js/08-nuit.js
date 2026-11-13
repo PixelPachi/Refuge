@@ -414,6 +414,7 @@ function glassHTML(d){
 }
 function bigIcon(k){
   const it=ING[k]||{};
+  if(typeof ARTOK!=="undefined" && ARTOK["ing-"+k]) return `<img class="itm big" src="${artSrc("ing-"+k)}" alt="${it.n}">`;
   if(it.item) return `<img class="itm big" src="${itemSrc(it.item)}" data-remote="${itemUrl(it.item)}" data-c="${it.c}" alt="${it.n}">`;
   return `<span class="dot big" style="background:${it.c||"#888"}"></span>`;
 }

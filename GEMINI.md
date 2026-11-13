@@ -138,6 +138,15 @@ Les cartes souvenir coûtent toujours 0 : le cadre porte une bulle avec « 0 ».
 ### Fil rouge
 - Le portrait d'Hector humain (moustache, tablier, taverne d'il y a cent ans) pourra servir d'image de dialogue plus tard.
 
+## À faire — Icônes d'ingrédients (remplacent des objets non comestibles)
+Même méthode que les icônes d'artefacts (prompt ICP, fond vert, `tools/art.py ing-<clé> fichier icon`, puis `tools/genassets.py`). Le jeu les affiche dès que le fichier `assets/art/ing-<clé>.webp` existe ; en attendant, une pastille de couleur.
+- `ing-plume` : Gingembre Confit (morceaux de gingembre confits au sucre dans une petite coupelle)
+- `ing-poudre` : Sucre Pétillant (un petit sachet de sucre pétillant doré qui crépite)
+- `ing-pierrestase` : Confiture d'Antan (un pot de confiture rouge avec un tissu à carreaux noué sur le couvercle)
+- `ing-poudremetal` : Flocons d'Avoine (un bocal de flocons d'avoine avec une cuillère en bois)
+- `ing-runesort` : Châtaigne Grillée (trois châtaignes grillées fendues, dans un cornet de papier)
+- `ing-runepurif` : Tisane de Sauge (une tasse fumante avec des feuilles de sauge)
+
 ## Plus tard (optionnel)
 - Icônes des 8 bibelots de saison : Tasse ébréchée d'Hector, Clochette de la Faille, Torchon brodé, Lanterne de poche, Bocal à pourboires, Carnet de notes, Sablier de sable fin, Bougie parfumée.
 

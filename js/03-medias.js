@@ -71,6 +71,7 @@ function itemIcon(key){
   if(key==="liqueur") return `<span class="combo">${SVG_BOTTLE("#c0303a")}<img class="itm sub" src="${itemSrc("cheri-berry")}" data-remote="${itemUrl("cheri-berry")}" data-c="#d8343a" alt=""></span>`;
   if(key==="menthe") return `<span class="combo">${SVG_LEAF}</span>`;
   if(key==="the" && ARTOK["item-the"]) return `<img class="itm" src="${artSrc("item-the")}" alt="">`;
+  if(ARTOK["ing-"+key]) return `<img class="itm" src="${artSrc("ing-"+key)}" alt="">`;
   if(it.item) return `<img class="itm" src="${itemSrc(it.item)}" data-remote="${itemUrl(it.item)}" data-c="${it.c}" alt="">`;
   return `<span class="dot" style="background:${it.c||"#888"}"></span>`;
 }

@@ -27,18 +27,18 @@ CL.metamorph = {
     gift:{key:"masque",n:"Masque de Métamorph",i:"🎭",d:"Au 3e tour de chaque combat, le client gagne 1 énergie de plus",fx:{turnStart(C){ if(C.turn===3){ C.energy++; C.emax++; } }}},
     staff:{n:"Sosie d'accueil",d:"Les âmes qui viennent pour la première fois arrivent avec +1 Ouverture",wage:25},
     staffFx:{arrive(c){ if(S.clients[c.k] && S.clients[c.k].visits===1) c.ouv++; }},
-    cogHint:"Il ne sait plus ce qu'il aime : ne lui impose rien de fort, et surtout pas de Super Bonbon, il croirait qu'on veut le changer. Une Gelée Blanche, et du simple : Lait Meumeu, Pierre Stase, Baie Mago.",
+    cogHint:"Il ne sait plus ce qu'il aime : ne lui impose rien de fort, et surtout pas de Super Bonbon, il croirait qu'on veut le changer. Une Gelée Blanche, et du simple : Lait Meumeu, Confiture d'Antan, Baie Mago.",
     map:mapStd({a:"Le chapiteau vide",b:"Les rires du public",h:"Mille formes à la seconde",c:"Les coulisses aux miroirs",i:"Le premier soir sur la piste",d:"La caisse où il dormait",j:"Les noms criés par la foule",k:"Le visage effacé",l:"La flaque au clair de lune",f:"Le miroir qui ne renvoie rien",g:"La nuit où il a oublié son visage"},{eb:"tristesse",eh:"peur",ej:"colere",ef:"peur",key:"joie"})
 };
 TALK.metamorph = [
     {t:"<i>Il prend ta forme, essuie un verre exactement comme toi, puis redevient flaque en riant.</i> Pardon ! Tu as une jolie façon de tenir le torchon. Je voulais voir ce que ça faisait."},
     {t:"<i>Il plonge un pseudopode dans le lait chaud.</i> Au chapiteau, le clown m'en donnait après le spectacle. Il était le seul à me parler quand j'étais une flaque.",like:"lait"},
-    {t:"<i>Il fixe la Pierre Stase sur l'étagère.</i> Une pierre qui empêche de changer… Il y a des Pokémon qui en ont peur. Moi, j'aimerais bien en avoir une dans la poche. Si j'avais une poche.",like:"pierrestase"}
+    {t:"<i>Il fixe le pot de Confiture d'Antan sur l'étagère.</i> Une confiture qui a le même goût depuis cent ans… Il y a des Pokémon qui trouvent ça triste. Moi, j'aimerais bien avoir un goût qui ne change jamais. Un seul.",like:"pierrestase"}
 ];
 WIPE.metamorph = ["<i>Il prend la forme d'un torchon, et s'essuie lui-même. Puis il éclate de rire.</i>","<i>Il te regarde faire, sans copier, pour une fois.</i> C'est reposant, de juste regarder."];
 LETTERS.metamorph = "« Premier numéro hier soir : une flaque qui sourit. Douze spectateurs. Un enfant a demandé : \"Il fait quoi, il se transforme ?\" J'ai dit non. Il a applaudi quand même. — M. »";
 REGULARS.metamorph = {order:{base:"lait",add:["pierrestase"]},
-    line:"<i>Une flaque violette passe sous la porte et se hisse sur un tabouret, sans copier personne.</i> Bonjour ! Un lait avec une Pierre Stase, s'il te plaît. Je reste moi aujourd'hui.",
+    line:"<i>Une flaque violette passe sous la porte et se hisse sur un tabouret, sans copier personne.</i> Bonjour ! Un lait avec une cuillère de Confiture d'Antan, s'il te plaît. Je reste moi aujourd'hui.",
     ok:"<i>Il boit, et garde sa forme tout du long.</i> Le chapiteau a mis mon nom sur l'affiche. Mon vrai nom. Sans « Prodige ». Juste : Métamorph.",
     ko:"<i>Il tremblote un peu.</i> Ce n'est pas ce que j'ai demandé… ce n'est pas grave. Je sais ce que j'aime, maintenant. C'est déjà beaucoup."};
 ROOM_SAY.metamorph = {a:"Le chapiteau. Vide. Je n'y étais jamais venu sans public.",b:"Les rires… Ils riaient de mes formes. Jamais de moi.",h:"Je change, je change, je n'arrive pas à m'arrêter !",c:"Les coulisses. Des miroirs partout. Je ne me vois dans aucun.",i:"Le premier soir sur la piste. J'étais une flaque, et j'avais peur. Mais j'étais moi.",d:"Ma caisse. C'est là que je redevenais moi, la nuit.",j:"Ils crient des noms. « Dracaufeu ! » « Mew ! » Jamais le mien.",k:"Un visage rond, effacé. Le mien ?",l:"La lune se reflète dans une flaque. Une flaque violette.",f:"Le miroir. Il ne renvoie rien. Rien du tout.",g:"La nuit où j'ai oublié mon visage."};
@@ -118,13 +118,13 @@ CL.kadabra = {
     gift:{key:"cuillere",n:"Cuillère Tordue",i:"🥄",d:"Au 2e tour de chaque combat, le client pioche 2 cartes de plus",fx:{draw(C){ return C.turn===2 ? 2 : 0; }}},
     staff:{n:"Liseur de pensées",d:"Les âmes très tendues (Tension 3 ou plus) arrivent avec +1 Ouverture",wage:30},
     staffFx:{arrive(c){ if(c.ten>=3) c.ouv++; }},
-    cogHint:"Il entend tout, même nos pensées : reste calme et ne secoue pas les verres devant lui. Une Gelée Rose pour l'esprit, et du doux : Thé de Safrania, Miel, Poudre Métal.",
+    cogHint:"Il entend tout, même nos pensées : reste calme et ne secoue pas les verres devant lui. Une Gelée Rose pour l'esprit, et du doux : Thé de Safrania, Miel, Flocons d'Avoine.",
     map:mapStd({a:"La chambre de Lise",b:"Le billet d'échange pâli",h:"Les cuillères qui tremblent",c:"Le centre d'échange",i:"La première pensée lue",d:"La bibliothèque silencieuse",j:"Les Alakazam des autres",k:"Les devoirs à deux",l:"Le jardin de l'école",f:"Le samedi où personne n'est venu",g:"La promesse oubliée"},{eb:"tristesse",eh:"peur",ej:"colere",ef:"tristesse",key:"joie",foe:{id:65,n:"Alakazam"}})
 };
 TALK.kadabra = [
     {t:"<i>Ta cuillère flotte jusqu'à toi, remuée toute seule dans ta tasse.</i> Pardon. Tu pensais très fort que ton café était trop chaud."},
     {t:"<i>Il hume la vapeur du thé.</i> Lise buvait du thé en révisant. Elle en renversait toujours sur ses cahiers, et me demandait de sécher les pages par la pensée.",like:"the"},
-    {t:"<i>Il regarde la Poudre Métal briller dans son flacon.</i> Les Métamorph en raffolent, paraît-il. Moi, ça me rappelle la limaille au fond de la boîte à outils de son père.",like:"poudremetal"}
+    {t:"<i>Il regarde le bocal de Flocons d'Avoine.</i> Son père en mangeait chaque matin, avant d'aller à l'atelier. « Ça tient au corps », il disait. Il tenait debout toute la journée.",like:"poudremetal"}
 ];
 WIPE.kadabra = ["<i>Le torchon flotte hors de tes mains et essuie le verre tout seul, en rythme.</i> Laisse-moi. Ça me calme.","<i>Les cuillères arrêtent de trembler pendant que tu essuies.</i>"];
 LETTERS.kadabra = "« Lise m'a présenté à sa classe. Un petit garçon n'osait pas dire qu'il ne comprenait pas. Je l'ai entendu. Lise lui a réexpliqué sans qu'il demande. Il croit que c'est de la magie. — K. »";
@@ -170,7 +170,7 @@ CL.chrysacier = {
 TALK.chrysacier = [
     {t:"<i>Il fixe la flamme de la bougie.</i> Vous savez ce qu'il y a dans une coque ? Moi non plus. C'est ça le problème. Je ne sais pas ce que je suis en train de devenir."},
     {t:"<i>Une goutte de miel glisse jusqu'à la fente.</i> Mmh. Les autres en trouvaient dans les fleurs, au printemps. Ils m'en rapportaient sur leurs pattes. Je goûtais l'été à travers eux.",like:"miel"},
-    {t:"<i>Il contemple la Pierre Stase.</i> Une pierre pour ne jamais changer. Avant, j'en aurais voulu une. Maintenant… je ne sais pas. Peut-être juste pour la tenir, en attendant.",like:"pierrestase"}
+    {t:"<i>Il contemple le pot de Confiture d'Antan.</i> Le même goût, toujours. Avant, c'est tout ce que je voulais : ne jamais changer. Maintenant… je ne sais pas. Peut-être juste en goûter un peu, en attendant.",like:"pierrestase"}
 ];
 WIPE.chrysacier = ["<i>Le frottement régulier du torchon le berce. Sa coque se ramollit un tout petit peu.</i>","<i>Il te regarde depuis sa fente.</i> Vous faites ça tous les soirs ? C'est rassurant, les choses qui reviennent."];
 LETTERS.chrysacier = "« JE SUIS SORTI. Mes ailes sont un peu de travers. Je vole en zigzag. C'est très drôle. Le premier truc que j'ai vu, c'était le ciel, comme prévu. Le deuxième, c'était votre enseigne. — Papilusion (ex-Chrysacier) »";

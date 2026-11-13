@@ -311,14 +311,14 @@ function startNextSeason(){
     ]:S.season===6?[
       {who:"narr",t:"Chapitre 3 · Les métamorphoses. Saison 6."},
       {who:"narr",t:"L'été arrive sur Bourg-Brume. Les Chrysacier du jardin public sont devenus des Papilusion, sauf un, qui prend son temps. Les villageois ont appris à ne plus demander « tu évolues quand ? »."},
-      {who:{id:52,n:"Miaouss"},t:"<i>La pancarte des Super Bonbons a disparu. Miaouss regarde la taverne depuis son seuil, sans rien dire.</i> …Ils sont revenus me demander des Pierres Stase, voisin. Chez moi. J'en ai pas. Tu te rends compte ? Ils veulent rester comme ils sont, et ils paient pour ça."},
+      {who:{id:52,n:"Miaouss"},t:"<i>La pancarte des Super Bonbons a disparu. Miaouss regarde la taverne depuis son seuil, sans rien dire.</i> …Ils sont revenus me demander de la Confiture d'Antan, voisin. Celle qui a le même goût depuis toujours. Chez moi. J'en ai pas. Tu te rends compte ? Ils veulent rester comme ils sont, et ils paient pour ça."},
       {who:"cog",t:"Patron… J'ai rêvé d'une silhouette violette, cette nuit. Immense. Qui flottait au-dessus de la Faille sans oser descendre."},
       {who:"hector",t:"<i>La voix d'Hector, grave, presque inquiète.</i> Hé… Celui-là, petit, personne ne l'a fait naître par amour. On l'a fabriqué. Quand il viendra, ne lui demande pas d'où il vient. Demande-lui s'il veut rester."}
     ]:S.season===5?[
       {who:"narr",t:"Chapitre 3 · Les métamorphoses. Saison 5."},
       {who:"narr",t:"Au printemps, tout Bourg-Brume change. Les Chenipan du jardin public deviennent des Chrysacier, les Ptitard de la fontaine des Têtartes. Sur la place, on ne parle plus que de ça : qui a évolué, qui pas encore."},
       {who:{id:52,n:"Miaouss"},t:"<i>Il affiche une pancarte devant le Pourboire d'Or : « SUPER BONBONS · ÉVOLUEZ CE SOIR · PAIEMENT À LA SORTIE ».</i> Grandir, voisin, c'est rentable. Personne ne paie pour un Pokémon qui reste petit."},
-      {who:"cog",t:"Patron… Il vend de l'évolution en bocal, maintenant. Et Kecleon a reçu de drôles de cailloux, des Pierres Stase. Il paraît que ça empêche de changer."},
+      {who:"cog",t:"Patron… Il vend de l'évolution en bocal, maintenant. Et Kecleon a reçu de la Confiture d'Antan, celle qui a le même goût depuis cent ans. Il paraît que ça aide à rester soi-même."},
       {who:"hector",t:"<i>La voix traverse le mur, songeuse.</i> Hé… Cette saison, ils viendront parce qu'ils n'ont pas changé comme on l'attendait d'eux. Ou parce qu'ils ont trop changé. Ne leur dis pas qui devenir, petit. Aide-les juste à se souvenir de qui ils sont."}
     ]:S.season===4?[
       {who:"narr",t:"Chapitre 2 · La saison des pluies. Saison 4."},

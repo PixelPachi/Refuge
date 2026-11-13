@@ -154,7 +154,7 @@ CL.magicarpe = {
     thanks:"<i>Il fait un Trempette. Un vrai, joyeux, qui éclabousse tout le comptoir.</i> Demain, je répondrai à leurs vagues.",
     gift:{key:"ecaille",n:"Écaille brillante de Magicarpe",i:"✨",d:"Après chaque combat gagné, le client récupère 5 PV"},
     staff:{n:"Service en salle",d:"+10 % de pourboire",wage:30},
-    cogHint:"Il sursautait à chaque ombre au plafond. Une seule Gelée Ciel l'aiderait à regarder le ciel en face. Mais pas de Plume Envol : ça lui rappelle trop leurs ailes.",
+    cogHint:"Il sursautait à chaque ombre au plafond. Une seule Gelée Ciel l'aiderait à regarder le ciel en face. Mais pas de Gingembre Confit : ça pique, et il a déjà assez peur comme ça.",
     map:{start:"a",nodes:{
       a:{t:"entree",n:"Le lac à l'aube",x:50,y:6,nx:["b"]},
       b:{t:"echo",e:"peur",dmg:2,n:"Les ombres immenses sous la surface",x:50,y:18,nx:["c"],foe:{id:130,n:"Léviator"}},
