@@ -73,12 +73,15 @@ function cardHTML(id, opts={}){
   const cls = (c.t==="atk"?"atk":c.t==="power"?"pow":c.t==="curse"?"curse":"skl")+(c.r==="legende"?" leg":"");
   const attrs = `${opts.act?`data-act="${opts.act}" data-i="${opts.i}"`:""} ${opts.drag?`data-hi="${opts.i}" data-tgt="${opts.tgt?1:0}"`:""}`;
   const base = String(id).split(":")[0];
-  if(CARD_ART.has(base)){
+  // Cartes souvenir et mots-clés : un dessin commun par type d'émotion (souvenir-<émotion>), et leur propre cadre
+  const svArt = c.r==="frag" ? "souvenir-"+c.emo : c.r==="kw" ? "souvenir-motcle" : null;
+  const artKey = svArt ? (ART_SET.has(svArt) ? svArt : null) : (CARD_ART.has(base) ? "card-"+base : null);
+  if(artKey){
     const odd = c.unplayable || c.x || !(c.c>=0 && c.c<=4);
     const fr = odd ? 0 : c.c;
-    const typ = c.t==="atk"?"Attaque":c.t==="power"?"Pouvoir":c.t==="curse"?"Malédiction":"Technique";
-    return `<div class="dcard art ${cls} ${opts.dis?"dis":""} ${opts.eff?"eff":""}" ${attrs}>
-    <img class="dart" src="assets/art/card-${base}.webp" alt="" draggable="false"><img class="dframe" src="assets/art/frame-${c.r==="legende"?"leg-":""}${fr}.webp" alt="" draggable="false">
+    const typ = c.r==="frag" ? `Souvenir · ${EMO[c.emo]?EMO[c.emo].n:""}` : c.r==="kw" ? "Mot-clé" : c.t==="atk"?"Attaque":c.t==="power"?"Pouvoir":c.t==="curse"?"Malédiction":"Technique";
+    return `<div class="dcard art ${cls}${svArt?" sv":""} ${opts.dis?"dis":""} ${opts.eff?"eff":""}" ${attrs}>
+    <img class="dart" src="assets/art/${artKey}.webp" alt="" draggable="false"><img class="dframe" src="assets/art/${svArt && ART_SET.has("frame-souvenir") ? "frame-souvenir" : `frame-${c.r==="legende"?"leg-":""}${fr}`}.webp" alt="" draggable="false">
     ${odd?`<div class="dcost2">${c.unplayable?"–":c.x?"X":c.c}</div>`:""}${c.r==="legende"?`<div class="dleg">Légendaire</div>`:""}
     <div class="dtxt ${(()=>{const L=String(cardDesc(id,c)).replace(/<[^>]+>/g,"").length;return L>95?"xxl":L>65?"xl":L>40?"lg":"";})()}"><div class="dn">${c.n}</div><div class="dty">${typ}</div><div class="dd">${cardDesc(id,c)}</div></div>${opts.tag?`<div class="dtag">${opts.tag}</div>`:""}</div>`;
   }

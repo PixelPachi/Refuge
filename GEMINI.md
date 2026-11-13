@@ -10,6 +10,21 @@ Après chaque lot : déposer les `.webp` dans `assets/art/` puis `python3 tools/
 - **Carte (2:3)** — préfixe `CARD` stocké dans Gemini (`localStorage.tklH`) : illustration portrait, tiers bas calme et sombre pour le texte. Légendaire : « carte légendaire : … » avec le Pokémon propriétaire. → `tools/cards.py <carte>:<suffixe>`
 - **Icône d'artefact** — « icône d'objet de jeu vidéo, style anime peint, un seul objet centré, bien détouré, légère lueur magique, sur un fond vert pur uni #00FF00, sans ombre portée au sol, sans texte. Objet : … » → `tools/art.py relic-<clé> <fichier> icon`
 
+## À faire — Cartes souvenir (design commun)
+
+Toutes les cartes souvenir partagent un dessin par type d'émotion, plus un cadre à elles. Les mots-clés (« … ») ont leur propre dessin.
+Les cartes souvenir coûtent toujours 0 : le cadre porte une bulle avec « 0 ».
+
+- **Cadre** `frame-souvenir` : même forme et même fenêtre rectangulaire que les cadres normaux (bulle bleue en haut à gauche avec « 0 »), mais en argent nacré et bleu pâle, avec de petites plumes et des fils de lumière, comme un souvenir qu'on garde précieusement. Intérieur et fond en vert #00FF00. → traiter comme les autres cadres (`tools/frame.py`).
+- **Dessins** (format carte 2:3, tiers bas calme pour le texte, style onirique, sans personnage précis pour servir à tous les clients) :
+  - `souvenir-joie` : un rayon de soleil doré qui traverse des pétales, chaleur, rires lointains
+  - `souvenir-nostalgie` : une vieille photo floue qui flotte au milieu de fleurs de cerisier roses, lumière douce du soir
+  - `souvenir-colere` : des braises rouges et des étincelles qui tourbillonnent, un éclat de verre brisé
+  - `souvenir-tristesse` : de la pluie sur une vitre, un parapluie bleu abandonné, gouttes lumineuses
+  - `souvenir-peur` : une forêt violette dans la brume, une petite lanterne qui résiste à l'obscurité
+  - `souvenir-motcle` : une bulle de parole lumineuse faite de fils dorés, comme un mot qui revient en mémoire
+- En attendant les images, ces cartes gardent leur design actuel.
+
 ## À faire — Saison 5 · Les métamorphoses
 
 ### Métamorph (salles `dj-metamorph-a` … `-l`)
