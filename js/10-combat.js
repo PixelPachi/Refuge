@@ -213,7 +213,7 @@ function drawCards(n){ const C=U.dawn.combat; for(let i=0;i<n;i++){ if(!C.draw.l
 function startTurn(){
   const D=U.dawn, C=D.combat; C.turn++;
   C.energy = 3 + (C.turn===1 && S.equip.bonnet ? 1 : 0); C.emax = C.energy; C.playedTurn=0;
-  C.cogUsed=false; if(C.turn===1) C.cogSpent=[];
+  C.cogUsed=false; if(C.turn===1){ C.cogSpent=[]; C.cogMsg=null; }
   C.block = (C.keepBlock?C.block:0) + C.blockNext; C.blockNext=0;
   C.hurtLast = C.hurtTurn||0;
   if(C.turn>1 && C.strTurn) C.str+=C.strTurn;
@@ -372,6 +372,7 @@ function hitClient(v){
 }
 function endTurn(){
   const D=U.dawn, C=D.combat; if(!C||C.over) return;
+  if(D.x.duo && !C.cogUsed){ cogAct(); if(C.over || U.dawn.combat!==C || C.en.hp<=0 || U.dawn.phase!=="combat") return; }
   const keep=[]; C.hand.forEach(e=>{ const cd=cardOf(e); if(cd.retain) keep.push(e); else if(cd.ethereal) C.exh.push(e); else C.disc.push(e); }); C.hand=keep;
   C.hurtTurn=0; C.lastCard=null;
   if(C.weak) C.weak--; if(C.vuln) C.vuln--;

@@ -651,3 +651,4 @@ button.sm{padding:7px 10px;font-size:13px}
 .cogsel{border-radius:8px;outline:3px solid transparent;transition:outline-color .15s, transform .15s}
 .cogsel.on{outline-color:#c9a8ff;transform:scale(.96)}
 .cogsel .dcard{width:100%!important;aspect-ratio:2/3}
+.cogmsg{color:#f2e6cc;background:rgba(0,0,0,.25);border-radius:6px;padding:3px 6px;margin-bottom:4px}

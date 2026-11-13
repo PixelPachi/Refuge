@@ -33,7 +33,7 @@ const ACT = {
   postOpen:()=>postPicker(),
   invite:(ds)=>{ if(S.money<20||S.invite) return; S.money-=20; S.invite=ds.k; save(); closeModal(); toast(`Lettre confiée à Cadoizo pour ${CL[ds.k].n}.`); renderRecap(); },
   relicInfo:(ds)=>{ const D=U.dawn, g=allRelics().find(g=>g.key===ds.k); D.relicInfo = D.relicKey===ds.k&&D.relicInfo ? null : `${relicIc(g)} <b>${g.n}</b> : ${g.d}${ds.k==='collier'&&D.collierUsed?' <i>(déjà utilisé)</i>':''}`; D.relicKey=ds.k; renderDungeon(); },
-  finaleGo:()=>finaleGo(), cogPick:(ds)=>cogPickToggle(Number(ds.i)), cogPlay:(ds)=>cogPlay(Number(ds.i)), miaPick:(ds)=>miaPick(ds.c), finaleSkip:()=>{ S.finale=S.finale||{}; S.finale[S.season||1]="skip"; endSeason(); },
+  finaleGo:()=>finaleGo(), cogPick:(ds)=>cogPickToggle(Number(ds.i)), miaPick:(ds)=>miaPick(ds.c), finaleSkip:()=>{ S.finale=S.finale||{}; S.finale[S.season||1]="skip"; endSeason(); },
   goPath:(ds)=>enterNode(ds.t), restPick:(ds)=>restPick(ds.k), eventPick:(ds)=>eventPick(Number(ds.i)),
   leaveRoom:()=>{ U.dawn.restDone=false; advance(); }, dRunEnd:()=>dRunEnd(),
   showRunDeck:()=>openModal(`<h3>Le deck de ${CL[U.dawn.x.k].n}</h3>${(()=>{ const D=U.dawn; const cnt={}; const items=[]; D.run.forEach(e=>{ if(e.id==="_x") items.push(cardHTML("_x",{cd:e.cd,eff:true})); else cnt[e.id]=(cnt[e.id]||0)+1; }); return `<div class="dgrid">${Object.keys(cnt).map(id=>`<div class="dwrap">${cardHTML(id)}${cnt[id]>1?`<span class="dcnt">×${cnt[id]}</span>`:""}</div>`).join("")}${items.map(h=>`<div class="dwrap">${h}</div>`).join("")}</div>`; })()}<button style="width:100%;margin-top:10px" data-act="closeModal">Fermer</button>`),

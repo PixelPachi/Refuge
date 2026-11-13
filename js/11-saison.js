@@ -122,25 +122,41 @@ function finaleGo(){
   U.dawn = {list:[{k:"_duo",ten:0,euph:false,hang:0,finale:true,duo:true,cogCards:ids}], i:0};
   setupDungeon();
 }
-// Jouer une carte de l'acolyte : une par tour, sans énergie
-function cogPlay(j){
-  const D=U.dawn, C=D&&D.combat; if(!C||C.over||!D.x.duo) return;
-  if(C.cogUsed){ toast(`${cog().n} a déjà joué ce tour-ci.`); return; }
-  if((C.cogSpent||[]).includes(j)){ toast("Carte déjà utilisée dans ce combat."); return; }
-  const id=D.x.cogCards[j]; if(!id) return; const cd=CARDS[id];
-  C.cogUsed=true; C.cogSpent=(C.cogSpent||[]).concat([j]);
+// L'acolyte joue seul : à la fin de chaque tour du Tenancier, il choisit une de ses cartes (sans énergie)
+function cogChoose(){
+  const D=U.dawn, C=D.combat, en=C.en, spent=C.cogSpent||[];
+  const m=en.moves[en.mi%en.moves.length];
+  const incoming = en.stun ? 0 : m.a==="atk" ? (m.v+(en.str||0))*(m.x||1) : (m.dmg||0);
+  const opts=D.x.cogCards.map((id,j)=>({j,cd:CARDS[id]})).filter(o=>o.cd && !spent.includes(o.j));
+  if(!opts.length) return -1;
+  const dmgOf=cd=>cd.dmg ? (cd.dmg+(C.str||0))*(cd.hits||1) : 0;
+  const best=(list,f)=>list.length ? list.slice().sort((x,y)=>f(y.cd)-f(x.cd))[0].j : -1;
+  // 1. achever l'ombre s'il le peut
+  const kill=opts.filter(o=>dmgOf(o.cd)>=en.hp+(en.block||0)); if(kill.length) return best(kill,dmgOf);
+  // 2. protéger le Tenancier si le coup qui arrive passe le Bouclier
+  const blk=opts.filter(o=>o.cd.block); if(incoming>C.block && blk.length) return best(blk,cd=>cd.block);
+  // 3. soigner s'il est mal en point
+  const heal=opts.filter(o=>o.cd.heal); if(D.hp<D.maxhp*0.4 && heal.length) return best(heal,cd=>cd.heal);
+  // 4. sinon, frapper fort (ou faire ce qu'il peut)
+  const atk=opts.filter(o=>o.cd.dmg); if(atk.length) return best(atk,dmgOf);
+  return opts[0].j;
+}
+function cogAct(){
+  const D=U.dawn, C=D&&D.combat; if(!C||C.over||!D.x.duo||C.cogUsed) return;
+  C.cogUsed=true; const j=cogChoose(); if(j<0){ C.cogMsg=null; return; }
+  const id=D.x.cogCards[j], cd=CARDS[id]; C.cogSpent=(C.cogSpent||[]).concat([j]);
   const e={id}; C.hand.push(e); C.energy+=cd.c||0;
   playCard(C.hand.length-1, 0);
   // la carte reste à l'acolyte : on la retire de la défausse du Tenancier
   [C.disc, C.exh].forEach(p=>{ const k=p.indexOf(e); if(k>=0) p.splice(k,1); });
-  if(C.log && !C.log.startsWith("🐾")) C.log=`🐾 ${cog().n} : `+C.log;
-  if(U.dawn && U.dawn.phase==="combat" && U.dawn.combat===C && !C.over) renderDungeon();
+  C.cogMsg=`🐾 ${cog().n} joue ${C.log||cd.n}`;
 }
 function cogRowHTML(){
   const D=U.dawn, C=D.combat; if(!D.x.duo || !(D.x.cogCards||[]).length) return "";
-  const K=cog(), spent=C.cogSpent||[];
-  return `<div class="cogrow"><div class="small cogtitle"><span class="cogav">${sprite(K.id,K.n,K.c,{anim:true})}</span><b>${K.n}</b>&nbsp;· ${C.cogUsed?"a joué ce tour-ci":"peut jouer 1 carte ce tour-ci, sans énergie"}</div>
-    <div class="dhand cog">${D.x.cogCards.map((id,j)=>cardHTML(id,{act:"cogPlay",i:j,dis:C.cogUsed||spent.includes(j)})).join("")}</div></div>`;
+  const K=cog(), spent=C.cogSpent||[], left=D.x.cogCards.length-spent.length;
+  return `<div class="cogrow"><div class="small cogtitle"><span class="cogav">${sprite(K.id,K.n,K.c,{anim:true})}</span><span><b>${K.n}</b> choisit seul sa carte à la fin de ton tour${left?` (${left} restante${left>1?"s":""})`:" : plus de carte pour ce combat"}.</span></div>
+    ${C.cogMsg?`<div class="small cogmsg">${C.cogMsg}</div>`:""}
+    <div class="dhand cog">${D.x.cogCards.map((id,j)=>cardHTML(id,{dis:spent.includes(j)})).join("")}</div></div>`;
 }
 function finaleEnd(win){
   const se=S.season||1; S.finale=S.finale||{}; S.finale[se]=win?"win":"lose"; U.inDungeon=false;
