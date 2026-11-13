@@ -193,7 +193,7 @@ function finaleEnd(win){
   playDialog(lines, endSeason, ()=>{ $app.innerHTML=`${hud()}${scene({night:false,doorOpen:false})}<div class="panel">${dialogBubble()}</div>`; });
 }
 // ---------- Fin de saison : la chronique ----------
-const LAST_SEASON = 6; // chapitre 1 « Portes ouvertes » (saisons 1 et 2) + début du chapitre 2 « La saison des pluies » (saison 3)
+const LAST_SEASON = 7; // chapitre 1 « Portes ouvertes » (saisons 1 et 2) + début du chapitre 2 « La saison des pluies » (saison 3)
 function seasonStats(){ const z=S.stats0||{served:0,perfect:0,earned:0,apaise:0}; return {served:S.stats.served-z.served, perfect:S.stats.perfect-z.perfect, earned:S.stats.earned-z.earned}; }
 function endSeason(){
   music("fin");
@@ -218,7 +218,7 @@ function endSeason(){
   $app.innerHTML = `<div class="pad fade scroll" style="flex:1">
     <div class="parch" id="chron">
       <h2>Chronique de la saison ${season}</h2>
-      <div class="center small">${season===2?"Chapitre 1 · Portes ouvertes · ":season===3||season===4?"Chapitre 2 · La saison des pluies · ":season===5||season===6?"Chapitre 3 · Les métamorphoses · ":""}La taverne · Bourg-Brume</div>
+      <div class="center small">${season===2?"Chapitre 1 · Portes ouvertes · ":season===3||season===4?"Chapitre 2 · La saison des pluies · ":season===5||season===6?"Chapitre 3 · Les métamorphoses · ":season===7||season===8?"Chapitre 4 · La fête de Bourg-Brume · ":""}La taverne · Bourg-Brume</div>
       <div class="souls">
         <div class="soul">${sprite(S.ten.id,S.ten.n,S.ten.c,{shiny:S.shiny})}</div>
         <div class="soul">${sprite(cog().id,cog().n,cog().c)}</div>
@@ -240,7 +240,7 @@ function endSeason(){
       ${season===2?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 1 · Portes ouvertes.</b> La taverne a appris à écouter.</p>`:season===4?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 2 · La saison des pluies.</b> La taverne a appris à rester à côté de ceux qui ont perdu quelqu'un.</p>`:season===6?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 3 · Les métamorphoses.</b> La taverne a appris à aimer chacun tel qu'il est, même ceux qui n'ont pas demandé à naître.</p>`:""}
     </div>
     <div class="row" style="margin-top:14px"><button class="grow alt" data-act="copyChron">Copier la chronique</button>${last?`<button class="grow" data-act="newGame">Nouvelle partie</button>`:`<button class="grow" data-act="nextSeason">Commencer la saison ${season+1}</button>`}</div>
-    <p class="small muted center">${last?"Fin du prototype : le chapitre 4, « La fête de Bourg-Brume », viendra dans une prochaine version.":"Tes niveaux, ton personnel, tes affinités, tes recettes et tes artefacts te suivent. Les bibelots, eux, restent dans la saison qui s'achève."}</p>
+    <p class="small muted center">${last?"Fin du prototype : la saison 8 et la fête de Bourg-Brume elle-même (avec le Pourboire d'Or au bord de la faillite, et un Grand Regret aux plumes de feu) viendront dans une prochaine version.":"Tes niveaux, ton personnel, tes affinités, tes recettes et tes artefacts te suivent. Les bibelots, eux, restent dans la saison qui s'achève."}</p>
   </div>`;
 }
 function startNextSeason(){
@@ -249,7 +249,14 @@ function startNextSeason(){
   CLIENT_ORDER.forEach(k=>{ if(!S.clients[k]) S.clients[k]={aff:0,state:"new",carryOuv:0,carryTen:0,visits:0,shake:false}; S.clients[k].lastNight=0; });
   U={}; save();
   const lines=[
-    ...(S.season===6?[
+    ...(S.season===7?[
+      {who:"narr",t:"Chapitre 4 · La fête de Bourg-Brume. Saison 7."},
+      {who:"narr",t:"La fin de l'été approche, et tout Bourg-Brume ne parle que d'une chose : la grande fête annuelle, à la fin de la saison prochaine. On accroche déjà des lampions au clocher, on repeint les étals, on répète la fanfare sur la place."},
+      {who:"narr",t:"Mais dans une ville qui se prépare à faire la fête ensemble, ceux qui sont seuls le sont encore plus. Ceux que la ville a oubliés en grandissant. Ceux qui ne servent plus à rien, croient-ils."},
+      {who:{id:52,n:"Miaouss"},t:"<i>Il compte ses pièces sur son seuil, moins vite qu'avant.</i> La fête, voisin ? Je vais louer le plus grand stand de la place. Des verres dorés à la louche. …Enfin, si le banquier veut bien me prêter encore un peu. Il me regarde bizarrement, ces temps-ci."},
+      {who:"cog",t:"Patron… Le maire a demandé si la taverne voulait un stand, à la fête. J'ai dit qu'on réfléchirait. On n'a jamais fait la fête, nous. On a toujours été ceux qui écoutent, après."},
+      {who:"hector",t:"<i>La voix d'Hector, plus douce que d'habitude.</i> Hé… La fête, petit, c'est quand une ville se souvient qu'elle est une ville. Cette saison, ils viendront parce que la ville les a oubliés. Ne les guéris pas de la solitude. Rends-les juste à la ville."}
+    ]:S.season===6?[
       {who:"narr",t:"Chapitre 3 · Les métamorphoses. Saison 6."},
       {who:"narr",t:"L'été arrive sur Bourg-Brume. Les Chrysacier du jardin public sont devenus des Papilusion, sauf un, qui prend son temps. Les villageois ont appris à ne plus demander « tu évolues quand ? »."},
       {who:{id:52,n:"Miaouss"},t:"<i>La pancarte des Super Bonbons a disparu. Miaouss regarde la taverne depuis son seuil, sans rien dire.</i> …Ils sont revenus me demander des Pierres Stase, voisin. Chez moi. J'en ai pas. Tu te rends compte ? Ils veulent rester comme ils sont, et ils paient pour ça."},
@@ -274,7 +281,7 @@ function startNextSeason(){
     ]:[{who:"narr",t:`Saison ${S.season}. Les premières pluies d'automne tambourinent sur le toit de la taverne.`}]),
     {who:"cog",t:"Une nouvelle saison ! Ceux qu'on a aidés passeront sûrement de jour. Et les autres… ils reviendront, la nuit. On sera prêts."},
     ...((SEASON_NEW[S.season]||[]).length?[{who:"kecleon",t:`Nouvel arrivage à l'étal, patron ! ${(SEASON_NEW[S.season]).map(k=>ING[k].n).join(", ")}. Personne d'autre au village n'en a !`}]:[]),
-    S.season===6 ? {who:"cog",t:"Dernière saison du chapitre. On garde un tabouret libre, au cas où."} : S.season===5 ? {who:"cog",t:"Une saison de changements. On sera là, quoi qu'ils deviennent."} : S.season===4 ? {who:"cog",t:"Et cette saison, ceux qui ont perdu quelqu'un continuent d'arriver. On reste à côté d'eux, comme dit Hector."} : S.season===3
+    S.season===7 ? {who:"cog",t:"Une saison pour ceux qui sont seuls. On leur gardera une place à la fête."} : S.season===6 ? {who:"cog",t:"Dernière saison du chapitre. On garde un tabouret libre, au cas où."} : S.season===5 ? {who:"cog",t:"Une saison de changements. On sera là, quoi qu'ils deviennent."} : S.season===4 ? {who:"cog",t:"Et cette saison, ceux qui ont perdu quelqu'un continuent d'arriver. On reste à côté d'eux, comme dit Hector."} : S.season===3
       ? {who:"hector",t:"<i>La voix traverse le mur, plus basse que d'habitude.</i> Hé… Cette saison, ils ne viendront pas parce qu'ils ont échoué, ou parce qu'on les a laissés. Ils viendront parce qu'ils ont perdu quelqu'un. Ceux-là, petit, il ne faut pas les réparer. Il faut juste rester à côté."}
       : {who:"hector",t:"<i>Une voix rieuse traverse le mur.</i> Hé hé… Prépare un tabouret de plus, petit. Ce soir, quelqu'un de très fier va pousser la porte. Quelqu'un que personne n'a jamais attendu."}
   ];

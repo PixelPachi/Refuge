@@ -22,7 +22,7 @@ Toutes les constantes sont globales (scripts classiques), donc l'ordre de charge
 | `js/08-nuit.js` | Nuit : file des âmes, comptoir, préparation et effets d'un verre, fin de service, récap, poste de Cadoizo |
 | `js/09-labyrinthe.js` | Aube : Labyrinthe salle par salle, carte, images des salles (`roomSrc`) |
 | `js/10-combat.js` | Deck building : effets des cartes, combats, reliques, récompenses |
-| `js/11-saison.js` | Pourboire d'Or et Miaouss, Grand Écho en duo (le Tenancier et l'acolyte : `COG_CARDS`, `cogPlay`) et Grands Regrets par saison (`FINALE_MAPS` : Suicune en 4, Mewtwo en 6), fin de saison, début de saison suivante (`LAST_SEASON`) |
+| `js/11-saison.js` | Pourboire d'Or et Miaouss, Grand Écho en duo (le Tenancier et l'acolyte autonome : `COG_CARDS`, `cogChoose`, `cogAct`) et Grands Regrets par saison (`FINALE_MAPS` : Suicune en 4, Mewtwo en 6), fin de saison, début de saison suivante (`LAST_SEASON`) |
 | `js/12-registre.js` | Le Grand Registre (livre), le menu, le code de sauvegarde (copier / charger) et la confirmation de nouvelle partie |
 | `js/13-actions.js` | Table `ACT` (boutons `data-act`) et démarrage du jeu |
 

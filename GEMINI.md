@@ -69,6 +69,28 @@ Les cartes souvenir coûtent toujours 0 : le cadre porte une bulle avec « 0 ».
 - `dj-mewtwo` : Mewtwo flottant les yeux fermés dans une cuve de verre brisée, lumière violette, très mélancolique
 - Carte : `card-droitdexister` (légendaire : Mewtwo assis maladroitement au comptoir d'une taverne, un verre de lait, une cuillère pliée en cœur)
 
+## À faire — Saison 7 · La fête de Bourg-Brume (chapitre 4)
+
+### Écrémeuh (`dj-ecremeuh-*`)
+- a La colline de la ferme · b L'étable vide · h Les bouteilles de la ville · c Le chemin du village · i Le premier verre d'un enfant · d La paille tiède · j Les volets de la ferme fermés · k Les matins de traite · l Le banc devant la fontaine · f L'hiver où Basile est parti · g **Cœur** : le jour où personne n'est monté sur la colline (une ferme seule sur la colline enneigée, une Écrémeuh dorée devant la barrière, le village en bas)
+- Cartes : `card-roulade` (Écrémeuh qui roule dans l'herbe de la colline), `card-laitmaison` (légendaire : un vieux fermier qui verse un verre de lait à un enfant, Écrémeuh qui regarde, lumière du matin)
+- Icône : `relic-clochemeuh` (une cloche de vache en laiton avec un ruban rose)
+
+### Tropius (`dj-tropius-*`)
+- a La place du village décorée · b Les fruits flétris · h La foule qui passe sans voir · c Les guirlandes de la fête · i Les enfants qui grimpent · d La palmeraie tranquille · j La machine à barbe à papa · k Le ruban de la petite fille · l Le verger au lever du jour · f La fête où personne n'a grimpé · g **Cœur** : le jour où elle ne l'a pas reconnu (Tropius seul au bout d'une place illuminée, un ruban délavé autour du cou)
+- Cartes : `card-tranchefeuille` (Tropius qui tranche le vent avec ses feuilles), `card-dernierfruit` (légendaire : des enfants sur le dos de Tropius qui cueillent ses fruits sous les lampions)
+- Icône : `relic-regime` (un régime de fruits jaunes noué d'un ruban)
+
+### Arcanin (`dj-arcanin-*`)
+- a Le poste de police la nuit · b La médaille et le placard · h Les rues sans lui · c Le carrefour de la grand-rue · i L'enfant retrouvé à la fête · d La niche du poste · j Les sifflets des Caninos · k Les rondes avec Lucie · l Le toit d'où l'on voit tout · f Le soir de la relève · g **Cœur** : le jour où plus personne n'avait besoin de lui (un vieil Arcanin assis sous un lampadaire, rue vide, insigne terni)
+- Cartes : `card-vitesseextreme` (Arcanin qui bondit dans une ruelle, traînée de feu), `card-derniereronde` (légendaire : un vieil Arcanin et deux Caninos qui patrouillent ensemble sous la lune)
+- Icône : `relic-insigne` (un insigne de police terni sur un collier de cuir)
+
+### Branette (`dj-branette-*`)
+- a Le grenier poussiéreux · b Le carton des jouets cassés · h Le noir sous la poussière · c L'escalier du grenier · i Le premier secret confié · d Le lit d'enfant · j La fermeture qui se coud · k Les nuits serrée contre elle · l La lucarne au clair de lune · f Les années à attendre · g **Cœur** : le jour où le carton est monté au grenier (une peluche noire dans un carton, rayon de lune par la lucarne)
+- Cartes : `card-griffeombre` (Branette qui griffe dans l'ombre), `card-sourirecousu` (légendaire : Branette qui ouvre sa fermeture éclair sur un sourire cousu, des petites Branette autour d'elle)
+- Icône : `relic-zip` (une fermeture éclair dorée sur un bout de tissu noir)
+
 ## Plus tard (optionnel)
 - Icônes des 8 bibelots de saison : Tasse ébréchée d'Hector, Clochette de la Faille, Torchon brodé, Lanterne de poche, Bocal à pourboires, Carnet de notes, Sablier de sable fin, Bougie parfumée.
 
