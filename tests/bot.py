@@ -9,6 +9,9 @@ with sync_playwright() as p:
     pg.on("console", lambda m: errs.append("console:"+m.text) if m.type=="error" and "Failed to load resource" not in m.text and "ERR_" not in m.text else None)
     pg.goto("file://"+path)
     pg.wait_for_timeout(500)
+    pg.evaluate('''()=>{ window.__runs=[]; const W=winCombat, L=loseRun;
+      winCombat=function(){ const D=U.dawn,C=D.combat; if(C.en.boss) __runs.push({s:S.season,k:D.x.k,w:1,hp:D.hp,max:D.maxhp,fin:!!D.finale,turns:C.turn}); return W(); };
+      loseRun=function(){ const D=U.dawn; __runs.push({s:S.season,k:D.x.k,w:0,hp:0,max:D.maxhp,fin:!!D.finale,node:D.node}); return L(); }; }''')
     pg.screenshot(path=f"{shots}/00_title.png")
     def acts():
         return pg.evaluate("""()=>[...document.querySelectorAll('[data-act]')].filter(e=>!e.disabled&&e.offsetParent!==null||e.closest('#modal')).map(e=>({a:e.dataset.act,i:e.dataset.i,k:e.dataset.k,v:e.dataset.v,id:e.dataset.id,ctx:e.dataset.ctx,dis:!!e.disabled}))""")
@@ -32,7 +35,7 @@ with sync_playwright() as p:
         if 'finaleGo' in names: mark('finale'); click('[data-act=finaleGo] >> nth=0'); continue
         if 'pickBib' in names: mark('bibelot'); click('[data-act=pickBib] >> nth=0'); continue
         if 'miaPick' in names: mark('miaouss'); click('[data-act=miaPick] >> nth=%d'%(steps%3)); continue
-        if 'nextSeason' in names: pg.screenshot(path=f"{shots}/98_chron_s1.png", full_page=True); print('SEASON END', pg.evaluate("JSON.stringify(S.chronicles)"), flush=True); click('[data-act=nextSeason]'); continue
+        if 'nextSeason' in names: pg.screenshot(path=f"{shots}/98_chron_s1.png", full_page=True); print('SEASON END', pg.evaluate("JSON.stringify(S.chronicles)"), flush=True); open(f"/tmp/snap_s{pg.evaluate('S.season||1')}.json",'w').write(pg.evaluate('JSON.stringify(S)')); click('[data-act=nextSeason]'); continue
         if 'dlgNext' in names: pg.click('[data-act=dlgNext]'); continue
         if 'answer' in names: mark('test'); pg.click('[data-act=answer] >> nth=%d'%(steps%3)); continue
         if 'acceptTen' in names: mark('reveal'); click('[data-act=acceptTen]'); continue
@@ -130,5 +133,6 @@ with sync_playwright() as p:
     final=pg.evaluate("({night:S.night,money:S.money,lvl:S.level,staff:S.staff,clients:S.clients,stats:S.stats,pages:S.pages,frags:S.fragments.length,finale:S.finale,cmd:S.cmd,equip:S.equip})")
     print(json.dumps(final,ensure_ascii=False))
     print("steps",steps,"stuck",log[-3:])
+    print('RUNS', pg.evaluate("JSON.stringify(window.__runs)"))
     print("ERRORS",errs[:20])
     b.close()

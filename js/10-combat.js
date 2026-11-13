@@ -154,7 +154,7 @@ function runCards(x){
 // Deck du Labyrinthe : celui du Tenancier, moins les cartes confiées à l'acolyte pour le Grand Écho
 function deckForRun(x){ const d=S.deck.slice(); (x.cogCards||[]).forEach(id=>{ const i=d.indexOf(id); if(i>=0) d.splice(i,1); }); return d; }
 function setupDungeon(){
-  U.inDungeon=true; ensureDeck();
+  U.inDungeon=true; ensureDeck(); relicInit();
   const D=U.dawn, x=D.list[D.i], d=CL[x.k];
   D.finale=!!x.finale; D.map = x.finale ? (FINALE_MAPS[S.season||1] || FINALE_MAP) : null;
   const bon=runHPBonus(x);
@@ -184,8 +184,20 @@ function enterNode(id){
   if(n.t==="enigme") D.event = makeEvent(n);
   renderDungeon();
 }
-function scaleHP(v){ return Math.round(v*(1+0.12*((S.season||1)-1))); }
-function makeEnemy(n,id){
+// ---------- Difficulté des ombres ----------
+// hp/atk : multiplicateurs de base ; hpSe/atkSe : progression par saison (les ombres finales des Grands Échos ont leurs propres valeurs)
+// (saison 1 plus douce : c'est la saison où l'on apprend ; réglages vérifiés avec tests/sim.py)
+const DIFF = {hp:1.25, atk:1.6, hp1:1.1, atk1:1.15, hpSe:0.12, atkSe:0.05, fin:1.35};
+function seN(){ return S.season||1; }
+function scaleHP(v){ return Math.round(v*(seN()===1?DIFF.hp1:DIFF.hp)*(1+DIFF.hpSe*(seN()-1))); }
+function scaleDmg(v){ return Math.round(v*(seN()===1?DIFF.atk1:DIFF.atk)*(1+DIFF.atkSe*(seN()-1))); }
+function scaleMoves(moves){ return moves.map(m=>Object.assign({},m, (m.a==="atk"||m.a==="def")&&m.v?{v:scaleDmg(m.v)}:{}, m.dmg?{dmg:scaleDmg(m.dmg)}:{})); }
+function makeEnemy(n,id){ const en=makeEnemy0(n,id);
+  // ombre finale d'un Grand Écho : ses coups sont déjà réglés à la main pour sa saison, seul le multiplicateur de base s'applique
+  if(U.dawn&&U.dawn.finale&&en.boss){ const a=DIFF.fin; en.moves=en.moves.map(m=>Object.assign({},m,(m.a==="atk"||m.a==="def")&&m.v?{v:Math.round(m.v*a)}:{},m.dmg?{dmg:Math.round(m.dmg*a)}:{})); }
+  else en.moves=scaleMoves(en.moves);
+  return en; }
+function makeEnemy0(n,id){
   const D=U.dawn, k=D.x.k, d=CL[k];
   if(n.t==="entree") return {n:"Ombre errante",id:d.id,self:true,hp:scaleHP(20),e:null,moves:[{a:"atk",v:6},{a:"def",v:5},{a:"atk",v:8}]};
   if(n.t==="coeur"){ const b=n.boss||BOSS[k]||{id:d.id,n:"Ombre du regret",self:true};

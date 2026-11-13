@@ -33,9 +33,10 @@ function bookPages(){
   const byOwner={}; S.fragments.forEach(f=>{ const o=CL[f.from]?CL[f.from].n:"Étincelles du co-gérant"; (byOwner[o]=byOwner[o]||[]).push(f); });
   add("souvenirs","souvenirs","Fragments de Mémoire",Object.keys(byOwner).length?Object.keys(byOwner).map(o=>`<div class="bh">${o}</div><div>${byOwner[o].map(f=>`<span class="frag" style="background:${EMO[f.e].c}">${EMO[f.e].i} ${esc(f.n)}</span>`).join("")}</div>`).join(""):`<p class="bnote">Aucun souvenir pour l'instant. Les âmes les confient quand elles ont confiance.</p>`);
   // artefacts, recettes, bibelots
-  const rel = allRelics().filter(g=>S.equip[g.key]);
+  relicInit();
+  const rel = CLIENT_ORDER.map(c=>CL[c].gift).filter(g=>g && S.owned[g.key]);
   const rec = S.recipes.map(r=>{ const d=CLIENT_ORDER.map(c=>CL[c].recipe).find(x=>x&&x.key===r); return d?`<p>${r==="shake"?drinkIcon({base:"lait",add:["sitrus"]},"sm"):"• "}<b>${d.n}</b> : ${d.d}</p>`:""; }).join("");
-  add("artefacts","artefacts","Artefacts et recettes",`<div class="bh">Artefacts du Labyrinthe</div>${rel.length?rel.map(g=>`<p><span class="brel">${relicIc(g)}</span> <b>${g.n}</b> : ${g.d}</p>`).join(""):`<p class="bnote">Aucun. Une âme offre le sien quand son affinité atteint 3 cœurs.</p>`}
+  add("artefacts","artefacts","Artefacts et recettes",`<div class="bh">Artefacts du Labyrinthe · ${wornCount()}/${RELIC_MAX} portés</div>${rel.length?`<p class="bnote">Tu peux en posséder autant que tu veux, mais tu n'en portes que ${RELIC_MAX} à la fois. Choisis ceux qui accompagnent les clients dans leur Labyrinthe.</p>`+rel.map(g=>`<p class="relrow ${S.equip[g.key]?"on":""}"><span class="brel">${relicIc(g)}</span> <b>${g.n}</b> : ${g.d}<br><button class="sm ${S.equip[g.key]?"alt":""}" data-act="relicWear" data-k="${g.key}" ${!S.equip[g.key]&&wornCount()>=RELIC_MAX?"disabled":""}>${S.equip[g.key]?"Ranger":"Porter"}</button></p>`).join(""):`<p class="bnote">Aucun. Une âme offre le sien quand son affinité atteint 3 cœurs.</p>`}${S.equip.faille?`<p><span class="brel">🔮</span> <b>Éclat de la Faille</b> : +6 PV dans chaque Labyrinthe (toujours actif)</p>`:""}
     <div class="bh">Recettes offertes</div>${rec||`<p class="bnote">Aucune recette pour l'instant.</p>`}
     <div class="bh">Bibelots de la saison</div>${(S.bibelots||[]).length?S.bibelots.map(k=>`<p>${BIBELOTS[k].i} <b>${BIBELOTS[k].n}</b> : ${BIBELOTS[k].d}</p>`).join(""):`<p class="bnote">Aucun. Ils remontent du Labyrinthe.</p>`}`);
   // deck

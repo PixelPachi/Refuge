@@ -321,7 +321,8 @@ function gainAff(k, lines){
   st.aff++;
   lines.push({who:"narr",t:`Affinité avec ${d.n} : ${hearts(st.aff)}`});
   if(st.aff===2 && d.recipe && !S.recipes.includes(d.recipe.key)){ S.recipes.push(d.recipe.key); lines.push({who:clientSp2(k),t:`Tiens, je te donne ma recette. <b>${d.recipe.n}</b> : ${d.recipe.d}.`}); }
-  if(st.aff===AFF_MAX && d.gift && !S.equip[d.gift.key]){ S.equip[d.gift.key]=true; lines.push({who:clientSp2(k),t:`Je veux que tu gardes ça. Ça m'a porté chance, là-dessous.`},{who:"narr",t:`Artefact obtenu : ${d.gift.i} <b>${d.gift.n}</b>. Il accompagnera chaque client dans son Labyrinthe : ${d.gift.d}.`}); }
+  relicInit();
+  if(st.aff===AFF_MAX && d.gift && !S.owned[d.gift.key]){ const worn=gainRelic(d.gift.key); lines.push({who:clientSp2(k),t:`Je veux que tu gardes ça. Ça m'a porté chance, là-dessous.`},{who:"narr",t:`Artefact obtenu : ${d.gift.i} <b>${d.gift.n}</b> (${d.gift.d}). `+(worn?`Tu le portes : il accompagnera chaque client dans son Labyrinthe.`:`Tu portes déjà ${RELIC_MAX} artefacts : il est rangé dans le Registre, où tu peux choisir lesquels porter.`)}); }
 }
 function clientSp2(k){ return {id:CL[k].id,n:CL[k].n}; }
 function clientLeaves(why, msg){

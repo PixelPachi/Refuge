@@ -42,6 +42,7 @@ const ACT = {
   menu:()=>showMenu(), closeModal:()=>closeModal(),
   registre:(ds)=>{ U.book=null; showRegistre(ds.k||null); },
   
+  relicWear:(ds)=>{ relicToggle(ds.k); const i=U.book?U.book.i:0; showRegistre(); if(U.book){ U.book.i=Math.min(i,U.book.P.length-1); renderBookPage(null); } },
   bookNext:()=>turnBook(1), bookPrev:()=>turnBook(-1), bookGo:(ds)=>goBook(ds.p), bookDeck:()=>{ U.book.open=false; showDeck('deck'); },
   discuter:()=>discuter(), essuyer:()=>essuyer(),
   rHire:(ds)=>recapDecide(ds.k,"hire"), rLetGo:(ds)=>recapDecide(ds.k,"letgo"), recapDone:()=>endNightGo(),

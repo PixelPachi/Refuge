@@ -14,6 +14,7 @@ function payroll(){
   return lines;
 }
 function startDay(){
+  relicInit();
   music("village");
   const dayKey=`${S.season||1}-${S.night}`;
   if(S.paidDay!==dayKey){ S.paidDay=dayKey; const pl=payroll(); if(pl.length){ save(); playDialog(pl, startDay, ()=>{ $app.innerHTML=`${hud()}${scene({doorOpen:false})}<div class="panel">${dialogBubble()}</div>`; }); return; } }

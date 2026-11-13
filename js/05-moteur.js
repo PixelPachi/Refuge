@@ -176,6 +176,20 @@ function dlgNext(){
 // prix d'un ingrédient chez Kecleon (réduction éventuelle d'un poste : staffFx "discount")
 function ingPrice(k){ return Math.round(ING[k].price*(1-Math.min(0.5,staffFx("discount")))); }
 function staffFx(name, ...args){ let r=0; S.staff.forEach(k=>{ const f=CL[k] && CL[k].staffFx; if(!f || !staffOn(k) || f[name]==null) return; r += typeof f[name]==="function" ? (f[name](...args)||0) : f[name]; }); return r; }
+// ---------- Artefacts portés ----------
+// On peut posséder tous les artefacts (S.owned), mais on n'en porte que RELIC_MAX à la fois (S.equip = artefacts portés).
+// L'Éclat de la Faille (RELIC_EXTRA) est toujours actif et ne compte pas.
+const RELIC_MAX = 5;
+function relicKeys(){ return CLIENT_ORDER.map(k=>CL[k].gift).filter(Boolean).map(g=>g.key); }
+function wornCount(){ return relicKeys().filter(k=>S.equip[k]).length; }
+function relicInit(){
+  if(S.owned) return; S.owned={};
+  relicKeys().forEach(k=>{ if(S.equip[k]) S.owned[k]=true; });
+  let n=0; relicKeys().forEach(k=>{ if(S.equip[k]){ n++; if(n>RELIC_MAX) delete S.equip[k]; } });
+}
+// nouvel artefact : on le possède, et on le porte s'il reste une place. Renvoie true s'il est porté.
+function gainRelic(key){ relicInit(); S.owned[key]=true; if(wornCount()<RELIC_MAX){ S.equip[key]=true; return true; } return false; }
+function relicToggle(key){ relicInit(); if(!S.owned[key]) return; if(S.equip[key]) delete S.equip[key]; else if(wornCount()<RELIC_MAX) S.equip[key]=true; else { toast(`Tu portes déjà ${RELIC_MAX} artefacts : range-en un d'abord.`); return; } save(); }
 function relicFx(name, ...args){ let r=0; CLIENT_ORDER.forEach(k=>{ const g=CL[k].gift; if(!g || !g.fx || !S.equip[g.key] || g.fx[name]==null) return; r += typeof g.fx[name]==="function" ? (g.fx[name](...args)||0) : g.fx[name]; }); return r; }
 function relicHP(){ return CLIENT_ORDER.map(k=>CL[k].gift).filter(g=>g && g.fx && g.fx.hp && S.equip[g.key]).map(g=>({hp:g.fx.hp, t:`${g.i} ${g.n}`})); }
 function ingFx(key, ctx){ const f=ING[key] && ING[key].fx; return f ? (f(ctx)||{}) : {}; }
