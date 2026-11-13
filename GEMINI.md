@@ -220,4 +220,5 @@ Même style que les `drink-lait-*` existants (verre seul sur fond transparent). 
 - Icônes des 8 bibelots de saison : Tasse ébréchée d'Hector, Clochette de la Faille, Torchon brodé, Lanterne de poche, Bocal à pourboires, Carnet de notes, Sablier de sable fin, Bougie parfumée.
 
 ## Déjà fait
+- Session du 13/11 (après-midi) : les 6 icônes d'ingrédients non comestibles + Muffin, 27 icônes d'artefacts (saisons 5 à 12), les 14 boissons au thé et au jus de baie, les 6 dessins de souvenirs, et les 58 illustrations de cartes manquantes (saisons 5 à 12, cartes d'Hector).
 Saisons 1 à 4 complètes (salles, cartes, artefacts), cadres de cartes normaux et légendaires, Pourboire d'Or (façade et salle), lac de Suicune et Suicune.
