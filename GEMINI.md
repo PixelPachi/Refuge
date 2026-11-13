@@ -193,6 +193,29 @@ Même style que les `drink-lait-*` existants (verre seul sur fond transparent). 
 - Cartes : `card-fracasroc` (Relicanth qui fonce tête la première), `card-jamaistroptard` (légendaire : Relicanth sur une plage la nuit, sous un ciel plein d'étoiles)
 - Icône : `relic-ecaillefossile` (une écaille grise avec des traces de coquillages fossiles)
 
+## À faire — Saison 12 · Les premiers pas (fin du chapitre 6)
+
+### Mordudor (`dj-mordudor-*`)
+- a Le coffre fermé · b Les pièces qu'on compte · h Les mains qui prennent · c La charrette du marchand · i Le vent sur le coffre · d Le fond du coffre · j Le marchand qui s'en va · k Les autocollants des villes · l La route au matin · f Le bord de la route · g **Cœur** : le jour où le coffre s'est refermé (un petit coffre seul au bord d'une route, une charrette qui s'éloigne)
+- Cartes : `card-piecejetee` (des pièces qui volent hors d'un coffre), `card-unepiece` (légendaire : Mordudor sur une route au soleil levant, une seule pièce sur le dos)
+- Icône : `relic-pieceroute` (une pièce d'or usée, avec un petit ruban)
+
+### Zarbi (`dj-zarbi-*`)
+- a La page blanche · b Le point d'interrogation · h Les mots qui le refusent · c Les ruines aux inscriptions · i La première phrase dans la buée · d Le coin de la page · j Le groupe qui part sans lui · k L'alphabet dans le ciel · l La phrase qui finit par lui · f Toutes les questions sans réponse · g **Cœur** : le jour où il est resté à côté (un Zarbi point d'interrogation seul, à côté d'un mot formé par d'autres Zarbi dans le ciel)
+- Cartes : `card-puissancecachee` (Zarbi qui brille d'une lueur étrange), `card-onyvaensemble` (légendaire : une phrase de Zarbi dans le ciel nocturne, terminée par un point d'interrogation lumineux)
+- Icône : `relic-pointinterro` (un point d'interrogation noir avec un œil)
+
+### Évoli (`dj-evoli-*`)
+- a Le couloir aux portes · b Les pierres alignées · h Toutes les vies perdues · c La portée réunie · i Le lac avec sa sœur · d Le panier de la portée · j Les photos de famille · k Les frères et sœurs qui choisissent · l Une journée à la fois · f Deux ans sans choisir · g **Cœur** : le jour où elle a retiré la patte (une Évoli devant une rangée de pierres d'évolution colorées, dans un long couloir aux portes ouvertes)
+- Cartes : `card-adaptabilite` (Évoli qui bondit), `card-unejournee` (légendaire : Évoli au bord d'un lac au soleil, une Aquali qui l'éclabousse)
+- Icône : `relic-sacpierres` (un petit sac de toile d'où dépassent des pierres de couleurs)
+
+### Le donjon d'Hector — dernier Grand Écho du chapitre 6
+- Salles (`dj-hector-*`) : `taverne` (la taverne il y a cent ans, Hector humain derrière le comptoir), `dispute` (une fillette au ruban rouge qui claque la porte), `attente` (une chaise tournée vers la porte, des bougies fondues), `hivers` (la salle sous la neige, cent hivers), `ruban` (un ruban rouge sur une table, lumière douce), `pacte` (un homme presque transparent qui serre la main d'une ombre aux yeux bleus), `portrait` (le portrait d'Hector aux yeux vides), `ames` (des voyageurs endormis aux tables, des lueurs qui glissent vers la cave), `cave` (la cave avant la Faille, tonneaux et poussière), `porte` (une porte vers le monde à l'envers), `seuil` (la porte d'entrée de la taverne vue de l'intérieur, la nuit), `apaisees` (des dizaines d'âmes en lumière douce), `cauchemars` (des rêves noirs qui tournent comme des corbeaux)
+- `dj-darkrai` : Darkrai dans une salle de cauchemars, contrat déchiré qui flotte
+- Cartes d'Hector : `card-hectorpardon` (Hector qui tend la main, ombre violette et lumière dorée), `card-hectorecoute` (Hector derrière son comptoir, cent bougies), `card-hectorservice` (Hector qui pose un dernier verre sur le comptoir), `card-pactebrise` (légendaire : un contrat déchiré qui brûle, Hector qui franchit la porte de sa taverne dans la nuit)
+- Icônes d'ingrédients : déjà fournies par PokeAPI (Crème Chantilly, Baie Lonme)
+
 ## Plus tard (optionnel)
 - Icônes des 8 bibelots de saison : Tasse ébréchée d'Hector, Clochette de la Faille, Torchon brodé, Lanterne de poche, Bocal à pourboires, Carnet de notes, Sablier de sable fin, Bougie parfumée.
 

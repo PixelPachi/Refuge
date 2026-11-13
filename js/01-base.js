@@ -132,10 +132,15 @@ const ING = {
   pommenectar:{n:"Pomme Nectar",cat:"fruit",price:70,c:"#e88838",item:"syrupy-apple",season:11,d:"Douce comme une récompense : +1 Ouverture pour les âmes du Seuil",
     fx:x=>x.def.family==="Seuil"?{ouv:1,note:"Pomme Nectar : une douceur qui donne envie d'avancer."}:{}},
   racine:{n:"Racine Énergie",cat:"garn",price:45,c:"#a8805a",item:"energy-root",season:11,d:"Amère mais tonique : +1 Ouverture si le client s'est déjà confié deux fois",
-    fx:x=>x.cur&&x.cur.stage>=2?{ouv:1,note:"Racine Énergie : amère, mais elle donne la force d'aller au bout."}:{}}
+    fx:x=>x.cur&&x.cur.stage>=2?{ouv:1,note:"Racine Énergie : amère, mais elle donne la force d'aller au bout."}:{}},
+  // --- nouveautés de la saison 12
+  chantilly:{n:"Crème Chantilly",cat:"garn",price:55,c:"#f8f0f0",item:"whipped-dream",season:12,d:"Légère comme un rêve : +1 Ouverture et -1 Tension pour une âme qui revient pour la troisième fois ou plus",
+    fx:x=>S.clients[x.k]&&S.clients[x.k].visits>=3?{ouv:1,ten:-1,note:"Crème Chantilly : légère comme un rêve qu'on ose enfin."}:{}},
+  lonme:{n:"Baie Lonme",cat:"baie",price:45,c:"#88c050",item:"hondew-berry",season:12,d:"Fraîche et franche : +1 Ouverture si le client est parfaitement calme (Tension 0)",
+    fx:x=>x.cur&&x.cur.ten<=0?{ouv:1,note:"Baie Lonme : dans le calme, les mots viennent tout seuls."}:{}}
 };
 function ingOk(k){ return (ING[k].season||1) <= ((typeof S!=="undefined"&&S&&S.season)||1); }
-const SEASON_NEW = {2:["the","pecha","mepo","biscuit"],3:["jusbaie","pomroz","glace"],4:["grena","coeursucre"],5:["pierrestase","superbonbon","poudremetal"],6:["baieprine","eaumystique"],7:["bonbonfete","galette"],8:["malasada","craquiroc"],9:["runesort","runepurif"],10:["sable","muffin"],11:["pommenectar","racine"]};
+const SEASON_NEW = {2:["the","pecha","mepo","biscuit"],3:["jusbaie","pomroz","glace"],4:["grena","coeursucre"],5:["pierrestase","superbonbon","poudremetal"],6:["baieprine","eaumystique"],7:["bonbonfete","galette"],8:["malasada","craquiroc"],9:["runesort","runepurif"],10:["sable","muffin"],11:["pommenectar","racine"],12:["chantilly","lonme"]};
 const BASES = ["eau","lait","soda","limonade","liqueur","the"];
 const CRUSH = k => ING[k] && (ING[k].cat==="baie" || ING[k].cat==="fruit");
 const EMO = {
@@ -148,4 +153,4 @@ const COUNTERS = {joie:["colere","tristesse"],nostalgie:["peur","tristesse"],col
 
 
 // Ordre d'arrivée des âmes (toutes saisons)
-const CLIENT_ORDER = ["machopeur", "ponchiot", "magicarpe", "psykokwak", "rondoudou", "leveinard", "ronflex", "tiplouf", "canarticho", "goupix", "hypotrempe", "osselait", "lokhlass", "kangourex", "lucario", "absol", "granivol", "apireine", "metamorph", "insecateur", "kadabra", "chrysacier", "ramoloss", "embrylex", "parasect", "ecremeuh", "tropius", "arcanin", "branette", "kecleon", "mimiqui", "miaouss", "dracolosse", "spiritomb", "muciole", "demolosse", "ptera", "jirachi", "noctali", "togepi", "ptiravi", "relicanth"];
+const CLIENT_ORDER = ["machopeur", "ponchiot", "magicarpe", "psykokwak", "rondoudou", "leveinard", "ronflex", "tiplouf", "canarticho", "goupix", "hypotrempe", "osselait", "lokhlass", "kangourex", "lucario", "absol", "granivol", "apireine", "metamorph", "insecateur", "kadabra", "chrysacier", "ramoloss", "embrylex", "parasect", "ecremeuh", "tropius", "arcanin", "branette", "kecleon", "mimiqui", "miaouss", "dracolosse", "spiritomb", "muciole", "demolosse", "ptera", "jirachi", "noctali", "togepi", "ptiravi", "relicanth", "mordudor", "zarbi", "evoli"];

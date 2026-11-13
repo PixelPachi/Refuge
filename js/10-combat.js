@@ -132,7 +132,7 @@ function moveCard(id){
 function runHPBonus(x){ const _b=runHPBonus0(x); _b.push(...relicHP()); if(S.equip.faille) _b.push({hp:6,t:"🔮 Éclat de la Faille"}); if(omen()==="brume") _b.push({hp:8,t:"🌫️ Brume de la Faille : la brume le protège"}); return _b; }
 function runHPBonus0(x){
   const st=S.clients[x.k], out=[];
-  if(x.duo){ out.push({t:`Le Tenancier et ${cog().n}, ensemble`, hp:20}); return out; }
+  if(x.duo){ out.push({t:`Le Tenancier et ${finaleMate().n}, ensemble`, hp:20}); return out; }
   const obs=Math.min(2, st.obs||0);
   if(obs) out.push({t:`${obs} observation${obs>1?"s":""} en silence au comptoir`, hp:4*obs});
   if(st.aff>=1) out.push({t:`Affinité ${hearts(st.aff)}`, hp:5*st.aff});
@@ -152,7 +152,7 @@ function runCards(x){
   return extra;
 }
 // Deck du Labyrinthe : celui du Tenancier, moins les cartes confiées à l'acolyte pour le Grand Écho
-function deckForRun(x){ const d=S.deck.slice(); (x.cogCards||[]).forEach(id=>{ const i=d.indexOf(id); if(i>=0) d.splice(i,1); }); return d; }
+function deckForRun(x){ const d=S.deck.slice().concat(x.hector?HECTOR_CARDS:[]); (x.cogCards||[]).forEach(id=>{ const i=d.indexOf(id); if(i>=0) d.splice(i,1); }); return d; }
 function setupDungeon(){
   U.inDungeon=true; ensureDeck(); relicInit();
   const D=U.dawn, x=D.list[D.i], d=CL[x.k];
@@ -161,6 +161,7 @@ function setupDungeon(){
   const maxhp = 40 + bon.reduce((a,b)=>a+(b.hp||0),0);
   Object.assign(D,{x, node:null, prev:null, visited:[], phase:"intro", out:null, bonuses:bon, seenTypes:{}, hp:maxhp, maxhp,
     run:deckForRun(x).map(id=>({id})).concat(runCards(x).map(cd=>({id:"_x",cd}))), temp:[], combat:null, tuto:{}, msg:null, ending:false});
+  if(x.duo && x.hector){ playDialog([{who:"narr",t:`Le Tenancier et Hector descendent les marches côte à côte. Pour la première fois depuis cent ans, Hector pose le pied sur l'escalier de sa propre cave.`},{who:"hector",t:`J'ai glissé trois de mes cartes dans ton deck, petit. Et donne-moi les tiennes : j'en jouerai une à chaque tour. C'est mon donjon. Je ne te laisserai pas y aller seul.`}], ()=>renderDungeon(), ()=>renderDungeon()); return; }
   if(x.duo){ playDialog([{who:"narr",t:`Le Tenancier et ${cog().n} descendent les marches côte à côte. En bas, la lumière a toutes les couleurs des âmes de la saison.`},{who:"cog",t:`J'ai mes ${x.cogCards.length} cartes, patron. Une par tour : je te couvre !`}], ()=>renderDungeon(), ()=>renderDungeon()); return; }
   if(!S.dungeonDeckTuto){
     const lines=[
@@ -513,7 +514,7 @@ function renderDungeon(){
       <div class="arena">${n?`<div class="arenabg">${roomArtInner(n)}</div>`:""}<div class="arenafade"></div>
         ${say && C.turn===1 && !C.log ? `<div class="asay"><span class="spkname" style="--sc:${d.c};font-size:11px;margin-bottom:3px">${d.n}</span><br>${say}</div>`:""}
         <div class="fighters">
-        <div class="me ${C.hurtFx?"hit":""}"><div class="mespr">${sprite(d.id,d.n,d.c,{anim:true})}${x.duo?`<div class="cogspr">${sprite(cog().id,cog().n,cog().c,{anim:true})}</div>`:""}</div>
+        <div class="me ${C.hurtFx?"hit":""}"><div class="mespr">${sprite(d.id,d.n,d.c,{anim:true})}${x.duo?`<div class="cogspr">${sprite(finaleMate().id,finaleMate().n,finaleMate().c,{anim:true})}</div>`:""}</div>
           ${miniHP(D.hp,D.maxhp,C.block)}<div class="sts">${stHTML(C)}</div></div>
         <div class="foe ${en.boss?"boss":""} ${C.hitFx?"hit":""}" data-foe="0"><div class="intent">${en.stun?"💤":intentText(m,en)}</div>
           <div class="foespr ${en.self?"selfshadow":""}">${sprite(en.id,en.n,"#000",{anim:true})}</div>

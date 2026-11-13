@@ -37,7 +37,7 @@ function artBg(k){ return ARTOK[k] ? `<img class="artbg" src="${artSrc(k)}" alt=
 // Icône d'une boisson préparée : recette offerte ou boisson fétiche reconnue, sinon le verre de sa base.
 const FLAVOR = {ceriz:"rouge",figuy:"rouge",framby:"rouge",oran:"bleu",fraive:"bleu",sitrus:"jaune",mago:"rose",kika:"rose",wiki:"rose",menthe:"vert",pommeacide:"vert",miel:"miel",pommesucree:"miel",gateau:"miel",
   // ingrédients des saisons 2 à 10 : ils colorent le verre comme les anciens
-  pecha:"rose",grena:"rose",coeursucre:"rose",mepo:"rouge",pomroz:"rouge",bonbonfete:"rouge",pierrestase:"rouge",eaumystique:"bleu",glace:"bleu",baieprine:"vert",runepurif:"vert",plume:"jaune",galette:"miel",malasada:"miel",runesort:"miel",sable:"miel",muffin:"miel",pommenectar:"miel"};
+  pecha:"rose",grena:"rose",coeursucre:"rose",mepo:"rouge",pomroz:"rouge",bonbonfete:"rouge",pierrestase:"rouge",eaumystique:"bleu",glace:"bleu",baieprine:"vert",runepurif:"vert",plume:"jaune",galette:"miel",malasada:"miel",runesort:"miel",sable:"miel",muffin:"miel",pommenectar:"miel",lonme:"vert",chantilly:"rose"};
 const DRINK_NAMES = {
   eau:{rouge:"Eau de Ceriz",bleu:"Eau Océane",jaune:"Eau Sitrus",rose:"Eau Rosée",vert:"Eau Fraîcheur Menthe",miel:"Eau Miellée"},
   lait:{rouge:"Lait Framboisé",bleu:"Lait Myrtille-Oran",jaune:"Lait Soleil",rose:"Lait Fraise-Mago",vert:"Lait à la Menthe",miel:"Lait Doux au Miel"},

@@ -72,15 +72,39 @@ const FINALE_MAP_S10 = (()=>{ const m=JSON.parse(JSON.stringify(FINALE_MAP)); co
   n.fh=Object.assign({},n.fh,{n:"Giratina et le ruban rouge",art:"giratina",say:"Giratina. Le maître du monde à l'envers. Il a été banni ici, il y a si longtemps, pour sa colère. Depuis, il garde les regrets que la Faille lui envoie, pour ne pas être seul. Et entre ses griffes, un petit ruban rouge.",
     boss:{id:487,n:"Giratina, le banni",hp:180,moves:[{a:"atk",v:16},{a:"weak",v:2,dmg:11},{a:"def",v:18},{a:"atk",v:10,x:2},{a:"vuln",v:2,dmg:12},{a:"buff",v:4},{a:"atk",v:28}]}});
   return m; })();
+// Saison 12 : le donjon d'Hector, plus long et plus dur (14 salles, deux carrefours, ombres d'élite), contre Darkrai, avec qui Hector a passé son pacte
+const FINALE_MAP_S12 = {start:"fa",nodes:{
+  fa:{t:"entree",n:"La taverne il y a cent ans",x:50,y:4,nx:["fb","fc"],art:"hector-taverne",say:"La taverne, comme elle était il y a cent ans. Les mêmes poutres. Un homme à moustache derrière le comptoir, qui regarde la porte."},
+  fb:{t:"echo",e:"colere",dmg:1,n:"Le soir de la dispute",x:28,y:14,nx:["fd"],art:"hector-dispute",say:"Des mots durs, une petite fille qui claque la porte. Hector se fige à côté de toi. « Ne regarde pas trop longtemps, petit. »"},
+  fc:{t:"echo",e:"tristesse",dmg:1,n:"Le comptoir où il attendait",x:72,y:14,nx:["fd"],art:"hector-attente",say:"Un comptoir, une chaise tournée vers la porte, des bougies qui fondent nuit après nuit."},
+  fd:{t:"carrefour",n:"La salle aux cent hivers",x:50,y:25,nx:["fe","ff","fg"],art:"hector-hivers",say:"Trois chemins. Hector hésite. « Ils mènent tous au même endroit. Mais par des souvenirs différents. »"},
+  fe:{t:"sanctuaire",n:"Le ruban de Lise",x:16,y:36,nx:["fh"],art:"hector-ruban",say:"Un ruban rouge, posé sur une table. La seule chose douce de tout ce donjon."},
+  ff:{t:"echo",e:"peur",dmg:2,n:"La nuit du pacte",x:50,y:36,nx:["fh"],art:"hector-pacte",foe:{id:94,n:"Hector d'autrefois"},say:"Hector, jeune encore, presque transparent, qui serre la main d'une ombre aux yeux bleus. « Je ne veux pas disparaître avant qu'elle revienne. » C'est lui. C'était lui."},
+  fg:{t:"enigme",need:"nostalgie",n:"Le portrait au-dessus de la cheminée",x:84,y:36,nx:["fh"],art:"hector-portrait",say:"Le portrait d'Hector, mais les yeux sont vides. Il manque quelque chose : un souvenir de ce qu'il était avant."},
+  fh:{t:"echo",e:"tristesse",dmg:2,n:"Les âmes données à la Faille",x:50,y:48,nx:["fi","fj"],art:"hector-ames",foe:{id:93,n:"Spectrum"},say:"Des voyageurs, un par un, qui s'endorment à une table de la taverne et ne se réveillent jamais tout à fait. Leurs regrets glissent vers la cave. Hector ferme les yeux."},
+  fi:{t:"sanctuaire",n:"La cave d'avant la Faille",x:28,y:60,nx:["fk"],art:"hector-cave",say:"La cave, avant. Des tonneaux, de la poussière, rien de violet. Un endroit où se reposer une dernière fois."},
+  fj:{t:"echo",e:"colere",dmg:2,n:"La porte du monde à l'envers",x:72,y:60,nx:["fk"],art:"hector-porte",foe:{id:487,n:"Ombre de Giratina"},say:"La porte que le pacte a ouverte dans le monde de Giratina. Une ombre de Giratina, d'avant qu'il apprenne à aimer les verres, garde le passage."},
+  fk:{t:"carrefour",n:"Le seuil de la taverne",x:50,y:71,nx:["fl","fm"],art:"hector-seuil",say:"La porte d'entrée de la taverne. Hector ne l'a jamais franchie depuis cent ans. Deux chemins pour aller au bout."},
+  fl:{t:"enigme",need:"joie",n:"Les âmes apaisées",x:28,y:81,nx:["fn"],art:"hector-apaisees",say:"Toutes les âmes que tu as écoutées, saison après saison. Elles sont là, en lumière douce. Elles regardent Hector sans colère."},
+  fm:{t:"echo",e:"peur",dmg:2,n:"Les cauchemars du marchand",x:72,y:81,nx:["fn"],art:"hector-cauchemars",foe:{id:491,n:"Cauchemar de Darkrai"},say:"Des rêves noirs qui tournent comme des corbeaux. Darkrai sait que tu viens."},
+  fn:{t:"coeur",key:"joie",n:"Darkrai, le marchand de cauchemars",x:50,y:94,art:"darkrai",nx:[],say:"Darkrai. Celui qui a proposé le pacte à Hector, il y a cent ans : « Je te garde en ce monde, tant que tu me nourris d'âmes. » Il ne veut pas perdre son meilleur client.",
+    boss:{id:491,n:"Darkrai, le marchand de cauchemars",hp:170,moves:[{a:"weak",v:2,dmg:12},{a:"atk",v:16},{a:"def",v:18},{a:"atk",v:9,x:3},{a:"vuln",v:2,dmg:13},{a:"buff",v:5},{a:"burn",v:4,dmg:10},{a:"atk",v:30}]}}
+}};
 // Plan du Grand Écho selon la saison (Grand Regret de fin de chapitre), sinon le plan standard
-const FINALE_MAPS = {4:FINALE_MAP_S4, 6:FINALE_MAP_S6, 8:FINALE_MAP_S8, 10:FINALE_MAP_S10};
+const FINALE_MAPS = {4:FINALE_MAP_S4, 6:FINALE_MAP_S6, 8:FINALE_MAP_S8, 10:FINALE_MAP_S10, 12:FINALE_MAP_S12};
 function finaleChamps(){ return CLIENT_ORDER.filter(k=>inSeason(k) && ["apaise","staff"].includes(S.clients[k].state)); }
 function seasonClose(){
   const se=S.season||1; S.finale=S.finale||{}; S.night=Math.min(S.night,NIGHTS_PER_SEASON);
   if(S.finale[se]){ endSeason(); return; }
   music("donjon");
   const fete = CLIENT_ORDER.filter(k=>[7,8].includes(CL[k].season) && ["apaise","staff"].includes(S.clients[k].state)).map(k=>CL[k].n);
-  const lines = se===11 ? [
+  const lines = se===12 ? [
+    {who:"narr",t:"La dernière nuit de la saison, toutes les âmes que la taverne a apaisées passent devant la fenêtre, en silence, comme des lucioles. Elles ne viennent pas boire. Elles regardent Hector."},
+    {who:"narr",t:"Puis la cave s'ouvre, et ce n'est pas la lumière violette de la Faille qui monte : c'est un noir épais, qui sent les mauvais rêves. Une voix, très douce, très froide."},
+    {who:{id:491,n:"Darkrai"},t:"Hector. Notre contrat. Cent ans que tu me nourris, et voilà que ton tavernier me vole mes repas, saison après saison. Il les apaise. Il me les reprend. Descends. Viens renégocier. Ou je viens chercher ce qu'on me doit… dans la salle."},
+    {who:"hector",t:"<i>Hector se lève. Il n'hésite pas, cette fois.</i> C'est mon donjon, petit. Mon regret à moi. Le co-gérant reste en haut pour garder la taverne. C'est moi qui descends avec toi. Et je ne viens pas les mains vides."},
+    {who:"cog",t:"Patron… Ramène-le. Ramène-le tout entier."}
+  ] : se===11 ? [
     {who:"narr",t:"La dernière nuit de la saison, la porte de la cave s'ouvre en grand, toute seule. Les regrets de la saison remontent, comme chaque fois."},
     {who:{id:487,n:"Giratina"},t:"<i>Une voix grave monte de la cave, presque gênée.</i> Tavernier. La Faille déborde, comme à chaque printemps. Je ne peux pas tout retenir de mon côté. Descends, avec ton acolyte. Je tiendrai les escaliers à l'endroit pour toi."},
     {who:"hector",t:"<i>Hector se lève, hésite, puis se rassoit.</i> Je… je devrais venir avec vous. Non. Pas encore. Vas-y, petit. Je garde le comptoir."},
@@ -130,15 +154,17 @@ function seasonClose(){
 // Avant la descente, le Tenancier confie COG_CARDS cartes de son deck à l'acolyte (elles quittent son deck pour l'Écho).
 // En combat, l'acolyte joue une de ses cartes par tour, sans énergie ; il récupère toutes ses cartes à chaque nouveau combat.
 const COG_CARDS = 5;
+// Compagnon du Grand Écho : le co-gérant, sauf pour le donjon d'Hector (saison 12), où Hector descend lui-même
+function finaleMate(){ return (S.season||1)===12 ? HECTOR : cog(); }
 function cogPickable(id){ const c=CARDS[id]; return !!c && !c.unplayable && !c.x; }
 function cogNeed(){ ensureDeck(); return Math.max(0, Math.min(COG_CARDS, S.deck.filter(cogPickable).length, S.deck.length - DECK_MIN)); }
 function renderFinaleChoice(){
   ensureDeck(); U.cogPick = U.cogPick || [];
-  const need=cogNeed(), K=cog(), n=U.cogPick.length;
+  const need=cogNeed(), K=finaleMate(), n=U.cogPick.length, se=S.season||1;
   $app.innerHTML=`${hud()}<div class="pad scroll" style="flex:1;display:flex;flex-direction:column;gap:10px">
     <h2 class="px" style="color:#c9a8ff;margin:2px 0">🌀 Le Grand Écho</h2>
     <div class="row" style="align-items:center;gap:8px"><span style="width:52px;height:52px;display:inline-block;flex:none">${sprite(S.ten.id,S.ten.n,S.ten.c,{anim:true})}</span><span style="width:44px;height:44px;display:inline-block;flex:none">${sprite(K.id,K.n,K.c,{anim:true})}</span>
-      <p class="small grow" style="margin:0">Cette fois, <b>tu descends toi-même</b>, avec <b>${K.n}</b>. Tu te bats avec ton deck et <b>tous les souvenirs de la saison</b>. Si vous tombez, rien n'est perdu : vous remontez, et la saison se termine quand même.</p></div>
+      <p class="small grow" style="margin:0">${se===12?`<b>C'est le donjon d'Hector.</b> Il descend avec toi, à la place de ${cog().n}, et glisse ses <b>3 cartes uniques</b> dans ton deck (${HECTOR_CARDS.map(id=>CARDS[id].n).join(", ")}). `:""}Cette fois, <b>tu descends toi-même</b>, avec <b>${K.n}</b>. Tu te bats avec ton deck et <b>tous les souvenirs de la saison</b>. Si vous tombez, rien n'est perdu : vous remontez, et la saison se termine quand même.</p></div>
     <div class="card"><div class="px" style="color:var(--candle)">Confier ${need} carte${need>1?"s":""} à ${K.n} (${n}/${need})</div>
       <div class="small muted">Elles quittent ton deck pour l'Écho. À chaque tour, ${K.n} peut en jouer <b>une</b>, sans énergie, et récupère toutes ses cartes au début de chaque combat.</div>
       <div class="dgrid cogpick">${S.deck.map((id,i)=>cogPickable(id)?`<div class="cogsel ${U.cogPick.includes(i)?"on":""}">${cardHTML(id,{act:"cogPick",i})}</div>`:"").join("")}</div></div>
@@ -147,7 +173,7 @@ function renderFinaleChoice(){
 }
 function cogPickToggle(i){
   U.cogPick=U.cogPick||[]; const j=U.cogPick.indexOf(i);
-  if(j>=0) U.cogPick.splice(j,1); else if(U.cogPick.length<cogNeed()) U.cogPick.push(i); else { toast(`${cog().n} a déjà ses ${cogNeed()} cartes.`); return; }
+  if(j>=0) U.cogPick.splice(j,1); else if(U.cogPick.length<cogNeed()) U.cogPick.push(i); else { toast(`${finaleMate().n} a déjà ses ${cogNeed()} cartes.`); return; }
   const p0=document.querySelector(".pad.scroll"), y=p0?p0.scrollTop:0; renderFinaleChoice(); const p=document.querySelector(".pad.scroll"); if(p) p.scrollTop=y;
 }
 function finaleGo(){
@@ -156,7 +182,7 @@ function finaleGo(){
   CL._duo = {id:S.ten.id, n:S.ten.n, c:S.ten.c||"#f0c060", family:"", reform:{}, frags:[], comfort:[], dislike:[], map:null};
   S.clients._duo = {aff:0,state:"new",carryOuv:0,carryTen:0,visits:0,shake:false};
   U.night = U.night || {out:{},recruits:[]};
-  U.dawn = {list:[{k:"_duo",ten:0,euph:false,hang:0,finale:true,duo:true,cogCards:ids}], i:0};
+  U.dawn = {list:[{k:"_duo",ten:0,euph:false,hang:0,finale:true,duo:true,cogCards:ids,hector:(S.season||1)===12}], i:0};
   setupDungeon();
 }
 // L'acolyte joue seul : à la fin de chaque tour du Tenancier, il choisit une de ses cartes (sans énergie)
@@ -186,11 +212,11 @@ function cogAct(){
   playCard(C.hand.length-1, 0);
   // la carte reste à l'acolyte : on la retire de la défausse du Tenancier
   [C.disc, C.exh].forEach(p=>{ const k=p.indexOf(e); if(k>=0) p.splice(k,1); });
-  C.cogMsg=`🐾 ${cog().n} joue ${C.log||cd.n}`;
+  C.cogMsg=`${D.x.hector?"👻":"🐾"} ${finaleMate().n} joue ${C.log||cd.n}`;
 }
 function cogRowHTML(){
   const D=U.dawn, C=D.combat; if(!D.x.duo || !(D.x.cogCards||[]).length) return "";
-  const K=cog(), spent=C.cogSpent||[], left=D.x.cogCards.length-spent.length;
+  const K=finaleMate(), spent=C.cogSpent||[], left=D.x.cogCards.length-spent.length;
   return `<div class="cogrow"><div class="small cogtitle"><span class="cogav">${sprite(K.id,K.n,K.c,{anim:true})}</span><span><b>${K.n}</b> choisit seul sa carte à la fin de ton tour${left?` (${left} restante${left>1?"s":""})`:" : plus de carte pour ce combat"}.</span></div>
     ${C.cogMsg?`<div class="small cogmsg">${C.cogMsg}</div>`:""}
     <div class="dhand cog">${D.x.cogCards.map((id,j)=>cardHTML(id,{dis:spent.includes(j)})).join("")}</div></div>`;
@@ -199,7 +225,24 @@ function finaleEnd(win){
   const se=S.season||1; S.finale=S.finale||{}; S.finale[se]=win?"win":"lose"; U.inDungeon=false;
   delete CL._duo; if(S.clients) delete S.clients._duo;
   const lines=[];
-  if(win && se===10){
+  if(win && se===12){
+    S.pages+=5; addXP(500); S.pacte=true;
+    const nb=CLIENT_ORDER.filter(k=>["apaise","staff"].includes(S.clients[k].state)).length;
+    lines.push({who:"narr",t:"Au fond du donjon, Darkrai recule dans ses propres ombres. Le contrat se déchire tout seul, comme une vieille page mouillée."});
+    lines.push({who:{id:491,n:"Darkrai"},t:"<i>Sa voix s'éloigne.</i> Tu n'as plus rien à me donner, tavernier. Ton remplaçant les a toutes rendues à elles-mêmes. Un client perdu… Les cauchemars trouveront d'autres portes. Pas celle-ci."});
+    lines.push({who:"narr",t:`Quand vous remontez, la taverne est pleine. ${nb} âme${nb>1?"s":""}, toutes celles que tu as écoutées, de Machopeur jusqu'à aujourd'hui. Elles ne disent rien. Elles attendent qu'Hector parle.`});
+    lines.push({who:"hector",t:"<i>Il enlève son tablier, et le tient dans ses mains.</i> C'est moi. C'est à cause de moi que vous étiez perdues. J'avais peur de disparaître avant le retour de Lise. Alors j'ai passé un marché : chaque voyageur qui s'endormait ici laissait un peu de son âme à la Faille, et moi, je restais. Je vous ai volé vos regrets pour durer. Je n'ai pas d'excuse. Seulement… pardon."});
+    lines.push({who:clientSp2("machopeur"),t:"<i>Machopeur, le premier, s'avance.</i> Tu nous as perdus, Hector. Mais c'est ta taverne qui nous a retrouvés. Et c'est toi qui as fait venir le Tenancier, non ? Tu as passé cent ans à réparer en cachette ce que tu avais cassé."});
+    lines.push({who:"narr",t:"Une à une, les âmes passent devant Hector. Certaines lui serrent la main, d'autres lui sourient seulement. Aucune ne part fâchée. Quand la dernière est passée, Hector est en larmes. Et pour la première fois, il a une ombre normale, à ses pieds."});
+    lines.push({who:"hector",t:"<i>Il se tourne vers la porte d'entrée de la taverne. Il pose la main sur la poignée. Il hésite. Puis il l'ouvre, et il fait un pas dehors, dans la nuit de Bourg-Brume.</i> …Cent ans que je n'avais pas senti le vent. Petit. Tu viens marcher avec moi jusqu'à la fontaine ? Juste jusqu'à la fontaine. Après, on rentre. On a une taverne à tenir."});
+    lines.push({who:"narr",t:"Carte légendaire obtenue : 🕯️ <b>Le Pacte Brisé</b>. Cinq pages s'écrivent au Grand Registre."});
+    addCard("pactebrise","le cadeau d'Hector");
+    if(!S.equip.faille){ S.equip.faille=true; lines.push({who:"narr",t:"Artefact obtenu : 🔮 <b>Éclat de la Faille</b> (+6 PV dans chaque Labyrinthe)."}); }
+  } else if(!win && se===12){
+    lines.push({who:"narr",t:"Le noir vous repousse jusqu'en haut de l'escalier. Darkrai rit, très loin. La trappe se referme."});
+    lines.push({who:"hector",t:"<i>Hector, essoufflé, la main sur ton épaule.</i> Pas cette fois. Mais il a eu peur, petit. Je l'ai vu. Cent ans que personne ne lui avait fait peur. On y retournera."});
+    S.finale[se]=undefined; delete S.finale[se];
+  } else if(win && se===10){
     S.pages+=4; addXP(400); S.lise=true;
     lines.push({who:"narr",t:"Au fond du monde à l'envers, Giratina repose doucement ses ailes. Les escaliers se remettent à l'endroit, un par un."});
     lines.push({who:{id:487,n:"Giratina"},t:"<i>Plus bas, presque humble.</i> On m'a banni pour ma colère. J'ai gardé les regrets des autres parce que c'était tout ce qu'on m'envoyait. Ton âme ne m'a pas combattu pour me les reprendre. Elle m'a demandé si j'avais froid. …Personne ne m'avait jamais demandé ça. Prends le ruban. Et laisse-moi la porte entrouverte. Juste un peu. Pour les soirs où je voudrai un verre."});
@@ -265,10 +308,10 @@ function finaleEnd(win){
     lines.push({who:"narr",t:"La lumière reflue toute seule, à contrecœur. La trappe claque. Le silence revient, mais quelque chose gratte encore, très loin en dessous."});
     lines.push({who:"cog",t:"On a tenu bon, patron. La prochaine fois, on sera plus forts."});
   }
-  playDialog(lines, endSeason, ()=>{ $app.innerHTML=`${hud()}${scene({night:false,doorOpen:false})}<div class="panel">${dialogBubble()}</div>`; });
+  playDialog(lines, (!win && se===12) ? renderFinaleChoice : endSeason, ()=>{ $app.innerHTML=`${hud()}${scene({night:false,doorOpen:false})}<div class="panel">${dialogBubble()}</div>`; });
 }
 // ---------- Fin de saison : la chronique ----------
-const LAST_SEASON = 11; // chapitre 1 « Portes ouvertes » (saisons 1 et 2) + début du chapitre 2 « La saison des pluies » (saison 3)
+const LAST_SEASON = 12; // chapitre 1 « Portes ouvertes » (saisons 1 et 2) + début du chapitre 2 « La saison des pluies » (saison 3)
 function seasonStats(){ const z=S.stats0||{served:0,perfect:0,earned:0,apaise:0}; return {served:S.stats.served-z.served, perfect:S.stats.perfect-z.perfect, earned:S.stats.earned-z.earned}; }
 function endSeason(){
   music("fin");
@@ -312,10 +355,10 @@ function endSeason(){
         <div>Pokédollars gagnés : <b>${st.earned} ₽</b></div><div>Pages du Registre : <b>${S.pages}</b></div>
         <div>Niveau du Tenancier : <b>${S.level}</b></div><div>Personnel : <b>${S.staff.map(k=>CL[k].n).join(", ")||"aucun"}</b></div>
       </div>
-      ${season===2?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 1 · Portes ouvertes.</b> La taverne a appris à écouter.</p>`:season===4?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 2 · La saison des pluies.</b> La taverne a appris à rester à côté de ceux qui ont perdu quelqu'un.</p>`:season===10?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 5 · Le secret d'Hector.</b> La taverne a appris qu'il n'est jamais trop tard pour revenir.</p>`:season===8?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 4 · La fête de Bourg-Brume.</b> La taverne a appris à rendre les solitaires à la ville.</p>`:season===6?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 3 · Les métamorphoses.</b> La taverne a appris à aimer chacun tel qu'il est, même ceux qui n'ont pas demandé à naître.</p>`:""}
+      ${season===2?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 1 · Portes ouvertes.</b> La taverne a appris à écouter.</p>`:season===4?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 2 · La saison des pluies.</b> La taverne a appris à rester à côté de ceux qui ont perdu quelqu'un.</p>`:season===12?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 6 · Les premiers pas.</b> La taverne a appris qu'on peut réparer ce qu'on a cassé, et qu'il faut parfois du courage pour franchir sa propre porte.</p>`:season===10?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 5 · Le secret d'Hector.</b> La taverne a appris qu'il n'est jamais trop tard pour revenir.</p>`:season===8?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 4 · La fête de Bourg-Brume.</b> La taverne a appris à rendre les solitaires à la ville.</p>`:season===6?`<p class="small center" style="margin-top:10px"><b>Fin du chapitre 3 · Les métamorphoses.</b> La taverne a appris à aimer chacun tel qu'il est, même ceux qui n'ont pas demandé à naître.</p>`:""}
     </div>
     <div class="row" style="margin-top:14px"><button class="grow alt" data-act="copyChron">Copier la chronique</button>${last?`<button class="grow" data-act="newGame">Nouvelle partie</button>`:`<button class="grow" data-act="nextSeason">Commencer la saison ${season+1}</button>`}</div>
-    <p class="small muted center">${last?"Fin du prototype : la saison 12, fin du chapitre 6, viendra dans une prochaine version.":"Tes niveaux, ton personnel, tes affinités, tes recettes et tes artefacts te suivent. Les bibelots, eux, restent dans la saison qui s'achève."}</p>
+    <p class="small muted center">${last?"Fin du prototype : les six premiers chapitres sont terminés. Hector a franchi la porte de sa taverne ; la suite de l'histoire viendra dans une prochaine version.":"Tes niveaux, ton personnel, tes affinités, tes recettes et tes artefacts te suivent. Les bibelots, eux, restent dans la saison qui s'achève."}</p>
   </div>`;
 }
 function startNextSeason(){
@@ -324,7 +367,16 @@ function startNextSeason(){
   CLIENT_ORDER.forEach(k=>{ if(!S.clients[k]) S.clients[k]={aff:0,state:"new",carryOuv:0,carryTen:0,visits:0,shake:false}; S.clients[k].lastNight=0; });
   U={}; save();
   const lines=[
-    ...(S.season===11?[
+    ...(S.season===12?[
+      {who:"narr",t:"Chapitre 6 · Les premiers pas. Saison 12."},
+      {who:"narr",t:"L'été arrive. Le Grand Registre est presque plein. Un soir, après la fermeture, Hector ne fait pas de blague. Il s'assoit en face de toi, de l'autre côté du comptoir, à la place des clients."},
+      {who:"hector",t:"<i>Très bas.</i> Petit. Il faut que je te dise la vérité. Toutes les âmes égarées qui sont passées par cette porte… C'est de ma faute."},
+      {who:"hector",t:"Quand Lise est partie, j'ai attendu. Mais un fantôme qui attend s'efface, petit. Je sentais que j'allais disparaître avant son retour. Alors une nuit, quelqu'un est venu me voir dans mes cauchemars. Darkrai. Il m'a proposé un marché : je resterais en ce monde, tant que je lui donnerais des âmes."},
+      {who:"hector",t:"<i>Sa voix se brise.</i> Les voyageurs qui s'endormaient ici… je laissais la Faille leur prendre un morceau d'âme. Leurs regrets. Ils repartaient le matin un peu plus vides, un peu plus perdus. Et ils revenaient, des années plus tard, la nuit, sans savoir pourquoi. Machopeur. Ponchiot. Tous. Je les ai volés pour durer."},
+      {who:"cog",t:"<i>Le co-gérant ne dit rien pendant un long moment.</i> …Et nous ? Pourquoi le Tenancier est venu ici ?"},
+      {who:"hector",t:"Parce que je l'ai appelé. Quand j'ai compris ce que j'avais fait, j'ai fait la seule chose que je pouvais : faire venir quelqu'un qui saurait les écouter. Toi. Tu as rendu à chacune ce que je lui avais pris. Je ne sais pas comment te remercier. Je ne sais pas comment leur demander pardon."},
+      {who:"hector",t:"<i>Il se lève.</i> Cette saison, il reste des âmes sur le seuil. Écoute-les, comme les autres. Et à la fin… il faudra descendre. Moi aussi. C'est mon donjon, cette fois."}
+    ]:S.season===11?[
       {who:"narr",t:"Chapitre 6 · Les premiers pas. Saison 11."},
       {who:"narr",t:"Le printemps revient sur Bourg-Brume. Le ruban rouge de Lise est accroché au-dessus du comptoir. La porte de la cave reste entrouverte, juste un peu, comme Giratina l'a demandé."},
       {who:"hector",t:"<i>Hector est assis au bout du comptoir, presque solide, sa moustache bien peignée.</i> Tu sais ce qui est drôle, petit ? Pendant cent ans, j'ai attendu au lieu d'agir. Et maintenant que je pourrais partir, je n'ose pas. Je reste sur le seuil. Comme un débutant."},
@@ -383,7 +435,7 @@ function startNextSeason(){
     ]:[{who:"narr",t:`Saison ${S.season}. Les premières pluies d'automne tambourinent sur le toit de la taverne.`}]),
     {who:"cog",t:"Une nouvelle saison ! Ceux qu'on a aidés passeront sûrement de jour. Et les autres… ils reviendront, la nuit. On sera prêts."},
     ...((SEASON_NEW[S.season]||[]).length?[{who:"kecleon",t:`Nouvel arrivage à l'étal, patron ! ${(SEASON_NEW[S.season]).map(k=>ING[k].n).join(", ")}. Personne d'autre au village n'en a !`}]:[]),
-    S.season===11 ? {who:"cog",t:"Une saison pour ceux qui restent sur le pas de la porte. On leur garde la porte ouverte."} : S.season===10 ? {who:"cog",t:"Dernière saison du chapitre. On garde la porte de la cave à l'œil."} : S.season===9 ? {who:"cog",t:"Une saison pour ceux qui n'ont pas fini quelque chose. On va les aider à finir, patron. Et Hector aussi, peut-être."} : S.season===8 ? {who:"cog",t:"Dernière saison du chapitre. Et à la fin, la fête ! On aura un stand, patron. Un vrai."} : S.season===7 ? {who:"cog",t:"Une saison pour ceux qui sont seuls. On leur gardera une place à la fête."} : S.season===6 ? {who:"cog",t:"Dernière saison du chapitre. On garde un tabouret libre, au cas où."} : S.season===5 ? {who:"cog",t:"Une saison de changements. On sera là, quoi qu'ils deviennent."} : S.season===4 ? {who:"cog",t:"Et cette saison, ceux qui ont perdu quelqu'un continuent d'arriver. On reste à côté d'eux, comme dit Hector."} : S.season===3
+    S.season===12 ? {who:"cog",t:"Dernière saison du chapitre. On finit ce qu'on a commencé, patron. Pour elles. Et pour lui."} : S.season===11 ? {who:"cog",t:"Une saison pour ceux qui restent sur le pas de la porte. On leur garde la porte ouverte."} : S.season===10 ? {who:"cog",t:"Dernière saison du chapitre. On garde la porte de la cave à l'œil."} : S.season===9 ? {who:"cog",t:"Une saison pour ceux qui n'ont pas fini quelque chose. On va les aider à finir, patron. Et Hector aussi, peut-être."} : S.season===8 ? {who:"cog",t:"Dernière saison du chapitre. Et à la fin, la fête ! On aura un stand, patron. Un vrai."} : S.season===7 ? {who:"cog",t:"Une saison pour ceux qui sont seuls. On leur gardera une place à la fête."} : S.season===6 ? {who:"cog",t:"Dernière saison du chapitre. On garde un tabouret libre, au cas où."} : S.season===5 ? {who:"cog",t:"Une saison de changements. On sera là, quoi qu'ils deviennent."} : S.season===4 ? {who:"cog",t:"Et cette saison, ceux qui ont perdu quelqu'un continuent d'arriver. On reste à côté d'eux, comme dit Hector."} : S.season===3
       ? {who:"hector",t:"<i>La voix traverse le mur, plus basse que d'habitude.</i> Hé… Cette saison, ils ne viendront pas parce qu'ils ont échoué, ou parce qu'on les a laissés. Ils viendront parce qu'ils ont perdu quelqu'un. Ceux-là, petit, il ne faut pas les réparer. Il faut juste rester à côté."}
       : {who:"hector",t:"<i>Une voix rieuse traverse le mur.</i> Hé hé… Prépare un tabouret de plus, petit. Ce soir, quelqu'un de très fier va pousser la porte. Quelqu'un que personne n'a jamais attendu."}
   ];
