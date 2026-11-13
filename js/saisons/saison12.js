@@ -26,7 +26,7 @@ CL.mordudor = {
     gift:{key:"pieceroute",n:"Pièce de Route de Mordudor",i:"🪙",d:"Au début de chaque combat, le client gagne 1 de Force et renvoie 2 dégâts à chaque coup reçu (Épines 2)",fx:{combatStart(C){ C.str+=1; C.thorns=(C.thorns||0)+2; }}},
     staff:{n:"Trésorier",d:"+20 ₽ par nuit, quoi qu'il arrive",wage:0},
     staffFx:{arrive(c){ if(U.night && U.night.idx===0 && !U.night.mordudorPaid){ U.night.mordudorPaid=true; S.money+=20; } }},
-    cogHint:"Il se méfie de tout le monde et a peur qu'on le dépouille : du simple, du solide, rien d'extravagant. Une Gelée Blanche, et du réconfortant : Lait Meumeu, Miel, Craquiroc.",
+    cogHint:"Il se méfie de tout le monde et a peur qu'on le dépouille : du simple, du solide, rien d'extravagant. Une Gelée Orange pour le courage de sortir du coffre, et du réconfortant : Lait Meumeu, Miel, Craquiroc.",
     map:mapStd({a:"Le coffre fermé",b:"Les pièces qu'on compte",h:"Les mains qui prennent",c:"La charrette du marchand",i:"Le vent sur le coffre",d:"Le fond du coffre",j:"Le marchand qui s'en va",k:"Les autocollants des villes",l:"La route au matin",f:"Le bord de la route",g:"Le jour où le coffre s'est refermé"},{eb:"peur",eh:"peur",ej:"colere",ef:"tristesse",key:"joie"})
 };
 TALK.mordudor = [
@@ -59,7 +59,7 @@ CL.zarbi = {
     hints:["Quand tu lui parles, son corps change légèrement de forme, comme s'il essayait de devenir une autre lettre, puis redevient un point d'interrogation.","Il regarde les mots écrits sur l'ardoise de la taverne avec une envie immense.","Dehors, on voit parfois passer d'autres Zarbi, en groupe, qui forment des mots en flottant ensemble. Lui reste seul."],
     stages:[
       {req:0,t:"<i>Des lettres apparaissent dans la buée de son verre, une à une, tracées par son œil.</i> JE SUIS UN POINT D'INTERROGATION. LES AUTRES SONT DES LETTRES. A, B, C. ILS SE METTENT ENSEMBLE ET ILS FONT DES MOTS. MOI, JE NE SUIS PAS UNE LETTRE.",kw:"lettre"},
-      {req:2,t:"<i>La buée s'efface, puis de nouvelles lettres.</i> ILS M'ONT DEMANDÉ DE VENIR AVEC EUX. POUR FAIRE UN MOT. MAIS UN MOT AVEC UN POINT D'INTERROGATION À LA FIN, ÇA DEVIENT UNE QUESTION. J'AI EU PEUR DE GÂCHER LEUR MOT. ALORS JE SUIS RESTÉ À COTÉ.",kw:"mot"},
+      {req:2,t:"<i>La buée s'efface, puis de nouvelles lettres.</i> ILS M'ONT DEMANDÉ DE VENIR AVEC EUX. POUR FAIRE UN MOT. MAIS UN MOT AVEC UN POINT D'INTERROGATION À LA FIN, ÇA DEVIENT UNE QUESTION. J'AI EU PEUR DE GÂCHER LEUR MOT. ALORS JE SUIS RESTÉ À CÔTÉ.",kw:"mot"},
       {req:3,t:"<i>Les lettres tremblent.</i> JE ME DEMANDE TOUJOURS : ET SI JE ME TROMPE ? ET S'ILS NE VEULENT PAS DE MOI ? ET SI CE N'EST PAS LE BON MOMENT ? TOUT EST UNE QUESTION, POUR MOI. ALORS JE NE COMMENCE JAMAIS RIEN. JE SUIS UNE QUESTION QUI ATTEND UNE RÉPONSE QUI NE VIENT PAS.",kw:"question"},
       {req:4,t:"<i>Il trace, très lentement, dans la buée, une phrase entière, et se place lui-même à la fin.</i> « ON Y VA ENSEMBLE » … ? <i>Il regarde la phrase. Il a l'air heureux.</i> UNE QUESTION, ÇA VEUT DIRE QU'ON ATTEND L'AUTRE. C'EST GENTIL, UNE QUESTION."}
     ],

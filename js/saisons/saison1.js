@@ -432,7 +432,7 @@ CL.ronflex = {
     thanks:"<i>Il se lève, enfin, de toute sa hauteur. Le plancher craque. Il dépose la vieille médaille sur le comptoir, délicatement.</i> Garde-la pour moi. Je n'en ai plus besoin pour savoir ce que j'ai fait.",
     gift:{key:"bavoir",n:"Bavoir de Ronflex",i:"🍽️",d:"Le client commence chaque combat avec 8 de Bouclier"},
     staff:{n:"Portier",d:"Chaque client de nuit reste un échange de plus",wage:30},
-    cogHint:"Ne le presse surtout pas : si tu le relances deux fois de suite, ça l'agace. Sers-le, laisse-le respirer, puis relance. Il aime ce qui se mange : champignons, miel, pomme.",
+    cogHint:"Ne le presse surtout pas : si tu le relances deux fois de suite, ça l'agace. Sers-le, laisse-le respirer, puis relance. Il aime ce qui se mange : champignons, miel, pomme. Et une Gelée Blanche, toute simple.",
     map:{start:"a",nodes:{
       a:{t:"entree",n:"Le banc trop petit du Centre Pokémon",x:50,y:6,nx:["b"]},
       b:{t:"echo",e:"tristesse",dmg:1,n:"Les Poké Balls qui s'éloignent",x:50,y:18,nx:["c"]},

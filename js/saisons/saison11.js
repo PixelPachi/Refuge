@@ -25,7 +25,7 @@ CL.togepi = {
     gift:{key:"coquille",n:"Éclat de Coquille de Togepi",i:"🥚",d:"Au premier tour de chaque combat, le client a 8 de Bouclier",fx:{combatStart(C){ C.blockNext=(C.blockNext||0)+8; }}},
     staff:{n:"Petit porte-bonheur",d:"Les âmes du Seuil arrivent avec +1 Ouverture",wage:10},
     staffFx:{arrive(c,d){ if(d.family==="Seuil") c.ouv++; }},
-    cogHint:"Il est tout juste né : rien de fort, rien de pétillant, il rentrerait dans sa coquille. Une Gelée Ciel pour le monde qu'il découvre, et du très doux : Lait Meumeu, Miel, Baie Pêcha.",
+    cogHint:"Il est tout juste né : rien de fort, rien de pétillant, il rentrerait dans sa coquille. Une Gelée Blanche, toute simple, pour celui qui vient de naître, et du très doux : Lait Meumeu, Miel, Baie Pêcha.",
     map:mapStd({a:"L'intérieur de la coquille",b:"La fente dans la coquille",h:"Le bruit du dehors",c:"Le paillasson de la taverne",i:"Les rires à travers la coquille",d:"Le coin tiède du tabouret",j:"Les autres Togepi déjà sortis",k:"La main qui l'a posé là",l:"La cour de l'école",f:"Trois saisons sans éclore",g:"Le matin où il aurait dû éclore"},{eb:"peur",eh:"peur",ej:"tristesse",ef:"peur",key:"joie"})
 };
 TALK.togepi = [

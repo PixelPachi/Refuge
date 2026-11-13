@@ -104,35 +104,35 @@ CL.kadabra = {
     arrive:"<i>Il parle dans ta tête avant de parler tout court.</i> Bonsoir. Pardon pour les cuillères, je ne contrôle pas tout quand je suis fatigué. Un thé au miel, si possible. Je… j'attends quelqu'un. Ça fait longtemps.",
     hints:["Il regarde sans arrêt vers la porte, et sa cuillère se tord un peu plus à chaque fois qu'elle ne s'ouvre pas.","Il tient un vieux billet plié : « Échange prévu samedi. Promis. » L'encre a pâli.","Il sait ce que tu vas servir avant toi. Il ne le dit pas, par politesse."],
     stages:[
-      {req:0,t:"<i>Il fait tourner sa cuillère.</i> Ma dresseuse s'appelait Lise. On était inséparables. Elle me disait que j'étais le Pokémon le plus intelligent qu'elle connaissait.",kw:"cuillère"},
-      {req:2,t:"<i>Il déplie le billet.</i> Les Kadabra n'évoluent que si on les échange. Alors Lise a organisé un échange avec sa meilleure amie : elle m'envoie, je deviens Alakazam, et son amie me renvoie aussitôt. Un aller-retour. Une formalité.",kw:"échange"},
-      {req:3,t:"<i>La cuillère se tord en spirale.</i> Le samedi, l'amie n'est pas venue. Ni le suivant. Elle avait déménagé. Lise a pleuré, puis elle a dit que ce n'était pas grave. Mais elle regardait les Alakazam des autres. Et moi, je suis resté Kadabra. Le Pokémon qu'on n'a pas réussi à faire grandir.",kw:"promesse"},
-      {req:4,t:"<i>Il redresse la cuillère, d'un seul regard.</i> Lise ne regardait pas les Alakazam. Elle me regardait, moi, qui regardais les Alakazam. Je viens de comprendre. Je lisais toutes les pensées, sauf la sienne. Elle m'aimait Kadabra."}
+      {req:0,t:"<i>Il fait tourner sa cuillère.</i> Ma dresseuse s'appelait Margot. On était inséparables. Elle me disait que j'étais le Pokémon le plus intelligent qu'elle connaissait.",kw:"cuillère"},
+      {req:2,t:"<i>Il déplie le billet.</i> Les Kadabra n'évoluent que si on les échange. Alors Margot a organisé un échange avec sa meilleure amie : elle m'envoie, je deviens Alakazam, et son amie me renvoie aussitôt. Un aller-retour. Une formalité.",kw:"échange"},
+      {req:3,t:"<i>La cuillère se tord en spirale.</i> Le samedi, l'amie n'est pas venue. Ni le suivant. Elle avait déménagé. Margot a pleuré, puis elle a dit que ce n'était pas grave. Mais elle regardait les Alakazam des autres. Et moi, je suis resté Kadabra. Le Pokémon qu'on n'a pas réussi à faire grandir.",kw:"promesse"},
+      {req:4,t:"<i>Il redresse la cuillère, d'un seul regard.</i> Margot ne regardait pas les Alakazam. Elle me regardait, moi, qui regardais les Alakazam. Je viens de comprendre. Je lisais toutes les pensées, sauf la sienne. Elle m'aimait Kadabra."}
     ],
     lie:{after:0,t:"<i>Il lisse sa moustache.</i> Je n'ai aucune envie d'évoluer. Alakazam, c'est vulgaire. Trop de cuillères."},
     reform:{"cuillère":"« Elle te trouvait le plus intelligent. Tel que tu étais. »","échange":"« Un échange raté, ce n'est pas une évolution ratée. C'est une promesse oubliée. »","promesse":"« Ce n'est pas toi qu'on n'a pas su faire grandir. C'est un rendez-vous qui n'a pas eu lieu. »"},
     essGood:"<i>Il boit, et toutes les cuillères de la salle s'immobilisent d'un coup.</i> Silence… Enfin. Merci.",
     essBad:"<i>Les cuillères se mettent à voler dans tous les sens.</i> Trop de bruit dans la tête ! Trop !",
-    frags:[{n:"Les devoirs faits ensemble, Lise et lui, la cuillère comme crayon",e:"nostalgie"},{n:"La première fois qu'il a lu dans les pensées de Lise : « tu es mon meilleur ami »",e:"joie"}],
-    thanks:"<i>Il range sa cuillère redressée dans sa poche.</i> Je vais rentrer. Lise a grandi, elle aussi. Elle donne des cours, maintenant. Je crois qu'elle aura besoin d'un assistant capable de lire dans la tête des élèves qui n'osent pas lever la main.",
+    frags:[{n:"Les devoirs faits ensemble, Margot et lui, la cuillère comme crayon",e:"nostalgie"},{n:"La première fois qu'il a lu dans les pensées de Margot : « tu es mon meilleur ami »",e:"joie"}],
+    thanks:"<i>Il range sa cuillère redressée dans sa poche.</i> Je vais rentrer. Margot a grandi, elle aussi. Elle donne des cours, maintenant. Je crois qu'elle aura besoin d'un assistant capable de lire dans la tête des élèves qui n'osent pas lever la main.",
     gift:{key:"cuillere",n:"Cuillère Tordue",i:"🥄",d:"Au 2e tour de chaque combat, le client pioche 2 cartes de plus",fx:{draw(C){ return C.turn===2 ? 2 : 0; }}},
     staff:{n:"Liseur de pensées",d:"Les âmes très tendues (Tension 3 ou plus) arrivent avec +1 Ouverture",wage:30},
     staffFx:{arrive(c){ if(c.ten>=3) c.ouv++; }},
     cogHint:"Il entend tout, même nos pensées : reste calme et ne secoue pas les verres devant lui. Une Gelée Rose pour l'esprit, et du doux : Thé de Safrania, Miel, Flocons d'Avoine.",
-    map:mapStd({a:"La chambre de Lise",b:"Le billet d'échange pâli",h:"Les cuillères qui tremblent",c:"Le centre d'échange",i:"La première pensée lue",d:"La bibliothèque silencieuse",j:"Les Alakazam des autres",k:"Les devoirs à deux",l:"Le jardin de l'école",f:"Le samedi où personne n'est venu",g:"La promesse oubliée"},{eb:"tristesse",eh:"peur",ej:"colere",ef:"tristesse",key:"joie",foe:{id:65,n:"Alakazam"}})
+    map:mapStd({a:"La chambre de Margot",b:"Le billet d'échange pâli",h:"Les cuillères qui tremblent",c:"Le centre d'échange",i:"La première pensée lue",d:"La bibliothèque silencieuse",j:"Les Alakazam des autres",k:"Les devoirs à deux",l:"Le jardin de l'école",f:"Le samedi où personne n'est venu",g:"La promesse oubliée"},{eb:"tristesse",eh:"peur",ej:"colere",ef:"tristesse",key:"joie",foe:{id:65,n:"Alakazam"}})
 };
 TALK.kadabra = [
     {t:"<i>Ta cuillère flotte jusqu'à toi, remuée toute seule dans ta tasse.</i> Pardon. Tu pensais très fort que ton café était trop chaud."},
-    {t:"<i>Il hume la vapeur du thé.</i> Lise buvait du thé en révisant. Elle en renversait toujours sur ses cahiers, et me demandait de sécher les pages par la pensée.",like:"the"},
+    {t:"<i>Il hume la vapeur du thé.</i> Margot buvait du thé en révisant. Elle en renversait toujours sur ses cahiers, et me demandait de sécher les pages par la pensée.",like:"the"},
     {t:"<i>Il regarde le bocal de Flocons d'Avoine.</i> Son père en mangeait chaque matin, avant d'aller à l'atelier. « Ça tient au corps », il disait. Il tenait debout toute la journée.",like:"poudremetal"}
 ];
 WIPE.kadabra = ["<i>Le torchon flotte hors de tes mains et essuie le verre tout seul, en rythme.</i> Laisse-moi. Ça me calme.","<i>Les cuillères arrêtent de trembler pendant que tu essuies.</i>"];
-LETTERS.kadabra = "« Lise m'a présenté à sa classe. Un petit garçon n'osait pas dire qu'il ne comprenait pas. Je l'ai entendu. Lise lui a réexpliqué sans qu'il demande. Il croit que c'est de la magie. — K. »";
+LETTERS.kadabra = "« Margot m'a présenté à sa classe. Un petit garçon n'osait pas dire qu'il ne comprenait pas. Je l'ai entendu. Margot lui a réexpliqué sans qu'il demande. Il croit que c'est de la magie. — K. »";
 REGULARS.kadabra = {order:{base:"the",add:["miel"]},
     line:"<i>Il apparaît au comptoir, sans passer par la porte, et sourit.</i> Bonjour. Un thé au miel. Ne cherche pas, je sais que tu allais me le proposer.",
-    ok:"<i>Il boit lentement, la cuillère bien droite dans sa poche.</i> Lise m'a demandé si je regrettais Alakazam. J'ai dit non. Elle a souri. Cette fois, je n'ai pas eu besoin de lire ses pensées.",
+    ok:"<i>Il boit lentement, la cuillère bien droite dans sa poche.</i> Margot m'a demandé si je regrettais Alakazam. J'ai dit non. Elle a souri. Cette fois, je n'ai pas eu besoin de lire ses pensées.",
     ko:"<i>Il penche la tête.</i> Pas tout à fait. Mais tu y pensais très fort, c'est déjà ça."};
-ROOM_SAY.kadabra = {a:"La chambre de Lise. Ses cahiers, ses posters… Mon coussin, au pied du lit.",b:"Le billet. « Samedi. Promis. » Combien de samedis depuis ?",h:"Les cuillères tremblent. Moi aussi.",c:"Le centre d'échange. Une machine qui attend deux personnes. Il n'en est venu qu'une.",i:"La première pensée que j'ai lue chez elle. « Tu es mon meilleur ami. »",d:"La bibliothèque. Ici, les pensées des autres se taisent.",j:"Les Alakazam des autres. Si fiers. Si grands.",k:"Les devoirs à deux. Elle écrivait, je tenais la lampe par la pensée.",l:"Le jardin de son école. Elle y donne des cours maintenant.",f:"Le samedi. Personne. Personne n'est venu.",g:"La promesse oubliée."};
+ROOM_SAY.kadabra = {a:"La chambre de Margot. Ses cahiers, ses posters… Mon coussin, au pied du lit.",b:"Le billet. « Samedi. Promis. » Combien de samedis depuis ?",h:"Les cuillères tremblent. Moi aussi.",c:"Le centre d'échange. Une machine qui attend deux personnes. Il n'en est venu qu'une.",i:"La première pensée que j'ai lue chez elle. « Tu es mon meilleur ami. »",d:"La bibliothèque. Ici, les pensées des autres se taisent.",j:"Les Alakazam des autres. Si fiers. Si grands.",k:"Les devoirs à deux. Elle écrivait, je tenais la lampe par la pensée.",l:"Le jardin de son école. Elle y donne des cours maintenant.",f:"Le samedi. Personne. Personne n'est venu.",g:"La promesse oubliée."};
 ROOM_KW.kadabra = {a:"cuillère",b:"échange",f:"promesse"};
 BOSS.kadabra = {id:64,n:"Ombre de l'échange manqué",self:true};
 LEGEND_CARD.kadabra = "echangeprecieux";

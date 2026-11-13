@@ -38,7 +38,7 @@ Les cartes souvenir coûtent toujours 0 : le cadre porte une bulle avec « 0 ».
 - Icône : `relic-lames` (deux lames vertes croisées)
 
 ### Kadabra (`dj-kadabra-*`)
-- a La chambre de Lise · b Le billet d'échange pâli · h Les cuillères qui tremblent · c Le centre d'échange · i La première pensée lue · d La bibliothèque silencieuse · j Les Alakazam des autres · k Les devoirs à deux · l Le jardin de l'école · f Le samedi où personne n'est venu · g **Cœur** : la promesse oubliée (silhouette d'une jeune fille qui serre Kadabra dans ses bras)
+- a La chambre de Margot · b Le billet d'échange pâli · h Les cuillères qui tremblent · c Le centre d'échange · i La première pensée lue · d La bibliothèque silencieuse · j Les Alakazam des autres · k Les devoirs à deux · l Le jardin de l'école · f Le samedi où personne n'est venu · g **Cœur** : la promesse oubliée (silhouette d'une jeune fille qui serre Kadabra dans ses bras)
 - Cartes : `card-chocpsy`, `card-echangeprecieux` (légendaire : Kadabra et une fille qui font leurs devoirs, cuillères flottantes dorées)
 - Icône : `relic-cuillere` (une cuillère argentée tordue, lueur rose)
 

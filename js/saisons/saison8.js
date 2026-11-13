@@ -118,7 +118,7 @@ CL.miaouss = {
     gift:{key:"rubanor",n:"Ruban de Miaouss",i:"🪙",d:"Au premier tour de chaque combat, le client a 1 énergie de plus",fx:{turnStart(C){ if(C.turn===1){ C.energy++; C.emax++; } }}},
     staff:{n:"Ancien rival",d:"Le Pourboire d'Or est fermé pour de bon. Les âmes de la Solitude arrivent avec +1 Ouverture",wage:10},
     staffFx:{arrive(c,d){ if(d.family==="Solitude") c.ouv++; }},
-    cogHint:"Il a l'habitude du fort, mais il n'en veut plus. Une Gelée Blanche, et du lait chaud, comme la vieille dame : Lait Meumeu, Miel, Pomme Sucrée. Si tu l'as écouté les nuits où il passait narguer la taverne, il arrivera déjà un peu ouvert.",
+    cogHint:"Il a l'habitude du fort, mais il n'en veut plus. Une Gelée Orange pour le petit bagarreur des rues qu'il est resté, et du lait chaud, comme la vieille dame : Lait Meumeu, Miel, Pomme Sucrée. Si tu l'as écouté les nuits où il passait narguer la taverne, il arrivera déjà un peu ouvert.",
     map:mapStd({a:"Le Pourboire d'Or éteint",b:"La pièce dans le caniveau",h:"Le banquier qui compte",c:"La ruelle derrière le marché",i:"Le bol de lait sur la fenêtre",d:"Le carton de l'hiver",j:"Persian qui part avec la caisse",k:"La vieille dame qui ne demandait rien",l:"La petite fenêtre aux bols de lait",f:"La fenêtre restée fermée",g:"Le jour où il a décidé de tout acheter"},{eb:"tristesse",eh:"peur",ej:"colere",ef:"tristesse",key:"nostalgie",foe:{id:53,n:"Persian"}})
 };
 TALK.miaouss = [
