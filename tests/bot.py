@@ -28,6 +28,7 @@ with sync_playwright() as p:
                 shot_marks.add(name); pg.screenshot(path=f"{shots}/{len(shot_marks):02d}_{name}.png")
         if 'pickCard' in names: mark('cardpick'); click('[data-act=pickCard] >> nth=0'); continue
         if pg.evaluate("()=>!!document.getElementById('cine')"): pg.evaluate("()=>{ if(U.cineNext) U.cineNext(); }"); pg.wait_for_timeout(500); continue
+        if 'cogPick' in names and pg.locator('[data-act=finaleGo][disabled]').count(): mark('duopick'); click('.cogsel:not(.on) [data-act=cogPick] >> nth=0'); continue
         if 'finaleGo' in names: mark('finale'); click('[data-act=finaleGo] >> nth=0'); continue
         if 'pickBib' in names: mark('bibelot'); click('[data-act=pickBib] >> nth=0'); continue
         if 'miaPick' in names: mark('miaouss'); click('[data-act=miaPick] >> nth=%d'%(steps%3)); continue
@@ -81,6 +82,7 @@ with sync_playwright() as p:
             mark('client'); click('[data-act=taire]'); continue
         if 'finChoice' in names: mark('fin'); click('[data-act=finChoice][data-v="0"]'); continue
         if 'endTurn' in names:
+            if pg.evaluate('()=>!!(U.dawn&&U.dawn.x&&U.dawn.x.duo&&U.dawn.combat&&!U.dawn.combat.cogUsed)'): mark('cogplay'); pg.evaluate('()=>{ const C=U.dawn.combat; const j=U.dawn.x.cogCards.findIndex((_,j)=>!(C.cogSpent||[]).includes(j)); if(j>=0) cogPlay(j); else C.cogUsed=true; }'); continue
             mark('d_combat')
             i = pg.evaluate('''(()=>{ const C=U.dawn.combat; if(!C||C.over) return -2; const en=C.en, m=en.moves[en.mi%en.moves.length];
               const inc = (m.a==='atk'? (m.v+(en.str||0))*(m.x||1) : (m.dmg||0));

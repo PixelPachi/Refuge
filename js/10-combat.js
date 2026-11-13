@@ -129,6 +129,7 @@ function moveCard(id){
 function runHPBonus(x){ const _b=runHPBonus0(x); _b.push(...relicHP()); if(S.equip.faille) _b.push({hp:6,t:"🔮 Éclat de la Faille"}); if(omen()==="brume") _b.push({hp:8,t:"🌫️ Brume de la Faille : la brume le protège"}); return _b; }
 function runHPBonus0(x){
   const st=S.clients[x.k], out=[];
+  if(x.duo){ out.push({t:`Le Tenancier et ${cog().n}, ensemble`, hp:20}); return out; }
   const obs=Math.min(2, st.obs||0);
   if(obs) out.push({t:`${obs} observation${obs>1?"s":""} en silence au comptoir`, hp:4*obs});
   if(st.aff>=1) out.push({t:`Affinité ${hearts(st.aff)}`, hp:5*st.aff});
@@ -147,6 +148,8 @@ function runCards(x){
     extra.push({n:`« ${k} »`,c:0,t:"skill",energy:1,draw:1,exhaust:true,r:"kw",i:"💬",kw:k,d:`Lui rappeler ce qu'il t'a confié. +1 énergie, pioche 1. Si c'est la salle dont il parle : 10 dégâts. Épuise.`}); });
   return extra;
 }
+// Deck du Labyrinthe : celui du Tenancier, moins les cartes confiées à l'acolyte pour le Grand Écho
+function deckForRun(x){ const d=S.deck.slice(); (x.cogCards||[]).forEach(id=>{ const i=d.indexOf(id); if(i>=0) d.splice(i,1); }); return d; }
 function setupDungeon(){
   U.inDungeon=true; ensureDeck();
   const D=U.dawn, x=D.list[D.i], d=CL[x.k];
@@ -154,7 +157,8 @@ function setupDungeon(){
   const bon=runHPBonus(x);
   const maxhp = 40 + bon.reduce((a,b)=>a+(b.hp||0),0);
   Object.assign(D,{x, node:null, prev:null, visited:[], phase:"intro", out:null, bonuses:bon, seenTypes:{}, hp:maxhp, maxhp,
-    run:S.deck.map(id=>({id})).concat(runCards(x).map(cd=>({id:"_x",cd}))), temp:[], combat:null, tuto:{}, msg:null, ending:false});
+    run:deckForRun(x).map(id=>({id})).concat(runCards(x).map(cd=>({id:"_x",cd}))), temp:[], combat:null, tuto:{}, msg:null, ending:false});
+  if(x.duo){ playDialog([{who:"narr",t:`Le Tenancier et ${cog().n} descendent les marches côte à côte. En bas, la lumière a toutes les couleurs des âmes de la saison.`},{who:"cog",t:`J'ai mes ${x.cogCards.length} cartes, patron. Une par tour : je te couvre !`}], ()=>renderDungeon(), ()=>renderDungeon()); return; }
   if(!S.dungeonDeckTuto){
     const lines=[
       {who:"narr",t:d.n+" descend les marches, une à une, et disparaît dans la lumière violette. À travers les Fragments, tu le vois."},
@@ -209,6 +213,7 @@ function drawCards(n){ const C=U.dawn.combat; for(let i=0;i<n;i++){ if(!C.draw.l
 function startTurn(){
   const D=U.dawn, C=D.combat; C.turn++;
   C.energy = 3 + (C.turn===1 && S.equip.bonnet ? 1 : 0); C.emax = C.energy; C.playedTurn=0;
+  C.cogUsed=false; if(C.turn===1) C.cogSpent=[];
   C.block = (C.keepBlock?C.block:0) + C.blockNext; C.blockNext=0;
   C.hurtLast = C.hurtTurn||0;
   if(C.turn>1 && C.strTurn) C.str+=C.strTurn;
@@ -489,7 +494,7 @@ function renderDungeon(){
       <div class="arena">${n?`<div class="arenabg">${roomArtInner(n)}</div>`:""}<div class="arenafade"></div>
         ${say && C.turn===1 && !C.log ? `<div class="asay"><span class="spkname" style="--sc:${d.c};font-size:11px;margin-bottom:3px">${d.n}</span><br>${say}</div>`:""}
         <div class="fighters">
-        <div class="me ${C.hurtFx?"hit":""}"><div class="mespr">${sprite(d.id,d.n,d.c,{anim:true})}</div>
+        <div class="me ${C.hurtFx?"hit":""}"><div class="mespr">${sprite(d.id,d.n,d.c,{anim:true})}${x.duo?`<div class="cogspr">${sprite(cog().id,cog().n,cog().c,{anim:true})}</div>`:""}</div>
           ${miniHP(D.hp,D.maxhp,C.block)}<div class="sts">${stHTML(C)}</div></div>
         <div class="foe ${en.boss?"boss":""} ${C.hitFx?"hit":""}" data-foe="0"><div class="intent">${en.stun?"💤":intentText(m,en)}</div>
           <div class="foespr ${en.self?"selfshadow":""}">${sprite(en.id,en.n,"#000",{anim:true})}</div>
@@ -499,7 +504,7 @@ function renderDungeon(){
       ${statusLegend(C)}
       <div class="handzone"><div class="clog small">${C.log||"&nbsp;"}</div>
       <div class="row" style="align-items:center"><span class="energy" title="Énergie"><span class="eorb"><img src="assets/art/icon-energy.webp" alt="" onerror="this.remove()"><b>${C.energy}</b></span><small>/${C.emax||3}</small></span><span class="small muted grow">Pioche ${C.draw.length} · Défausse ${C.disc.length}</span><button class="sm" data-act="endTurn">Fin du tour</button></div>
-      <div class="dhand fight ${C.hand.length>6?"rows3":""}">${C.hand.map((e,i)=>{ const cd=cardOf(e); const ef=effective(cd); return cardHTML(e.id,{cd, drag:true, tgt:needsTarget(cd), i, dis:cd.unplayable||cd.c>C.energy, eff:e.id==="_x", tag: ef===2?"Efficace":ef===0.5?"Le nourrit":cd.kw&&(ROOM_KW[x.k]||{})[D.node]===cd.kw?"Cette salle !":""}); }).join("")}</div></div>`;
+      <div class="dhand fight ${C.hand.length>6?"rows3":""}">${C.hand.map((e,i)=>{ const cd=cardOf(e); const ef=effective(cd); return cardHTML(e.id,{cd, drag:true, tgt:needsTarget(cd), i, dis:cd.unplayable||cd.c>C.energy, eff:e.id==="_x", tag: ef===2?"Efficace":ef===0.5?"Le nourrit":cd.kw&&(ROOM_KW[x.k]||{})[D.node]===cd.kw?"Cette salle !":""}); }).join("")}</div>${cogRowHTML()}</div>`;
     C.hitFx=false; C.hurtFx=false;
   } else if(D.phase==="reward"){
     body = roomScene(n,{top:`<div class="rbanner good">L'ombre se dissipe !${D.relicMsg?`<small>${D.relicMsg}</small>`:""}</div>${deckTuto("reward")}`,

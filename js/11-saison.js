@@ -65,45 +65,86 @@ const FINALE_MAPS = {4:FINALE_MAP_S4, 6:FINALE_MAP_S6};
 function finaleChamps(){ return CLIENT_ORDER.filter(k=>inSeason(k) && ["apaise","staff"].includes(S.clients[k].state)); }
 function seasonClose(){
   const se=S.season||1; S.finale=S.finale||{}; S.night=Math.min(S.night,NIGHTS_PER_SEASON);
-  if(S.finale[se] || !finaleChamps().length){ endSeason(); return; }
+  if(S.finale[se]){ endSeason(); return; }
   music("donjon");
   const lines = se===6 ? [
     {who:"narr",t:"La dernière nuit de la saison, toutes les cuillères de la taverne se soulèvent en même temps, et restent suspendues dans l'air."},
     {who:"narr",t:"La porte ne s'ouvre pas. Il est simplement là, au milieu de la salle, flottant à un pied du sol. Une silhouette violette et blanche, immense, la queue enroulée autour de lui comme un enfant qui se tient les genoux."},
     {who:{id:150,n:"Mewtwo"},t:"<i>Sa voix résonne directement dans ta tête, et dans celle de tous les présents.</i> On m'a fabriqué dans une cuve, pour être le plus fort. Personne ne m'a demandé si je voulais naître. J'ai détruit le laboratoire, et depuis, je cherche une raison. On dit qu'ici, on écoute ceux qui ne savent plus qui ils sont. Moi, je ne sais même pas si j'ai le droit d'être."},
     {who:"narr",t:"Les cuillères retombent une à une. La trappe de la cave s'ouvre toute seule, sur une lumière froide de laboratoire."},
-    {who:"hector",t:"<i>Hector, à voix basse.</i> Le Grand Regret du chapitre, petit. Envoie quelqu'un qui a appris à s'aimer tel qu'il est. Lui seul saura lui répondre."}
+    {who:"hector",t:"<i>Hector, à voix basse.</i> Le Grand Regret du chapitre, petit. Cette fois, personne ne descendra à ta place : vas-y toi-même, avec ton acolyte. Tu as appris à aimer chacun tel qu'il est. C'est ça qu'il a besoin d'entendre."}
   ] : se===4 ? [
     {who:"narr",t:"La dernière nuit de la saison, la pluie s'arrête d'un coup. Le silence est si total qu'on entend la Faille respirer."},
     {who:"narr",t:"Puis la porte s'ouvre sur un vent du nord glacé. Sur le seuil, une silhouette immense, bleue comme l'eau des montagnes, avec un ruban de cristal qui flotte derrière elle."},
     {who:"narr",t:"Suicune. Le Pokémon légendaire qui court sur les eaux et les purifie. Ses pattes laissent des traces noires et huileuses sur le plancher."},
     {who:{id:245,n:"Suicune"},t:"<i>Sa voix vient de partout à la fois, comme le bruit d'une rivière.</i> On m'a dit qu'ici, on écoutait ceux qui ont perdu ce qu'ils aimaient. J'avais un lac. Le plus clair du monde. Les hommes l'ont souillé, et je n'ai pas su le laver. Je cours sur l'eau depuis, et tout ce que je touche reste sale."},
     {who:"narr",t:"Suicune se couche devant la trappe de la cave. Elle s'ouvre seule. En dessous, la lumière a la couleur d'une eau trouble."},
-    {who:"hector",t:"<i>La voix d'Hector, toute proche.</i> C'est un Grand Regret, petit. Un légendaire qui a perdu sa raison d'être. Envoie quelqu'un qui sait ce que c'est, de perdre. Quelqu'un qui s'en est relevé."}
+    {who:"hector",t:"<i>La voix d'Hector, toute proche.</i> C'est un Grand Regret, petit. Un légendaire qui a perdu sa raison d'être. Descends toi-même, avec ton acolyte. Toi, tu sais rester à côté de ceux qui ont perdu."}
   ] : [
     {who:"narr",t:"Le soleil devrait se lever. Il ne se lève pas. Toutes les bougies de la taverne se couchent d'un coup, du même côté."},
     {who:"narr",t:"La trappe de la cave s'ouvre dans un souffle. En dessous, la lumière n'est plus violette : elle a toutes les couleurs des âmes de la saison, mêlées."},
     {who:"cog",t:"Patron… la Faille déborde ! Tout ce qu'elle a avalé cette saison, les regrets, les souvenirs… tout remonte en même temps !"},
-    {who:"hector",t:"<i>Une voix, très loin, comme à travers un mur.</i> Hé… hé. Ne laisse personne descendre seul, cette fois. Envoie quelqu'un qui a déjà trouvé la paix. Lui, il connaît le chemin."},
-    {who:"cog",t:"C'était… Hector ? Il avait l'air moins drôle que d'habitude."}
+    {who:"hector",t:"<i>Une voix, très loin, comme à travers un mur.</i> Hé… hé. Cette fois, c'est à toi de descendre, Tenancier. Pas seul : prends ton acolyte. Et confie-lui quelques-unes de tes cartes, il en aura besoin."},
+    {who:"cog",t:"C'était… Hector ? Il avait l'air moins drôle que d'habitude. …Bon. On y va ensemble, patron. Je te couvre."}
   ];
   playDialog(lines, renderFinaleChoice, ()=>{ $app.innerHTML=`${hud()}${scene({night:true,doorOpen:false})}<div class="panel">${dialogBubble()}</div>`; });
 }
+// ---------- Le Grand Écho en duo : le Tenancier et son acolyte descendent ensemble ----------
+// Avant la descente, le Tenancier confie COG_CARDS cartes de son deck à l'acolyte (elles quittent son deck pour l'Écho).
+// En combat, l'acolyte joue une de ses cartes par tour, sans énergie ; il récupère toutes ses cartes à chaque nouveau combat.
+const COG_CARDS = 5;
+function cogPickable(id){ const c=CARDS[id]; return !!c && !c.unplayable && !c.x; }
+function cogNeed(){ ensureDeck(); return Math.max(0, Math.min(COG_CARDS, S.deck.filter(cogPickable).length, S.deck.length - DECK_MIN)); }
 function renderFinaleChoice(){
-  const ch=finaleChamps();
+  ensureDeck(); U.cogPick = U.cogPick || [];
+  const need=cogNeed(), K=cog(), n=U.cogPick.length;
   $app.innerHTML=`${hud()}<div class="pad scroll" style="flex:1;display:flex;flex-direction:column;gap:10px">
     <h2 class="px" style="color:#c9a8ff;margin:2px 0">🌀 Le Grand Écho</h2>
-    <p class="small">Une âme apaisée peut redescendre pour refermer la Faille. Elle se battra avec <b>ton deck</b>, ses artefacts, et <b>tous les souvenirs de la saison</b>. Si elle tombe, rien n'est perdu : elle remonte, et la saison se termine quand même.</p>
-    ${ch.map(k=>`<button class="dopt" data-act="finaleGo" data-k="${k}"><span class="row" style="align-items:center"><span style="width:40px;height:40px;display:inline-block">${sprite(CL[k].id,CL[k].n,CL[k].c,{anim:true})}</span><span class="grow"><b>${CL[k].n}</b><br><small style="color:#5a3a20">${hearts(S.clients[k].aff)} · ${S.clients[k].state==="staff"?"employé de la taverne":"apaisé"}</small></span></span></button>`).join("")}
+    <div class="row" style="align-items:center;gap:8px"><span style="width:52px;height:52px;display:inline-block;flex:none">${sprite(S.ten.id,S.ten.n,S.ten.c,{anim:true})}</span><span style="width:44px;height:44px;display:inline-block;flex:none">${sprite(K.id,K.n,K.c,{anim:true})}</span>
+      <p class="small grow" style="margin:0">Cette fois, <b>tu descends toi-même</b>, avec <b>${K.n}</b>. Tu te bats avec ton deck et <b>tous les souvenirs de la saison</b>. Si vous tombez, rien n'est perdu : vous remontez, et la saison se termine quand même.</p></div>
+    <div class="card"><div class="px" style="color:var(--candle)">Confier ${need} carte${need>1?"s":""} à ${K.n} (${n}/${need})</div>
+      <div class="small muted">Elles quittent ton deck pour l'Écho. À chaque tour, ${K.n} peut en jouer <b>une</b>, sans énergie, et récupère toutes ses cartes au début de chaque combat.</div>
+      <div class="dgrid cogpick">${S.deck.map((id,i)=>cogPickable(id)?`<div class="cogsel ${U.cogPick.includes(i)?"on":""}">${cardHTML(id,{act:"cogPick",i})}</div>`:"").join("")}</div></div>
+    <button data-act="finaleGo" ${n<need?"disabled":""}>${n<need?`Choisis encore ${need-n} carte${need-n>1?"s":""}`:`Descendre avec ${K.n}`}</button>
     <button class="alt" data-act="finaleSkip">Laisser la Faille se refermer seule</button></div>`;
 }
-function finaleGo(k){
+function cogPickToggle(i){
+  U.cogPick=U.cogPick||[]; const j=U.cogPick.indexOf(i);
+  if(j>=0) U.cogPick.splice(j,1); else if(U.cogPick.length<cogNeed()) U.cogPick.push(i); else { toast(`${cog().n} a déjà ses ${cogNeed()} cartes.`); return; }
+  const p0=document.querySelector(".pad.scroll"), y=p0?p0.scrollTop:0; renderFinaleChoice(); const p=document.querySelector(".pad.scroll"); if(p) p.scrollTop=y;
+}
+function finaleGo(){
+  ensureDeck(); const ids=(U.cogPick||[]).map(i=>S.deck[i]).filter(Boolean); U.cogPick=null;
+  // le duo est un « client » temporaire, le temps de l'Écho (retiré par finaleEnd)
+  CL._duo = {id:S.ten.id, n:S.ten.n, c:S.ten.c||"#f0c060", family:"", reform:{}, frags:[], comfort:[], dislike:[], map:null};
+  S.clients._duo = {aff:0,state:"new",carryOuv:0,carryTen:0,visits:0,shake:false};
   U.night = U.night || {out:{},recruits:[]};
-  U.dawn = {list:[{k,ten:0,euph:false,hang:0,finale:true}], i:0};
+  U.dawn = {list:[{k:"_duo",ten:0,euph:false,hang:0,finale:true,duo:true,cogCards:ids}], i:0};
   setupDungeon();
+}
+// Jouer une carte de l'acolyte : une par tour, sans énergie
+function cogPlay(j){
+  const D=U.dawn, C=D&&D.combat; if(!C||C.over||!D.x.duo) return;
+  if(C.cogUsed){ toast(`${cog().n} a déjà joué ce tour-ci.`); return; }
+  if((C.cogSpent||[]).includes(j)){ toast("Carte déjà utilisée dans ce combat."); return; }
+  const id=D.x.cogCards[j]; if(!id) return; const cd=CARDS[id];
+  C.cogUsed=true; C.cogSpent=(C.cogSpent||[]).concat([j]);
+  const e={id}; C.hand.push(e); C.energy+=cd.c||0;
+  playCard(C.hand.length-1, 0);
+  // la carte reste à l'acolyte : on la retire de la défausse du Tenancier
+  [C.disc, C.exh].forEach(p=>{ const k=p.indexOf(e); if(k>=0) p.splice(k,1); });
+  if(C.log && !C.log.startsWith("🐾")) C.log=`🐾 ${cog().n} : `+C.log;
+  if(U.dawn && U.dawn.phase==="combat" && U.dawn.combat===C && !C.over) renderDungeon();
+}
+function cogRowHTML(){
+  const D=U.dawn, C=D.combat; if(!D.x.duo || !(D.x.cogCards||[]).length) return "";
+  const K=cog(), spent=C.cogSpent||[];
+  return `<div class="cogrow"><div class="small cogtitle"><span class="cogav">${sprite(K.id,K.n,K.c,{anim:true})}</span><b>${K.n}</b>&nbsp;· ${C.cogUsed?"a joué ce tour-ci":"peut jouer 1 carte ce tour-ci, sans énergie"}</div>
+    <div class="dhand cog">${D.x.cogCards.map((id,j)=>cardHTML(id,{act:"cogPlay",i:j,dis:C.cogUsed||spent.includes(j)})).join("")}</div></div>`;
 }
 function finaleEnd(win){
   const se=S.season||1; S.finale=S.finale||{}; S.finale[se]=win?"win":"lose"; U.inDungeon=false;
+  delete CL._duo; if(S.clients) delete S.clients._duo;
   const lines=[];
   if(win && se===6){
     S.pages+=3; addXP(300); S.mewtwo=true;
