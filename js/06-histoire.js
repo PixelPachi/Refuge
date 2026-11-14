@@ -117,7 +117,7 @@ function cineScene(kind){
   if(ARTOK[ak]){
     const extra = kind==="bus" ? `<div class="walker stay seat-art">${me}</div>`
       : kind==="town" ? `<div class="walker">${me}</div><div class="npc">${sprite(74,"Racaillou","#a89878",{anim:true})}</div>`
-      : `<div class="artsign">Taverne</div><div class="walker stay">${me}</div>${kind==="hector"?`<div class="hghost">${sprite(HECTOR.id,"Hector",HECTOR.c,{anim:true})}</div>`:""}`;
+      : `<div class="walker stay">${me}</div>${kind==="hector"?`<div class="hghost">${sprite(HECTOR.id,"Hector",HECTOR.c,{anim:true})}</div>`:""}`;
     return `<div class="cine hasart ${kind}-sc">${artBg(ak)}${extra}</div>`;
   }
   if(kind==="bus") return `<div class="cine bus-sc"><div class="sky dusk"></div><div class="moon"></div><div class="hills h1"></div><div class="hills h2"></div><div class="road"></div>
