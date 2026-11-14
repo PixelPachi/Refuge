@@ -684,3 +684,8 @@ body.desk #deskR{right:0;align-items:flex-start}
 .dkmuted{opacity:.65;font-size:13px;margin:4px 0}
 .dkkeys p{margin:5px 0;font-size:13px}
 kbd{display:inline-block;background:#3a2718;border:1px solid #6b4a30;border-bottom-width:2px;border-radius:5px;padding:0 5px;font-family:inherit;font-size:12px}
+/* Ordinateur : la main reste visible en bas du labyrinthe (une seule rangée, sans défiler) */
+body.desk .handzone{position:sticky!important;bottom:0!important;z-index:6;background:linear-gradient(rgba(26,18,12,0),#1a120c 26%)!important;padding-bottom:4px}
+body.desk .handzone .dhand.fight{flex-wrap:nowrap!important;gap:6px!important;padding:14px 4px 4px!important}
+body.desk .handzone .dhand.fight .dcard{flex:1 1 0;width:auto!important;max-width:118px;min-width:0}
+body.desk .handzone .dhand.fight .dcard:not(.dragging):not(.aiming):hover{transform:translateY(-16px) scale(1.18);z-index:12}
