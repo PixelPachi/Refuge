@@ -7,7 +7,10 @@ const ORDERS = {
   cadoizo:[{base:"the",add:[]},{base:"the",add:["biscuit"]},{base:"the",add:["miel"]}],
   racaillou:[{base:"lait",add:[]},{base:"lait",add:["petitchampi"]},{base:"soda",add:["figuy"]}],
   melofee:[{base:"lait",add:["miel"]},{base:"limonade",add:["mago"]},{base:"eau",add:["framby","miel"]}],
-  chaglam:[{base:"eau",add:["menthe"]},{base:"limonade",add:["menthe"]},{base:"soda",add:["wiki"]}]
+  chaglam:[{base:"eau",add:["menthe"]},{base:"limonade",add:["menthe"]},{base:"soda",add:["wiki"]}],
+  wattouat:[{base:"lait",add:[]},{base:"lait",add:["miel"]},{base:"the",add:["poudremetal"]}],
+  mysdibule:[{base:"soda",add:[]},{base:"soda",add:["poudre"]},{base:"limonade",add:["superbonbon"]}],
+  chetiflor:[{base:"the",add:[]},{base:"eau",add:["racine"]},{base:"the",add:["petitchampi"]}]
 };
 const ART = {the:"un Thé de Safrania",eau:"une Eau Fraîche",lait:"un Lait Meumeu",soda:"un Soda Cool",limonade:"une Limonade",liqueur:"une Liqueur de Baie Ceriz"};
 function orderAsk(v){ const o=orderText(U.order);
@@ -15,6 +18,9 @@ function orderAsk(v){ const o=orderText(U.order);
   if(v.key==="melofee") return `Je voudrais <b>${o}</b>, s'il vous plaît !`;
   if(v.key==="racaillou") return `Mets-moi <b>${o}</b>, et que ça tienne au corps !`;
   if(v.key==="chaglam") return `Ce sera <b>${o}</b>, mon chou.`;
+  if(v.key==="wattouat") return `Bêêê… <b>${o}</b>, s'il te plaît, quelque chose de chaud !`;
+  if(v.key==="mysdibule") return `Pour moi, <b>${o}</b> ! Et ne lésine pas sur le sucre.`;
+  if(v.key==="chetiflor") return `<b>${o[0].toUpperCase()+o.slice(1)}</b>… doucement, s'il te plaît.`;
   if(v.key==="cadoizo") return `Vite, <b>${o}</b> ! J'ai encore toute la tournée !`;
   if(v.regular){ const d=CL[v.regular]; return ["ponchiot","magicarpe","rondoudou","goupix","hypotrempe","leveinard"].includes(v.regular) ? `Je voudrais bien <b>${o}</b>, s'il te plaît.` : `<b>${o[0].toUpperCase()+o.slice(1)}</b>, s'il te plaît.`; }
   return `Je voudrais <b>${o}</b>, s'il te plaît.`; }
@@ -24,6 +30,9 @@ const FAV = {
   racaillou:{n:"le Lait du Carrier",base:"lait",add:["grochampi"],say:"<i>Il se gratte la tête, et un peu de gravier tombe.</i> Si un jour tu me fais un Lait Meumeu avec un Gros Champi… le Lait du Carrier, comme on dit à la carrière… je te laisse un sacré pourboire."},
   melofee:{n:"la Douceur de Lune",base:"lait",add:["miel","mago"],say:"<i>Elle joint les mains, rêveuse.</i> Ma boisson préférée, c'est la Douceur de Lune : un Lait Meumeu avec du Miel et de la Baie Mago. Si vous me la servez un jour, je serai la plus heureuse !"},
   chaglam:{n:"le Murmure",base:"soda",add:["menthe"],say:"<i>Elle baisse la voix, l'air complice.</i> Entre nous, mon vrai péché mignon, c'est le Murmure : un Soda Cool à la Feuille Menthe. Ça, ça vaut un gros pourboire."},
+  wattouat:{n:"le Bol du Berger",base:"lait",add:["poudremetal","miel"],say:"<i>Sa laine crépite doucement, pleine d'électricité statique.</i> Chez nous, à la bergerie, on boit le Bol du Berger : un Lait Meumeu avec des Flocons d'Avoine et du Miel. Ça réchauffe jusqu'au bout de la laine !"},
+  mysdibule:{n:"la Bombe Pétillante",base:"soda",add:["poudre","superbonbon"],say:"<i>Sa grande mâchoire arrière claque, gourmande.</i> Mon secret de pâtissière ? La Bombe Pétillante : un Soda Cool avec du Sucre Pétillant et un Super Bonbon. Ça pique la langue et ça fait rire !"},
+  chetiflor:{n:"l'Infusion du Sous-Bois",base:"the",add:["racine","petitchampi"],say:"<i>Il se balance doucement, comme une fleur dans le vent.</i> Mon infusion préférée… l'Infusion du Sous-Bois. Un Thé de Safrania avec une Racine Énergie et un Petit Champi. Ça sent la forêt après la pluie."},
   pijako:{n:"le Cocktail Perroquet",base:"limonade",add:["framby"],say:"<i>Il gonfle ses plumes.</i> Pijako adore Limonade et Baie Framby ! Limonade et Baie Framby !"}
 };
 function favKnown(k){ return S.villFav && S.villFav[k]; }
@@ -35,6 +44,10 @@ const VILLAGERS = [
   {key:"chaglam",id:431,n:"Chaglam",c:"#9888b8",line:"<i>Elle s'installe en enroulant sa queue en spirale, l'œil brillant.</i> Une eau à la menthe, mon chou. Et je te raconte une rumeur.",want:d=>d.base==="eau"&&d.add.includes("menthe"),ok:"<i>Elle se penche vers toi, toutes moustaches dehors.</i> Parfait. Alors écoute bien…",ko:"<i>Elle repousse le verre du bout de la griffe.</i> C'est pas une eau à la menthe, ça. Tant pis pour la rumeur.",rumor:true},
   {key:"pijako",id:441,n:"Pijako",c:"#58a8d8",line:"<i>Il se pose sur le comptoir en battant des ailes, et renverse une serviette.</i> Pijako veut un verre ! Pijako veut un verre !",want:d=>true,ok:"<i>Il hoche la tête en rythme.</i> Pijako content ! Pijako a entendu un mot hier soir !",ko:"<i>Il ébouriffe ses plumes, vexé.</i> Pas la bonne boisson ! Pas la bonne boisson ! Pijako boude !",keyword:true},
   {key:"cadoizo",id:225,season:2,n:"Cadoizo",c:"#d84a3a",line:"<i>Il atterrit devant la porte dans un nuage de plumes rouges, sa sacoche pleine à craquer.</i> Courrier ! Courrier pour la taverne ! Et un thé, vite, j'ai encore toute la tournée !",want:d=>d.base==="the",ok:"<i>Il boit d'un trait et fouille sa sacoche.</i> Ah ! Il y a une lettre pour toi, justement.",ko:"<i>Il repose le verre, pressé.</i> Pas le temps de discuter, j'ai du courrier ! La lettre attendra demain.",letter:true}
+,
+  {key:"wattouat",id:179,season:3,n:"Wattouat",c:"#f0e8b0",line:"<i>Elle entre en trottinant, et sa laine fait se dresser les cheveux de tout le monde près de la porte.</i> Bêêê ! Bonjour ! Je descends de la bergerie sur la colline. Il fait froid, là-haut… Tu as quelque chose de chaud ?",want:d=>d.base==="lait"||d.base==="the",ok:"<i>Elle boit à petites gorgées, et sa laine se met à briller doucement.</i> Oh, ça réchauffe… Je vais faire des étincelles toute la journée !",ko:"<i>Elle frissonne.</i> Bêê… c'est un peu froid, ça. Tant pis, je garderai ma laine bien serrée."},
+  {key:"mysdibule",id:303,season:5,n:"Mysdibule",c:"#a8a0a8",line:"<i>Elle pose sur le comptoir une boîte de petits gâteaux, et sa grande mâchoire arrière sourit toute seule.</i> Bonjour ! J'ai ouvert la pâtisserie près de la fontaine. J'ai goûté à tout le village, il me manquait ta taverne !",want:d=>d.base==="soda"||d.add.some(k=>["poudre","superbonbon","biscuit","gateau"].includes(k)),ok:"<i>Sa mâchoire arrière claque de plaisir.</i> Délicieux ! Je vais en faire un gâteau, de ce verre. Si si, je trouverai comment.",ko:"<i>Elle fait la moue, polie.</i> Pas assez sucré pour moi… mais je suis difficile, c'est le métier qui veut ça."},
+  {key:"chetiflor",id:69,season:8,n:"Chétiflor",c:"#88c060",line:"<i>Il entre en se balançant comme une tige dans le vent, de la terre encore sur les racines.</i> Bonjour… Je m'occupe du jardin communal. Les fleurs vont bien. Moi, j'ai soif.",want:d=>d.base==="the"||d.base==="eau",ok:"<i>Ses feuilles se déplient d'un coup, toutes vertes.</i> Ahhh… comme une bonne pluie de printemps. Merci.",ko:"<i>Ses feuilles retombent un peu.</i> C'est… gentil. Mais les racines n'aiment pas trop ça."}
 ];
 // Cadoizo, le facteur (saison 2) : il apporte les lettres des âmes apaisées
 

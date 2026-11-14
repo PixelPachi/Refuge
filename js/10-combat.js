@@ -29,7 +29,12 @@ const VILL_LEGEND_LINE = {
 };
 const VILL_LEGEND = {cadoizo:"lettre",racaillou:"explosion",melofee:"metronome",chaglam:"larcin",pijako:"babil"};
 
-const VILL_CARD = {cadoizo:"lettre_c",racaillou:"boularmure",melofee:"douxbaiser",chaglam:"griffe",pijako:"bavardage"};
+Object.assign(CARDS,{
+  laineelec:{n:"Laine Électrique",c:1,t:"skill",block:6,para:1,r:"jour",i:"🐑",from:"wattouat"},
+  gourmandise:{n:"Gourmandise",c:0,t:"skill",draw:2,heal:2,exhaust:true,r:"jour",i:"🧁",from:"mysdibule"},
+  pollen:{n:"Pluie de Pollen",c:1,t:"skill",seed:3,heal:3,r:"jour",i:"🌼",from:"chetiflor"}
+});
+const VILL_CARD = {wattouat:"laineelec",mysdibule:"gourmandise",chetiflor:"pollen",cadoizo:"lettre_c",racaillou:"boularmure",melofee:"douxbaiser",chaglam:"griffe",pijako:"bavardage"};
 const POOL = { commune:["charge","abri","coupdboule","armure","prevoyance","belier","feinte","meteores","feufollet","pouvoirantique","dansepluie","etincelle","grimace","rugissement"], peu:["coupbas","riposte","dansefeu","reflet","griffacier","dansedeslames","ultimapoing","rafale","telekinesie","lanceflammes","megasangsue","hydrocanon","tonnerre","ballombre","tornade"], rare:["repos","mur","gonflette","giga","deflagration","furie","frenesie"] };
 const CARD_PRICE = {legende:0, commune:40, peu:70, rare:120, jour:50, client:80, base:30};
 const FRAG_CARD = {

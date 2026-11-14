@@ -486,6 +486,7 @@ function finishGestures(){
   const q = gr.every(x=>x==="P") ? "P" : rate>=2 ? "R" : "J";
   const drink={base:U.b.base, ess:Object.assign({},U.b.ess), add:U.b.add.slice(), rest:U.b.rest, flambe:U.b.flambe};
   closeModal(); U.g=null;
+  S.drinkBook=S.drinkBook||{}; const dk=drinkKey(drink); if(dk) S.drinkBook[dk]=true;
   if(U.b.ctx==="vill") villagerServed({drink,q});
   else serveClient({drink,q});
 }

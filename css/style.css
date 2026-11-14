@@ -702,3 +702,10 @@ body.desk .handzone .dhand.fight .dcard:not(.dragging):not(.aiming):hover{transf
 .bibbtn .bibi{height:40px;display:inline-flex;align-items:center;justify-content:center}
 .bibbtn .bibi .relimg{width:40px;height:40px}
 .bpage .relimg,p .relimg{width:22px;height:22px;vertical-align:middle}
+/* Registre : carte des boissons */
+.dbkrow{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:6px}
+.dbk{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px}
+.dbk img{width:46px;height:46px;object-fit:contain}
+.dbk span{width:46px;height:46px;border-radius:50%;background:#0002;display:flex;align-items:center;justify-content:center;font-weight:bold;opacity:.5}
+.dbk small{font-size:9px;line-height:1.1}
+.dbk.locked img{filter:brightness(0) opacity(.35)}

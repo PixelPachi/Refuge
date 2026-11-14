@@ -217,6 +217,7 @@ Même style que les `drink-lait-*` existants (verre seul sur fond transparent). 
 - Icônes d'ingrédients : déjà fournies par PokeAPI (Crème Chantilly, Baie Lonme)
 
 ## Déjà fait
+- Boissons fétiches de Cadoizo, Wattouat, Mysdibule et Chétiflor ; cartes des villageois Laine Électrique, Gourmandise, Pluie de Pollen.
 - Icônes des 8 bibelots de saison (`bib-*`).
 - Session du 13/11 (après-midi) : les 6 icônes d'ingrédients non comestibles + Muffin, 27 icônes d'artefacts (saisons 5 à 12), les 14 boissons au thé et au jus de baie, les 6 dessins de souvenirs, et les 58 illustrations de cartes manquantes (saisons 5 à 12, cartes d'Hector). Les décors des Grands Regrets (Mewtwo, Ho-Oh, Giratina, Darkrai) et les 13 salles du donjon d'Hector.
 - Toutes les salles des labyrinthes (saisons 1 à 12), le cadre `frame-souvenir`, les cartes et artefacts de l'après-fin (voyageurs et chromatiques) sont faits.

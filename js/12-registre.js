@@ -9,7 +9,7 @@ function bookPages(){
     <div class="bcov-spr">${sprite(S.ten.id,S.ten.n,S.ten.c,{anim:true})}</div>
     <div class="bcov-p">${S.pages} page${S.pages>1?"s":""} écrite${S.pages>1?"s":""} · Saison ${S.season||1}</div>
     <div class="bcov-hint">${typeof isDesk==="function"&&isDesk()?"Clique ▶ ou flèche droite pour ouvrir":"Glisse ou touche ▶ pour ouvrir"}</div></div>`);
-  const sections=[["tenancier","Le Tenancier"],["habitues","Les âmes"],["villageois","Les villageois"],...(S.pg||Object.keys(S.shinies||{}).length?[["voyageurs","Les voyageurs"],["chromatiques","Les couleurs rares"]]:[]),["souvenirs","Souvenirs"],["artefacts","Artefacts et recettes"],["deck","Le deck"],["saison","La saison"],["emotions","Les émotions"]];
+  const sections=[["tenancier","Le Tenancier"],["habitues","Les âmes"],["villageois","Les villageois"],["recettes","Les recettes"],...(S.pg||Object.keys(S.shinies||{}).length?[["voyageurs","Les voyageurs"],["chromatiques","Les couleurs rares"]]:[]),["souvenirs","Souvenirs"],["artefacts","Artefacts et recettes"],["deck","Le deck"],["saison","La saison"],["emotions","Les émotions"]];
   add("toc","toc","Sommaire",`<div class="btoc">${sections.map(([id,t])=>`<a data-act="bookGo" data-p="${id}"><span>${t}</span><i></i></a>`).join("")}</div>
     <p class="bnote">Chaque âme a sa page. Celles qu'on n'a pas encore rencontrées restent blanches.</p>`);
   // tenancier
@@ -29,6 +29,7 @@ function bookPages(){
   // villageois
   S.villLeg=S.villLeg||{};
   add("villageois","villageois","Les villageois",VILLAGERS.map(v=>`<div class="brow" style="margin-bottom:8px"><div class="bspr sm">${sprite(v.id,v.n,v.c,{anim:false})}</div><div><b>${v.n}</b>${S.villLeg[v.key]?` <span class="bleg">★ légendaire offerte</span>`:""}<br><small>Boisson fétiche : ${favKnown(v.key)?`${drinkIcon(FAV[v.key],"sm")}${FAV[v.key].n} (${orderShort(FAV[v.key])})`:"pas encore découverte"}</small></div></div>`).join("")+`<p class="bnote">Bien servis, les villageois offrent une carte. Très rarement, leur carte légendaire.</p>`);
+  recipePages(add);
   pgRegPages(add);
   // souvenirs
   const byOwner={}; S.fragments.forEach(f=>{ const o=CL[f.from]?CL[f.from].n:"Étincelles du co-gérant"; (byOwner[o]=byOwner[o]||[]).push(f); });
@@ -72,7 +73,7 @@ function showRegistre(focus, tab){
   bk.addEventListener("touchend",e=>{ if(x0==null) return; const dx=e.changedTouches[0].clientX-x0; x0=null; if(Math.abs(dx)>45) turnBook(dx<0?1:-1); });
 }
 function pageHTML(p, idx, total){
-  const secs=[["toc","📖"],["tenancier","🎩"],["habitues","👥"],["villageois","🏘️"],...(S.pg||Object.keys(S.shinies||{}).length?[["voyageurs","🧭"],["chromatiques","✨"]]:[]),["souvenirs","💠"],["artefacts","🔮"],["deck","🃏"],["saison","🌙"]];
+  const secs=[["toc","📖"],["tenancier","🎩"],["habitues","👥"],["villageois","🏘️"],["recettes","🍹"],...(S.pg||Object.keys(S.shinies||{}).length?[["voyageurs","🧭"],["chromatiques","✨"]]:[]),["souvenirs","💠"],["artefacts","🔮"],["deck","🃏"],["saison","🌙"]];
   if(p.sec==="cover") return `<div class="bpage cover">${p.html}</div>`;
   return `<div class="bpage"><div class="bribbons">${secs.map(([s,ic])=>`<a class="brib ${p.sec===s?"on":""}" data-act="bookGo" data-p="${s}" title="${s}">${ic}</a>`).join("")}</div>
     <div class="btitle">${p.title}</div><div class="bbody">${p.html}</div><div class="bfoot">— ${idx} —</div></div>`;
@@ -169,4 +170,30 @@ function loadCodeGo(){
 function newGameAsk(){
   openModal(`<h3>Nouvelle partie ?</h3><p class="small">Une partie est déjà en cours sur cet appareil. En commencer une nouvelle l'<b>effacera</b>.</p><p class="small muted">Astuce : copie d'abord ta sauvegarde depuis le menu du jeu si tu veux la garder.</p>
     <div class="answers"><button data-act="newGame">Effacer et recommencer</button><button class="alt" data-act="closeModal">Annuler</button></div>`);
+}
+
+// ---- Le chapitre des recettes : recettes offertes, boissons fétiches, carte des boissons ----
+const DRINK_BASES = ["eau","lait","soda","limonade","the","jusbaie","liqueur"];
+const FLAVOR_LABEL = {rouge:"Rouge",bleu:"Bleu",jaune:"Jaune",rose:"Rose",vert:"Vert",miel:"Miel"};
+function recipePages(add){
+  const book=S.drinkBook||{};
+  const all=CLIENT_ORDER.map(c=>CL[c].recipe).filter(Boolean);
+  const recipeDrink={shake:{base:"lait",add:["sitrus"]},remede:{base:"limonade",add:["menthe","wiki"]}};
+  const recs=all.map(r=>{ const own=S.recipes.includes(r.key), d=recipeDrink[r.key];
+    return `<div class="brow" style="margin-bottom:8px"><div class="bspr sm">${own&&d?drinkIcon(d):"❔"}</div><div><b>${own?r.n:"Recette inconnue"}</b><br><small>${own?r.d:"Offerte par une âme apaisée qui t'apprécie (2 cœurs)."}</small></div></div>`; }).join("");
+  const favs=VILLAGERS.filter(v=>FAV[v.key]).map(v=>{ const f=FAV[v.key], k=favKnown(v.key);
+    return `<div class="brow" style="margin-bottom:8px"><div class="bspr sm">${k?drinkIcon(f):"❔"}</div><div><b>${k?f.n[0].toUpperCase()+f.n.slice(1):"???"}</b> · <small>${v.n}</small><br><small>${k?orderShort(f):"Sers bien "+v.n+" pour qu'il te confie sa boisson préférée."}</small></div></div>`; }).join("");
+  const nFav=VILLAGERS.filter(v=>FAV[v.key]&&favKnown(v.key)).length, nFavT=VILLAGERS.filter(v=>FAV[v.key]).length;
+  add("recettes","recettes","Recettes et boissons fétiches",`<div class="bh">Recettes offertes · ${S.recipes.length}/${all.length}</div>${recs}
+    <div class="bh">Boissons fétiches des villageois · ${nFav}/${nFavT}</div>${favs}
+    <p class="bnote">Une boisson fétiche servie à son villageois rapporte un gros pourboire.</p>`);
+  // carte des boissons : chaque base, nature et dans ses six couleurs
+  const flav={}; Object.keys(FLAVOR).forEach(i=>{ if(ING[i]) (flav[FLAVOR[i]]=flav[FLAVOR[i]]||[]).push(ING[i].n); });
+  let made=0, tot=0;
+  const rows=DRINK_BASES.filter(b=>ING[b]).map(b=>{ const cells=[null].concat(Object.keys(FLAVOR_LABEL)).map(f=>{ const key=f?`drink-${b}-${f}`:`drink-${b}`; if(!ARTOK[key]) return ""; tot++; const ok=book[key]; if(ok) made++;
+      const nm=f?(DRINK_NAMES[b]||{})[f]:ING[b].n;
+      return `<div class="dbk${ok?"":" locked"}" title="${ok?nm:"???"}">${ok?`<img src="${artSrc(key)}" alt="">`:"<span>?</span>"}<small>${ok?nm:"???"}</small></div>`; }).join("");
+    return `<div class="bh">${ING[b].n}</div><div class="dbkrow">${cells}</div>`; }).join("");
+  add("carteboissons","recettes",`Carte des boissons · ${made}/${tot}`,`<p class="bnote">Chaque verre servi s'inscrit ici. La base choisit le verre ; le premier ingrédient parfumé lui donne sa couleur.</p>
+    <p class="small">${Object.keys(FLAVOR_LABEL).map(f=>`<b>${FLAVOR_LABEL[f]}</b> : ${(flav[f]||[]).slice(0,6).join(", ")}`).join("<br>")}</p>${rows}`);
 }
