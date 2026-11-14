@@ -698,3 +698,4 @@ body.desk .handzone .dhand.fight .dcard:not(.dragging):not(.aiming):hover{transf
 .dcard.art .dleg.chroma{background:linear-gradient(90deg,#ffc6ec,#c6f0ff,#fff2b0);color:#5a2a7a}
 .dcard.art .dleg.voyage{background:#8fd0ff;color:#0a3a5a}
 .spr.shiny img{filter:drop-shadow(0 0 4px #fff8)}
+.dcard.art.chroma .dn{color:#ffe6fb;text-shadow:0 0 6px #c08cff,0 1px 2px #000}

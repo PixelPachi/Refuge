@@ -216,16 +216,10 @@ Même style que les `drink-lait-*` existants (verre seul sur fond transparent). 
 - Cartes d'Hector : `card-hectorpardon` (Hector qui tend la main, ombre violette et lumière dorée), `card-hectorecoute` (Hector derrière son comptoir, cent bougies), `card-hectorservice` (Hector qui pose un dernier verre sur le comptoir), `card-pactebrise` (légendaire : un contrat déchiré qui brûle, Hector qui franchit la porte de sa taverne dans la nuit)
 - Icônes d'ingrédients : déjà fournies par PokeAPI (Crème Chantilly, Baie Lonme)
 
-## À faire — Après la fin (post-game)
-- Cartes de voyageurs (`card-<id>`, cadre normal) : `card-chantglaces` (des flocons qui dansent autour d'une silhouette blanche dans la neige), `card-pietinement` (une énorme patte qui fait trembler le sol gelé), `card-sambapluie` (des gouttes de pluie qui dansent sur des feuilles), `card-plongeoncatch` (un catcheur masqué en plein saut, sans visage reconnaissable), `card-paume` (une paume ouverte entourée d'une aura rose calme), `card-illusion` (une silhouette de renard qui se défait en fumée rouge et noire), `card-aria` (des notes de musique dorées sur une scène d'opéra vide), `card-forgeacier` (une enclume et des étincelles dans une forge sombre)
-- Cartes chromatiques (ambiance irisée, paillettes, reflets) : `card-eclatchroma`, `card-refletirise`, `card-unechance` (un trèfle qui brille), `card-paillettes`, `card-prisme`, `card-halodore`, `card-aurascint`, `card-inverse` (une palette aux couleurs inversées)
-- Icônes d'artefacts : `relic-conque` (clochette de glace), `relic-defensegivre` (une défense d'ivoire givrée), `relic-maracas` (maracas en feuilles), `relic-masquelutte` (un masque de catcheur vert et orange), `relic-medaillon` (un chapelet de perles roses), `relic-voileillusion` (un voile sombre aux reflets rouges), `relic-rubanopera` (un ruban vert de scène), `relic-enclume` (une petite enclume d'acier)
-- Les salles des donjons de la Faille réutilisent toutes les salles des Labyrinthes : rien à faire.
-
 ## Plus tard (optionnel)
 - Icônes des 8 bibelots de saison : Tasse ébréchée d'Hector, Clochette de la Faille, Torchon brodé, Lanterne de poche, Bocal à pourboires, Carnet de notes, Sablier de sable fin, Bougie parfumée.
 
 ## Déjà fait
 - Session du 13/11 (après-midi) : les 6 icônes d'ingrédients non comestibles + Muffin, 27 icônes d'artefacts (saisons 5 à 12), les 14 boissons au thé et au jus de baie, les 6 dessins de souvenirs, et les 58 illustrations de cartes manquantes (saisons 5 à 12, cartes d'Hector). Les décors des Grands Regrets (Mewtwo, Ho-Oh, Giratina, Darkrai) et les 13 salles du donjon d'Hector.
-- Reste à faire : les salles des labyrinthes des clients des saisons 5 à 12 (`dj-<client>-<salle>`), et le cadre `frame-souvenir`.
+- Toutes les salles des labyrinthes (saisons 1 à 12), le cadre `frame-souvenir`, les cartes et artefacts de l'après-fin (voyageurs et chromatiques) sont faits.
 Saisons 1 à 4 complètes (salles, cartes, artefacts), cadres de cartes normaux et légendaires, Pourboire d'Or (façade et salle), lac de Suicune et Suicune.
