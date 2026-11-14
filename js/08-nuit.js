@@ -42,7 +42,7 @@ function cine(kind, next){
   const el=document.createElement("div"); el.id="cine"; el.className="dncine "+(night?"to-night":"to-day"); el.dataset.act="cineSkip";
   el.innerHTML=`<div class="csky"></div><div class="cstars"></div><div class="csun"></div><div class="cmoon"></div>
     ${ARTOK["cine-"+kind]?`<img class="cimg" src="${artSrc("cine-"+kind)}" alt="">`:CINE_TOWN}
-    <div class="ctitle"><small>${sub}</small><b>${title}</b>${O?`<span>${O.i} ${O.n}</span>`:""}</div><div class="cskip">Toucher pour passer</div>`;
+    <div class="ctitle"><small>${sub}</small><b>${title}</b>${O?`<span>${O.i} ${O.n}</span>`:""}</div><div class="cskip">${typeof isDesk==="function"&&isDesk()?"Clic ou Espace pour passer":"Toucher pour passer"}</div>`;
   document.body.appendChild(el); music(night?"nuit":"village");
   let done=false; const fin=()=>{ if(done) return; done=true; el.classList.add("out"); setTimeout(()=>el.remove(),450); U.cineNext=null; next(); };
   U.cineNext=fin; setTimeout(fin, 3600);

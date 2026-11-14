@@ -654,3 +654,33 @@ button.sm{padding:7px 10px;font-size:13px}
 .cogmsg{color:#f2e6cc;background:rgba(0,0,0,.25);border-radius:6px;padding:3px 6px;margin-bottom:4px}
 .relrow{opacity:.6;margin:6px 0}.relrow.on{opacity:1}.relrow button{margin-top:4px}
 .ing .gw{display:block;font-size:9px;opacity:.75;line-height:1.1}
+
+/* ===== Affichage ordinateur (js/14-ordi.js ajoute body.desk sur grand écran en paysage) =====
+   La colonne de téléphone est agrandie avec zoom (--z) ; deux panneaux occupent les côtés. Sur téléphone, rien ne change. */
+body.desk{background:#120b07 url("../assets/art/bar-nuit-ouvert.webp") center/cover fixed}
+body.desk::before{content:"";position:fixed;inset:0;background:rgba(14,9,6,.78);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:0}
+body.desk #app{zoom:var(--z);height:calc(100dvh / var(--z));z-index:1;box-shadow:0 0 60px rgba(0,0,0,.7)}
+body.desk .bubble{max-height:calc(34dvh / var(--z))}
+body.desk .cine{height:max(300px,calc(48vh / var(--z)))}
+body.desk #modal{align-items:center}
+body.desk #modal .sheet{zoom:var(--z);max-height:calc(90dvh / var(--z));border:3px solid var(--candle);border-radius:18px}
+body.desk .book{zoom:var(--z);height:min(calc(92dvh / var(--z)),760px)}
+body.desk #toast{zoom:var(--z)}
+.deskside{display:none}
+body.desk .deskside{display:flex;flex-direction:column;gap:12px;position:fixed;top:0;bottom:0;width:calc((100vw - 480px * var(--z)) / 2);padding:22px 26px;box-sizing:border-box;overflow-y:auto;z-index:1;font-size:15px}
+body.desk #deskL{left:0;align-items:flex-end}
+body.desk #deskR{right:0;align-items:flex-start}
+.dkcard{width:100%;max-width:340px;background:rgba(33,22,15,.92);border:1px solid #5a3f2a;border-radius:14px;padding:12px 14px;color:var(--paper);box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.dkh{font-weight:800;color:var(--candle);margin-bottom:8px;font-size:15px}
+.dkstats{display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:14px}
+.dkrow{display:flex;align-items:center;gap:10px;margin:6px 0;line-height:1.2}
+.dkrow small{display:block;opacity:.75;font-size:12px}
+.dkspr{width:40px;height:40px;flex:none;display:flex;align-items:flex-end;justify-content:center}
+.dkspr .spr{width:40px;height:40px}
+.dkrel{width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;font-size:22px}
+.dkrel img{width:32px;height:32px}
+.dkunknown{opacity:.55}
+.dkq{font-weight:800;font-size:22px;color:var(--candle)}
+.dkmuted{opacity:.65;font-size:13px;margin:4px 0}
+.dkkeys p{margin:5px 0;font-size:13px}
+kbd{display:inline-block;background:#3a2718;border:1px solid #6b4a30;border-bottom-width:2px;border-radius:5px;padding:0 5px;font-family:inherit;font-size:12px}

@@ -1,3 +1,5 @@
+// Affichage ordinateur détecté tôt (avant le premier écran) ; le reste est dans js/14-ordi.js
+if(window.matchMedia && matchMedia("(min-width:1000px) and (min-aspect-ratio:5/4)").matches) document.body.classList.add("desk");
 // ---------- État ----------
 let S = null;          // état sauvegardé
 let U = {};            // état d'interface (non sauvegardé)

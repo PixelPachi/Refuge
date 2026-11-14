@@ -8,7 +8,7 @@ function bookPages(){
   add("cover","cover","",`<div class="bcover"><div class="bcov-t">Grand Registre</div><div class="bcov-s">de la taverne de Bourg-Brume</div>
     <div class="bcov-spr">${sprite(S.ten.id,S.ten.n,S.ten.c,{anim:true})}</div>
     <div class="bcov-p">${S.pages} page${S.pages>1?"s":""} écrite${S.pages>1?"s":""} · Saison ${S.season||1}</div>
-    <div class="bcov-hint">Glisse ou touche ▶ pour ouvrir</div></div>`);
+    <div class="bcov-hint">${typeof isDesk==="function"&&isDesk()?"Clique ▶ ou flèche droite pour ouvrir":"Glisse ou touche ▶ pour ouvrir"}</div></div>`);
   const sections=[["tenancier","Le Tenancier"],["habitues","Les âmes"],["villageois","Les villageois"],["souvenirs","Souvenirs"],["artefacts","Artefacts et recettes"],["deck","Le deck"],["saison","La saison"],["emotions","Les émotions"]];
   add("toc","toc","Sommaire",`<div class="btoc">${sections.map(([id,t])=>`<a data-act="bookGo" data-p="${id}"><span>${t}</span><i></i></a>`).join("")}</div>
     <p class="bnote">Chaque âme a sa page. Celles qu'on n'a pas encore rencontrées restent blanches.</p>`);

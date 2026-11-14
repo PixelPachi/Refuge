@@ -341,7 +341,7 @@ function cardStart(el){ const r=el.getBoundingClientRect(); return {x:r.left+r.w
     if(D.dis){ return; }
     if(!D.moved){ D.moved=true; D.el.classList.add(D.tgt?"aiming":"dragging"); }
     if(D.tgt){ const st=cardStart(D.el), f=foeAt(e.clientX,e.clientY); document.querySelectorAll("[data-foe]").forEach(x=>x.classList.toggle("targeted",x===f)); drawAim(st.x,st.y,e.clientX,e.clientY,!!f); }
-    else { D.el.style.transform=`translate(${dx}px,${dy}px) scale(1.12)`; const hz=document.querySelector(".handzone"); D.el.classList.toggle("ready", hz && e.clientY < hz.getBoundingClientRect().top-10); }
+    else { const z=typeof deskZoom==="function"?deskZoom():1; D.el.style.transform=`translate(${dx/z}px,${dy/z}px) scale(1.12)`; const hz=document.querySelector(".handzone"); D.el.classList.toggle("ready", hz && e.clientY < hz.getBoundingClientRect().top-10); }
   });
   document.addEventListener("pointerup",e=>{
     // mode visée après un simple toucher sur une carte à cible

@@ -11,7 +11,7 @@ function screenTitle(){
     ${sv&&sv.ten&&!sv.seasonOver?`<button class="alt" data-act="continue" style="width:240px">Continuer (nuit ${sv.night})</button>`:""}
     <button class="ghost sm" data-act="loadCodeOpen">Charger une sauvegarde</button>
     <button class="ghost sm" data-act="toggleSound">Son : ${(S?S.settings.sound:true)?"activé":"coupé"}</button>
-    <div class="small muted">Touche l'écran pour lancer la musique.</div>
+    <div class="small muted">${typeof isDesk==='function'&&isDesk()?'Clique n\'importe où':'Touche l\'écran'} pour lancer la musique.</div>
     <p class="muted" style="font-size:11px;max-width:330px">Projet de fan non commercial. Pokémon appartient à Nintendo, Game Freak et The Pokémon Company. Sprites et cris : PokeAPI.</p>
   </div>`;
 }

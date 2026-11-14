@@ -64,3 +64,8 @@ Les saisons 1 et 2 gardent quelques effets historiques codés directement dans l
 - Difficulté des ombres : `DIFF` dans `js/10-combat.js` (multiplicateurs de PV et de dégâts, progression par saison, saison 1 plus douce, multiplicateur des ombres finales des Grands Échos).
 - Artefacts : on les possède tous (`S.owned`) mais on n'en porte que `RELIC_MAX` (5) à la fois (`S.equip`), à choisir dans le Registre. L'Éclat de la Faille est toujours actif.
 - Mesurer : `tests/bot.py` écrit une sauvegarde à chaque fin de saison (`/tmp/snap_sN.json`), puis `tests/sim.py` rejoue des Labyrinthes depuis ces sauvegardes avec un joueur glouton et donne le taux de victoire et les PV restants. Cible : PV restants autour de 30 à 50 % contre l'ombre finale, environ une défaite sur dix.
+
+## Affichage ordinateur
+- `js/14-ordi.js` : sur grand écran en paysage (`min-width:1000px` et `min-aspect-ratio:5/4`), ajoute `body.desk`, agrandit la colonne de téléphone avec un zoom (`--z`), affiche deux panneaux sur les côtés (saison, personnel, artefacts portés, âmes de la saison, raccourcis) et gère les raccourcis clavier (Espace/Entrée, 1 à 9, F, D, R, Échap).
+- Les styles sont à la fin de `css/style.css` (bloc « Affichage ordinateur »). Sur téléphone, rien ne change.
+- Le glisser des cartes divise le déplacement par `deskZoom()`.
