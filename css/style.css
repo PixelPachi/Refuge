@@ -772,3 +772,6 @@ body.desk .handzone .dhand.fight .dcard:not(.dragging):not(.aiming):hover{transf
 body.fxlock #app{pointer-events:none}
 .foespr.fxko{animation:fxko .75s ease-in forwards}
 @keyframes fxko{0%{opacity:1;filter:brightness(1)}35%{filter:brightness(2.2)}100%{opacity:0;transform:translateY(10px) scale(.85);filter:brightness(2) blur(3px)}}
+.dfr img.dfrimg{width:100%!important;height:100%!important;object-fit:fill;filter:none!important}
+.dfrin{overflow:hidden}
+.dfrin img{max-width:92%;max-height:92%}

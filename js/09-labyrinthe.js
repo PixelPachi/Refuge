@@ -36,7 +36,10 @@ function startDawn(){
 }
 const TER_MAX = 10;
 function dmap(){ const D=U.dawn; return (D&&D.map) || CL[D.x.k].map; }
-function roomSay(){ const D=U.dawn, n=D.node?dmap().nodes[D.node]:null; return (n&&n.say) || (ROOM_SAY[D.x.k]||{})[D.node]; }
+function roomSay(){ const D=U.dawn, n=D.node?dmap().nodes[D.node]:null;
+  // Grand Écho : les salles empruntées aux Labyrinthes des clients ne gardent que leur décor ; seules les salles propres au Grand Écho parlent (Hector, la Faille, le Grand Regret)
+  if(D.finale && n && /\//.test(n.art||"")) return "";
+  return (n&&n.say) || (ROOM_SAY[D.x.k]||{})[D.node]; }
 // Image d'une salle : dj-<client>-<salle>, ou un décor partagé (art:"client/salle", "faille", "suicune…").
 // Si l'image n'existe pas encore (à faire avec Gemini, voir GEMINI.md), on prend le décor générique du type de salle.
 function roomKey(n){ const D=U.dawn, a=n.art||D.node; return a.includes("/") ? "dj-"+a.replace("/","-") : (D.finale||a==="faille"||a.startsWith("suicune")||a.startsWith("mewtwo")) ? "dj-"+a : `dj-${D.x.k}-${a}`; }
