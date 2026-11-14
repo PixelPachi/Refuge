@@ -216,8 +216,15 @@ Même style que les `drink-lait-*` existants (verre seul sur fond transparent). 
 - Cartes d'Hector : `card-hectorpardon` (Hector qui tend la main, ombre violette et lumière dorée), `card-hectorecoute` (Hector derrière son comptoir, cent bougies), `card-hectorservice` (Hector qui pose un dernier verre sur le comptoir), `card-pactebrise` (légendaire : un contrat déchiré qui brûle, Hector qui franchit la porte de sa taverne dans la nuit)
 - Icônes d'ingrédients : déjà fournies par PokeAPI (Crème Chantilly, Baie Lonme)
 
-## Plus tard (optionnel)
-- Icônes des 8 bibelots de saison : Tasse ébréchée d'Hector, Clochette de la Faille, Torchon brodé, Lanterne de poche, Bocal à pourboires, Carnet de notes, Sablier de sable fin, Bougie parfumée.
+## À faire — Icônes des bibelots de saison (`bib-<clé>`, comme les icônes d'artefacts, fond vert)
+- `bib-tasse` : une tasse de porcelaine ancienne ébréchée, avec un peu de vapeur
+- `bib-clochette` : une petite clochette en laiton avec une lueur violette
+- `bib-tablier` : un torchon de cuisine plié, brodé de fleurs
+- `bib-lanterne` : une lanterne de poche en cuivre allumée
+- `bib-bocal` : un bocal en verre rempli de pièces
+- `bib-carnet` : un carnet de notes en cuir avec un crayon
+- `bib-sablier` : un sablier en bois au sable doré
+- `bib-bougie` : une bougie parfumée dans un pot en verre, flamme douce
 
 ## Déjà fait
 - Session du 13/11 (après-midi) : les 6 icônes d'ingrédients non comestibles + Muffin, 27 icônes d'artefacts (saisons 5 à 12), les 14 boissons au thé et au jus de baie, les 6 dessins de souvenirs, et les 58 illustrations de cartes manquantes (saisons 5 à 12, cartes d'Hector). Les décors des Grands Regrets (Mewtwo, Ho-Oh, Giratina, Darkrai) et les 13 salles du donjon d'Hector.

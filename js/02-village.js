@@ -53,6 +53,7 @@ const BIBELOTS = {
   sablier:{n:"Sablier de sable fin",i:"⏳",d:"Chaque client de nuit reste un échange de plus"},
   bougie:{n:"Bougie parfumée",i:"🕯️",d:"+1 PC max"}
 };
+function bibIc(k){ return ARTOK['bib-'+k] ? `<img class="relimg" src="${artSrc('bib-'+k)}" alt="">` : BIBELOTS[k].i; }
 function hasBib(k){ return (S.bibelots||[]).includes(k); }
 function offerBibelot(next){
   const pool = shuffle(Object.keys(BIBELOTS).filter(k=>!hasBib(k))).slice(0,3);
@@ -61,8 +62,8 @@ function offerBibelot(next){
   $app.innerHTML = `${hud()}<div class="pad scroll" style="flex:1;display:flex;flex-direction:column;gap:10px">
     <div class="px" style="color:var(--candle);font-size:18px">Un bibelot remonte du Labyrinthe</div>
     <p class="small muted" style="margin:0">En remontant, il a rapporté de petits objets oubliés. Garde-en un : il t'aidera jusqu'à la fin de la saison, puis disparaîtra.</p>
-    ${pool.map(k=>`<button class="bibbtn" data-act="pickBib" data-k="${k}"><span class="bibi">${BIBELOTS[k].i}</span><span><b>${BIBELOTS[k].n}</b><br><small>${BIBELOTS[k].d}</small></span></button>`).join("")}
-    ${(S.bibelots||[]).length?`<div class="small muted">Déjà sur l'étagère : ${S.bibelots.map(k=>BIBELOTS[k].i+" "+BIBELOTS[k].n).join(", ")}</div>`:""}
+    ${pool.map(k=>`<button class="bibbtn" data-act="pickBib" data-k="${k}"><span class="bibi">${bibIc(k)}</span><span><b>${BIBELOTS[k].n}</b><br><small>${BIBELOTS[k].d}</small></span></button>`).join("")}
+    ${(S.bibelots||[]).length?`<div class="small muted">Déjà sur l'étagère : ${S.bibelots.map(k=>bibIc(k)+" "+BIBELOTS[k].n).join(", ")}</div>`:""}
   </div>`;
 }
 function pickBib(k){ S.bibelots=S.bibelots||[]; if(!hasBib(k)) S.bibelots.push(k); save(); toast(`${BIBELOTS[k].n} rejoint l'étagère.`); const n=U.bibNext; U.bibNext=null; n&&n(); }

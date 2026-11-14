@@ -99,7 +99,7 @@ function renderPgNight(){
     <button class="alt" data-act="pgSleep">Fermer la trappe et aller dormir</button>
   </div>`;
 }
-function pgTenCL(){ CL.__ten = {id:S.ten.id, n:S.ten.n, c:S.ten.c, fem:false, reform:{}, frags:[], stages:[], map:null, thanks:""}; }
+function pgTenCL(){ CL.__ten = {id:S.ten.id, n:S.ten.n, c:S.ten.c, shiny:!!S.shiny, fem:false, reform:{}, frags:[], stages:[], map:null, thanks:""}; }
 function pgGo(k){
   if(!pgCanGo(k)) return;
   if(k==="__ten") pgTenCL();
@@ -109,7 +109,7 @@ function pgGo(k){
   const d=CL[k];
   const lines = k==="__ten" ? [{who:"narr",t:"Tu poses le pied sur la première marche. Puis la deuxième. Pour la première fois, c'est toi qui descends."},{who:"cog",t:"Je garde le comptoir, patron ! Et je te suis à travers les Fragments. Reviens entier, hein ?"}]
     : [{who:clientSp2(k),t:["On y va ? J'ai hâte de voir ce que la Faille a rêvé cette nuit.","Plus de regret à affronter, cette fois. Juste l'aventure. Ça change !","Garde-moi un verre au chaud. Je remonte avant l'aube."][rnd(3)]}];
-  playDialog(lines, setupDungeon, ()=>{ $app.innerHTML=`${hud()}${scene({doorOpen:false,client:sprite(d.id,d.n,d.c,{anim:true,h:"110px"})})}<div class="panel">${dialogBubble()}</div>`; });
+  playDialog(lines, setupDungeon, ()=>{ $app.innerHTML=`${hud()}${scene({doorOpen:false,client:sprite(d.id,d.n,d.c,{anim:true,h:"110px",shiny:!!d.shiny})})}<div class="panel">${dialogBubble()}</div>`; });
 }
 function pgSleep(){ pgNextDay([{who:"narr",t:"La trappe se referme doucement. Cette nuit, tout le monde dort à la taverne."}]); }
 function pgNextDay(lines){

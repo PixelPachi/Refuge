@@ -73,7 +73,7 @@ function miniMap(){
       const cls=[ "hn", n.t, D.visited.includes(id)&&id!==D.node?"done":"", id===D.node?"cur":"", next.includes(id)&&id!==D.node?"next":"", fog?"hfog":"" ].join(" ");
       const pick = (D.phase==="carrefour" && D.node && next.includes(id)) || (D.phase==="intro" && id===M.start);
       return `<div class="${cls}${pick?" pick":""}" ${pick?(D.phase==="intro"?`data-act="dStart"`:`data-act="goPath" data-t="${id}"`):""} style="left:${P[id].l}px;top:${P[id].t}px;--c:${fog?"#5a5270":c}"><div class="hic">${fog?"?":nodeIcon(n)}</div><div class="hnm">${fog?"???":n.n}</div></div>`; }).join("")}
-    ${D.node?`<div class="explorer" id="explorer" style="left:${from.l}px;top:${from.t}px">${sprite(d.id,d.n,d.c,{anim:true})}</div>`:""}
+    ${D.node?`<div class="explorer" id="explorer" style="left:${from.l}px;top:${from.t}px">${sprite(d.id,d.n,d.c,{anim:true,shiny:!!d.shiny})}</div>`:""}
     </div></div></div>`;
 }
 function mapFollow(){

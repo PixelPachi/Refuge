@@ -197,7 +197,17 @@ function seN(){ return S.season||1; }
 function scaleHP(v){ return Math.round(v*(seN()===1?DIFF.hp1:DIFF.hp)*(1+DIFF.hpSe*(seN()-1))); }
 function scaleDmg(v){ return Math.round(v*(seN()===1?DIFF.atk1:DIFF.atk)*(1+DIFF.atkSe*(seN()-1))); }
 function scaleMoves(moves){ return moves.map(m=>Object.assign({},m, ["atk","def","drain","shatter","heal"].includes(m.a)&&m.v?{v:scaleDmg(m.v)}:{}, m.dmg?{dmg:scaleDmg(m.dmg)}:{})); }
-function makeEnemy(n,id){ if(U.dawn&&U.dawn.pg) return makeEnemyPG(n); const en=makeEnemy0(n,id);
+// À partir de la saison 4, les ombres apprennent de nouveaux tours (les mêmes que dans l'après-fin), selon leur émotion.
+const NEW_MOVES_BY_EMO = {colere:["shatter","poison"], tristesse:["drain","frost"], peur:["hex","confus"], nostalgie:["heal","confus"], joie:["drain","shatter"]};
+function newMove(a){ return Object.assign({}, PG_MOVES.neuf.find(m=>m.a===a)); }
+function addNewMoves(en,n){
+  const se=S.season||1; if(se<4 || n.t==="entree" || (U.dawn&&U.dawn.finale&&en.boss)) return;
+  const pool = NEW_MOVES_BY_EMO[en.e] || NEW_MOVES_BY_EMO.peur;
+  const count = en.boss ? (se>=8?2:1) : ((n.dmg||1)>=2 && se>=8 ? 2 : 1);
+  en.moves=en.moves.slice();
+  pool.slice(0,count).forEach((a,i)=>en.moves.splice(1+i*2,0,newMove(a)));
+}
+function makeEnemy(n,id){ if(U.dawn&&U.dawn.pg) return makeEnemyPG(n); const en=makeEnemy0(n,id); addNewMoves(en,n);
   // ombre finale d'un Grand Écho : ses coups sont déjà réglés à la main pour sa saison, seul le multiplicateur de base s'applique
   if(U.dawn&&U.dawn.finale&&en.boss){ const a=DIFF.fin; en.moves=en.moves.map(m=>Object.assign({},m,(m.a==="atk"||m.a==="def")&&m.v?{v:Math.round(m.v*a)}:{},m.dmg?{dmg:Math.round(m.dmg*a)}:{})); }
   else en.moves=scaleMoves(en.moves);
@@ -523,6 +533,7 @@ function renderDungeon(){
       ${D.bonuses.map(b=>`<div class="small" style="margin-top:4px">${b.hp>0?`<b style="color:var(--good)">+${b.hp} PV</b>`:b.hp<0?`<b style="color:var(--bad)">${b.hp} PV</b>`:"•"} ${b.t}</div>`).join("")}
       ${relicList()}
       <div class="small" style="margin-top:6px">PV de ${d.n} : <b>${D.maxhp}</b> · Deck : <b>${deck} cartes</b> dont <b>${D.run.filter(e=>e.id==="_x").length}</b> souvenirs et mots-clés</div>
+      ${!D.pg&&(S.season||1)>=4?`<div class="small" style="margin-top:8px;color:#c9a8ff">✦ Depuis la saison 4, les ombres connaissent de nouveaux tours : ☠️ poison, ❄️ gel, 💫 confusion, 🌀 maléfice, 🩸 drain, 💥 brise-garde, ✚ soin. Regarde bien leurs intentions.</div>`:""}
       ${D.pg?`<div class="small" style="margin-top:8px;color:#c9a8ff">✦ <b>Un donjon rêvé par la Faille</b> : des salles venues de tous les Labyrinthes, des ombres au hasard. Méfie-toi de leurs nouveaux tours : ☠️ poison, ❄️ gel, 💫 confusion, 🌀 malédiction, 🩸 drain, 💥 brise-garde.</div>`:""}
       ${D.finale?`<div class="small" style="margin-top:8px;color:#c9a8ff">🌀 <b>Le Grand Écho</b> : toutes les âmes de la saison ont laissé une trace ici. <b>Tous les souvenirs</b> de la saison sont utilisables, quel que soit leur propriétaire.</div>`:""}
       <div class="small" style="margin-top:6px;color:#e9b8ff">💠 Chaque souvenir ne sert qu'<b>une fois</b> : joué, il disparaît. Ceux qui ne sont pas utilisés s'évanouissent à la fin de ce Labyrinthe.</div>
@@ -537,7 +548,7 @@ function renderDungeon(){
       <div class="arena">${n?`<div class="arenabg">${roomArtInner(n)}</div>`:""}<div class="arenafade"></div>
         ${say && C.turn===1 && !C.log ? `<div class="asay"><span class="spkname" style="--sc:${d.c};font-size:11px;margin-bottom:3px">${d.n}</span><br>${say}</div>`:""}
         <div class="fighters">
-        <div class="me ${C.hurtFx?"hit":""}"><div class="mespr">${sprite(d.id,d.n,d.c,{anim:true})}${x.duo?`<div class="cogspr">${sprite(finaleMate().id,finaleMate().n,finaleMate().c,{anim:true})}</div>`:""}</div>
+        <div class="me ${C.hurtFx?"hit":""}"><div class="mespr">${sprite(d.id,d.n,d.c,{anim:true,shiny:!!d.shiny})}${x.duo?`<div class="cogspr">${sprite(finaleMate().id,finaleMate().n,finaleMate().c,{anim:true})}</div>`:""}</div>
           ${miniHP(D.hp,D.maxhp,C.block)}<div class="sts">${stHTML(C)}</div></div>
         <div class="foe ${en.boss?"boss":""} ${C.hitFx?"hit":""}" data-foe="0"><div class="intent">${en.stun?"💤":intentText(m,en)}</div>
           <div class="foespr ${en.self?"selfshadow":""}">${sprite(en.id,en.n,"#000",{anim:true})}</div>
@@ -579,7 +590,7 @@ function renderDungeon(){
   const SCENE = ["reward","carrefour","sanctuaire","enigme","bosswin","lost","end"].includes(D.phase) && n;
   const art = n && D.phase!=="combat" && !SCENE ? roomArt(n) : "";
   $app.innerHTML = `${hud()}<div class="pad scroll dun" style="flex:1;display:flex;flex-direction:column;gap:8px">
-    <div class="row"><div style="width:44px;height:44px">${sprite(d.id,d.n,d.c,{anim:true})}</div>
+    <div class="row"><div style="width:44px;height:44px">${sprite(d.id,d.n,d.c,{anim:true,shiny:!!d.shiny})}</div>
       <div class="grow"><div class="px" style="color:var(--candle);font-size:15px">${D.finale?"Le Grand Écho":D.pg?`Donjon de la Faille · prof. ${S.pg.depth+1}`:`Le Labyrinthe de ${d.n}`}${n?` · ${n.n}`:""}</div>
       ${D.phase!=="combat"?`<div class="small">PV ${hpBar(D.hp,D.maxhp,0)}</div>`:""}</div></div>
     ${relicBar()}${D.relicInfo?`<div class="advice small">${D.relicInfo}</div>`:""}
@@ -596,7 +607,7 @@ function roomScene(n, o){
   return `<div class="rscene ${o.compact?"compact":""}"><div class="artblur" style="background-image:url('${src}')${ARTOK[ak]?`,url('${artSrc(ak)}')`:""}"></div>
     <div class="rtop">${o.say?`<div class="asay rsay"><span class="spkname" style="--sc:${d.c};font-size:11px;margin-bottom:3px">${d.n}</span><br>${o.say}</div>`:""}${o.top||""}</div>
     <div class="rimg">${artBg(ak)}<img class="artbg lab" src="${src}" alt="" onerror="this.remove()">
-      ${o.noClient?"":`<div class="rclient">${sprite(d.id,d.n,d.c,{anim:true})}</div>`}</div>
+      ${o.noClient?"":`<div class="rclient">${sprite(d.id,d.n,d.c,{anim:true,shiny:!!d.shiny})}</div>`}</div>
     <div class="rbottom">${o.bottom||""}</div></div>`;
 }
 function roomArtInner(n){ const D=U.dawn, ak="donjon-"+n.t; return `<div class="artblur" style="background-image:url('${roomSrc(n)}')${ARTOK[ak]?`,url('${artSrc(ak)}')`:""}"></div>${artBg(ak)}<img class="artbg lab" src="${roomSrc(n)}" alt="" onerror="this.remove()">`; }
@@ -630,7 +641,7 @@ function dungeonNext(){
 }
 function renderDawnTalk(k){
   const d=CL[k];
-  $app.innerHTML=`${hud()}${scene({doorOpen:true,client:sprite(d.id,d.n,d.c,{anim:true,h:"112px"})})}<div class="panel">${dialogBubble()}</div>`;
+  $app.innerHTML=`${hud()}${scene({doorOpen:true,client:sprite(d.id,d.n,d.c,{anim:true,h:"112px",shiny:!!d.shiny})})}<div class="panel">${dialogBubble()}</div>`;
 }
 function hire(k){
   const st=S.clients[k]; st.state="staff"; S.staff.push(k); S.pages+=0.5;

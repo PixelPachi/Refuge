@@ -699,3 +699,6 @@ body.desk .handzone .dhand.fight .dcard:not(.dragging):not(.aiming):hover{transf
 .dcard.art .dleg.voyage{background:#8fd0ff;color:#0a3a5a}
 .spr.shiny img{filter:drop-shadow(0 0 4px #fff8)}
 .dcard.art.chroma .dn{color:#ffe6fb;text-shadow:0 0 6px #c08cff,0 1px 2px #000}
+.bibbtn .bibi{height:40px;display:inline-flex;align-items:center;justify-content:center}
+.bibbtn .bibi .relimg{width:40px;height:40px}
+.bpage .relimg,p .relimg{width:22px;height:22px;vertical-align:middle}
