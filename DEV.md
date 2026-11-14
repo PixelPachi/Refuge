@@ -80,3 +80,8 @@ Les saisons 1 et 2 gardent quelques effets historiques codés directement dans l
 ## Deck
 - `DECK_MAX = 30` (js/10-combat.js) : `deckAdd(id)` met la carte dans la réserve quand le deck est plein ; `deckFit()` (appelé par `ensureDeck`) range l'excédent des anciennes sauvegardes dans la réserve.
 - Test longue durée de l'après-fin : `/tmp/pglong.py` (300 jours simulés sans interface).
+
+## Malédictions et coûts
+- Malédictions (`CURSES`, js/10-combat.js) : Doute, Regret (−2 PV en fin de tour), Remords (Faible 1), Cauchemar (−1 énergie à la pioche, éphémère), Poids du Passé (retenue), Hésitation (ne fait rien). Ajoutées par les marchés risqués des salles à choix (`curseBargains`) et par le coup Maléfice des ombres (`hexCurse`). Le sanctuaire retire d'abord une malédiction.
+- `js/16-equilibrage.js` : `COST_FIX` (coûts relevés) et `STAT_FIX` (cartes gardées à 1 énergie mais réduites).
+- `jusbaie` ajouté à `BASES` (le Jus de Baies n'était pas sélectionnable au comptoir).

@@ -146,7 +146,7 @@ const ING = {
 };
 function ingOk(k){ return (ING[k].season||1) <= ((typeof S!=="undefined"&&S&&S.season)||1); }
 const SEASON_NEW = {2:["the","pecha","mepo","biscuit"],3:["jusbaie","pomroz","glace"],4:["grena","coeursucre"],5:["pierrestase","superbonbon","poudremetal"],6:["baieprine","eaumystique"],7:["bonbonfete","galette"],8:["malasada","craquiroc"],9:["runesort","runepurif"],10:["sable","muffin"],11:["pommenectar","racine"],12:["chantilly","lonme"]};
-const BASES = ["eau","lait","soda","limonade","liqueur","the"];
+const BASES = ["eau","lait","soda","limonade","liqueur","the","jusbaie"];
 const CRUSH = k => ING[k] && (ING[k].cat==="baie" || ING[k].cat==="fruit");
 const EMO = {
   joie:{n:"Joie",c:"#ffd84a",i:"☀"}, colere:{n:"Colère",c:"#f06048",i:"✹"}, peur:{n:"Peur",c:"#9a7bff",i:"☾"},

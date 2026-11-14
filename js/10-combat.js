@@ -252,7 +252,7 @@ function startCombat(en){
   startTurn();
 }
 const HAND_MAX = 8; // main de 8 cartes maximum (3-3-2)
-function drawCards(n){ const C=U.dawn.combat; for(let i=0;i<n;i++){ if(!C.draw.length){ if(!C.disc.length) break; C.draw=shuffle(C.disc); C.disc=[]; } if(C.hand.length>=HAND_MAX) break; C.hand.push(C.draw.pop()); } }
+function drawCards(n){ const C=U.dawn.combat; for(let i=0;i<n;i++){ if(!C.draw.length){ if(!C.disc.length) break; C.draw=shuffle(C.disc); C.disc=[]; } if(C.hand.length>=HAND_MAX) break; const e=C.draw.pop(); C.hand.push(e); const cd=cardOf(e); if(cd.curseEnergy){ C.energy=Math.max(0,C.energy-cd.curseEnergy); C.log=(C.log?C.log+" · ":"")+`${cd.i} ${cd.n} : −${cd.curseEnergy} énergie`; } } }
 function startTurn(){
   const D=U.dawn, C=D.combat; C.turn++;
   C.energy = 3 + (C.turn===1 && S.equip.bonnet ? 1 : 0); C.emax = C.energy; C.playedTurn=0;
@@ -428,9 +428,10 @@ function hitClient(v){
 function endTurn(){
   const D=U.dawn, C=D.combat; if(!C||C.over) return;
   if(D.x.duo && !C.cogUsed){ cogAct(); if(C.over || U.dawn.combat!==C || C.en.hp<=0 || U.dawn.phase!=="combat") return; }
+  let cWeak=0; C.hand.forEach(e=>{ const cd=cardOf(e); if(cd.curseHurt){ D.hp=Math.max(1,D.hp-cd.curseHurt); } if(cd.curseWeak) cWeak+=cd.curseWeak; });
   const keep=[]; C.hand.forEach(e=>{ const cd=cardOf(e); if(cd.retain) keep.push(e); else if(cd.ethereal) C.exh.push(e); else C.disc.push(e); }); C.hand=keep;
   C.hurtTurn=0; C.lastCard=null;
-  if(C.weak) C.weak--; if(C.vuln) C.vuln--;
+  if(C.weak) C.weak--; if(C.vuln) C.vuln--; C.weak+=cWeak;
   const en=C.en; en.block=0;
   let log="", dot=[];
   if(en.burn){ en.hp-=en.burn; dot.push(`🔥 -${en.burn}`); en.burn--; }
@@ -448,7 +449,7 @@ function endTurn(){
     if(m.a==="poison"){ C.poison=(C.poison||0)+m.v; if(m.dmg) t=hitClient(m.dmg); log=`${en.n} l'empoisonne : Poison ${C.poison}${t?`, ${t} dégâts`:""}.`; }
     if(m.a==="frost"){ C.frost=(C.frost||0)+m.v; if(m.dmg) t=hitClient(m.dmg); log=`${en.n} le glace : −${m.v} énergie au prochain tour${t?`, ${t} dégâts`:""}.`; }
     if(m.a==="confus"){ C.confus=(C.confus||0)+m.v; if(m.dmg) t=hitClient(m.dmg); log=`${en.n} le désoriente : il piochera moins${t?`, ${t} dégâts`:""}.`; }
-    if(m.a==="hex"){ for(let h=0;h<m.v;h++) C.draw.splice(rnd(C.draw.length+1),0,{id:"doute"}); if(m.dmg) t=hitClient(m.dmg); log=`${en.n} murmure une malédiction : un Doute se glisse dans sa pioche${t?`, ${t} dégâts`:""}.`; }
+    if(m.a==="hex"){ let cu="doute"; for(let h=0;h<m.v;h++){ cu=hexCurse(); C.draw.splice(rnd(C.draw.length+1),0,{id:cu}); } if(m.dmg) t=hitClient(m.dmg); log=`${en.n} murmure une malédiction : ${CARDS[cu].n} se glisse dans sa pioche${t?`, ${t} dégâts`:""}.`; }
     if(m.a==="drain"){ t=hitClient(m.v); const h=Math.min(t,en.maxhp-en.hp); en.hp+=h; log=`${en.n} draine ses forces : ${t} dégâts${h?`, et récupère ${h} PV`:""}.`; }
     if(m.a==="shatter"){ const b=C.block; C.block=0; t=hitClient(m.v); log=`${en.n} brise sa garde${b?` (−${b} Bouclier)`:""} : ${t} dégâts.`; }
     if(m.a==="heal"){ const h=Math.min(m.v,en.maxhp-en.hp); en.hp+=h; log=`${en.n} se referme sur elle-même : +${h} PV.`; }
@@ -503,7 +504,8 @@ function makeEvent(n){
     {l:"Lui tendre la main", fx: Math.random()<0.6 ? {card:"courage"} : {heal:6}},
     {l:"Le laisser fouiller seul dans ce souvenir", fx: Math.random()<0.5 ? {card:["griffacier","rafale","telekinesie","ultimapoing"][rnd(4)]} : {hurt:7, card:"doute"}},
     {l:`Chercher avec lui le souvenir de ${EMO[n.need].n} qui manque`, fx: hasNeed ? {heal:12, card:"souffle"} : {hurt:5}},
-    {l:"Lui redire ce qu'il t'a confié au comptoir", fx: kws>=2 ? {heal:10} : {hurt:4}}
+    {l:"Lui redire ce qu'il t'a confié au comptoir", fx: kws>=2 ? {heal:10} : {hurt:4}},
+    ...curseBargains()
   ]).slice(0,3);
   return {opts, done:null};
 }
@@ -512,11 +514,13 @@ function eventPick(i){
   if(o.fx.heal){ const h=Math.min(o.fx.heal, D.maxhp-D.hp); D.hp+=h; r.push(`Il se sent mieux. <span class="delta p">+${h} PV</span>`); }
   if(o.fx.hurt){ D.hp=Math.max(1,D.hp-o.fx.hurt); r.push(`Ce souvenir lui fait mal. <span class="delta n">-${o.fx.hurt} PV</span>`); }
   if(o.fx.card){ D.temp.push({id:o.fx.card}); r.push(`${CARDS[o.fx.card].t==="curse"?"Un doute s'installe":"Il en garde quelque chose"} : <b>${CARDS[o.fx.card].n}</b> rejoint son deck pour ce Labyrinthe.`); }
+  if(o.fx.curse){ D.temp.push({id:o.fx.curse}); r.push(`Mais quelque chose s'accroche à lui : <b>${CARDS[o.fx.curse].i} ${CARDS[o.fx.curse].n}</b> (malédiction) rejoint son deck pour ce Labyrinthe.`); }
   ev.done=r.join("<br>"); renderDungeon();
 }
 function restPick(kind){
   const D=U.dawn;
   if(kind==="heal"){ const h=Math.min(Math.round(D.maxhp*(S.equip.oeuf?0.5:0.35)), D.maxhp-D.hp); D.hp+=h; D.msg=`Il s'assoit un moment. Sa respiration se calme. <span class="delta p">+${h} PV</span>`; }
+  else if(D.temp.some(e=>CARDS[e.id]&&CARDS[e.id].t==="curse")){ const i=D.temp.findIndex(e=>CARDS[e.id].t==="curse"); const c=CARDS[D.temp[i].id].n; D.temp.splice(i,1); D.msg=`Il ferme les yeux, et la malédiction se détache de lui. <b>${c}</b> retirée de son deck pour ce Labyrinthe.`; }
   else { const i=D.run.findIndex(e=>e.id==="frappe"||e.id==="garde"); if(i>=0){ const c=CARDS[D.run[i].id].n; D.run.splice(i,1); D.msg=`Il repense au chemin parcouru, et laisse derrière lui ce qui ne lui sert plus. <b>${c}</b> retirée de son deck pour ce Labyrinthe.`; } else D.msg="Il n'a rien à laisser derrière lui."; }
   D.restDone=true; renderDungeon();
 }
@@ -585,7 +589,7 @@ function renderDungeon(){
     body = roomScene(n,{say:roomSay()||"", top:deckTuto("sanctuaire"),
       bottom: D.restDone?`<div class="rnarr">${D.msg}</div><button class="rbtn go" data-act="leaveRoom">Continuer</button>`:
       `<button class="rbtn" data-act="restPick" data-k="heal"><span>Lui proposer de s'asseoir un moment</span><small>Soigne une partie de ses PV</small></button>
-       <button class="rbtn" data-act="restPick" data-k="thin"><span>Laisser derrière lui ce qui l'encombre</span><small>Retire une Frappe ou une Garde, pour ce Labyrinthe</small></button>`});
+       <button class="rbtn" data-act="restPick" data-k="thin"><span>Laisser derrière lui ce qui l'encombre</span><small>${D.temp.some(e=>CARDS[e.id]&&CARDS[e.id].t==="curse")?"Retire une malédiction de son deck":"Retire une Frappe ou une Garde, pour ce Labyrinthe"}</small></button>`});
   } else if(D.phase==="enigme"){
     const ev=D.event;
     body = roomScene(n,{say:roomSay()||"", top:`${deckTuto("enigme")}<div class="rchip">Il manque un souvenir de ${EMO[n.need].i} <b>${EMO[n.need].n}</b> à cette scène</div>`,
@@ -727,4 +731,26 @@ function endNightGo(){
   if(S.night>NIGHTS_PER_SEASON || remaining===0){ lines.push({who:"narr",t:"La dernière nuit de la saison s'achève…"}); playDialog(lines, seasonClose, ()=>{ $app.innerHTML=`${hud()}${scene({doorOpen:false})}<div class="panel">${dialogBubble()}</div>`; }); return; }
   lines.push({who:"narr",t:`Le soleil se lève sur Bourg-Brume. Nuit ${S.night} ce soir.`});
   if(lines.length) playDialog(lines, ()=>cine("jour", startDay), ()=>{ $app.innerHTML=`${hud()}${scene({doorOpen:false})}<div class="panel">${dialogBubble()}</div>`; });
+}
+
+// ---------- Malédictions ----------
+// Cartes injouables (ou inutiles) qui encombrent le deck pendant un Labyrinthe.
+Object.assign(CARDS,{
+  regret:{n:"Regret",c:1,t:"curse",unplayable:true,curseHurt:2,r:"temp",i:"🥀",d:"Injouable. S'il est encore en main à la fin du tour, perd 2 PV."},
+  remords:{n:"Remords",c:1,t:"curse",unplayable:true,curseWeak:1,r:"temp",i:"🪨",d:"Injouable. S'il est encore en main à la fin du tour, Faible 1."},
+  cauchemar:{n:"Cauchemar",c:1,t:"curse",unplayable:true,ethereal:true,curseEnergy:1,r:"temp",i:"🌑",d:"Injouable. Quand il est pioché, −1 énergie. Éphémère."},
+  poidspasse:{n:"Poids du Passé",c:1,t:"curse",unplayable:true,retain:true,r:"temp",i:"⛓️",d:"Injouable. Retenue : il ne quitte jamais la main."},
+  hesitation:{n:"Hésitation",c:1,t:"curse",exhaust:true,r:"temp",i:"🌀",d:"Ne fait rien. Épuise."}
+});
+const CURSES=["doute","regret","remords","cauchemar","poidspasse","hesitation"];
+function hexCurse(){ return (S.season||1)>=4 && Math.random()<0.5 ? CURSES[1+rnd(CURSES.length-1)] : "doute"; }
+// Marchés risqués des salles à choix : une récompense, mais une malédiction rejoint le deck pour le Labyrinthe.
+function curseBargains(){
+  const cu=()=>CURSES[1+rnd(CURSES.length-1)];
+  const rare=()=>randomCards(1,{peu:2,rare:3})[0]||"rafale";
+  return shuffle([
+    {l:"Ouvrir le coffre scellé par une ombre", fx:{card:rare(), curse:cu()}},
+    {l:"Boire à la source trouble", fx:{heal:16, curse:cu()}},
+    {l:"Écouter la voix qui promet la force", fx:{card:"courage", heal:6, curse:cu()}}
+  ]).slice(0, (S.season||1)>=2 ? 2 : 1);
 }

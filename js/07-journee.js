@@ -90,7 +90,7 @@ function buy(k){
   const el=document.querySelector(".pad.scroll"); if(el) el.scrollTop=y;
 }
 function regularGuest(k){ const d=CL[k], r=REGULARS[k]; const fav=SOUL_FAV[k]&&soulFavKnown(k)&&Math.random()<0.35; return {key:k, regular:k, id:d.id, n:d.n, c:d.c, line:r.line, ok:r.ok, ko:r.ko, order:fav?{base:SOUL_FAV[k].base,add:SOUL_FAV[k].add.slice()}:r.order}; }
-function villGuest(v){ const list=ORDERS[v.key]; return Object.assign({}, v, {order: list ? list[rnd(list.length)] : null}); }
+function villGuest(v){ const list=(ORDERS[v.key]||[]).filter(o=>ingOk(o.base)&&o.add.every(ingOk)); return Object.assign({}, v, {order: list.length ? list[rnd(list.length)] : null}); }
 function pickVillager(){
   if(U.day && U.dayNight===S.night){ return; }
   if(S.pg){ pgPickGuests(); return; }
