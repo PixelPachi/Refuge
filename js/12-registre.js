@@ -18,7 +18,7 @@ function bookPages(){
       <div class="bsub">${TALENTS[S.ten.t]?TALENTS[S.ten.t].n:""} · niveau ${S.level} (${S.xp}/${S.level*100} XP)</div></div></div>
     <div class="bh">Co-gérant</div><p>${cog().n} : ${cog().p}${S.duo?" · Duo":""}</p>
     <div class="bh">Caisse et stock</div><p>${S.money} ₽ · ${st}</p>
-    <div class="bh">Le personnel</div><p>${S.staff.length?S.staff.map(k=>`<b>${CL[k].n}</b> (${CL[k].staff.n} : ${CL[k].staff.d}) · ${wageOf(k)} ₽/jour`).join("<br>"):"Personne, à part le co-gérant."}</p>
+    <div class="bh">Le personnel · ${S.staff.length}/${STAFF_MAX}</div><p>${S.staff.length?S.staff.map(k=>`<b>${CL[k].n}</b> (${CL[k].staff.n} : ${CL[k].staff.d}) · ${wageOf(k)} ₽/jour`).join("<br>"):"Personne, à part le co-gérant."}</p>
     <div class="bh">Les comptes</div><p>Verres servis : ${S.stats.served} · parfaits : ${S.stats.perfect} · gagnés : ${S.stats.earned} ₽<br>Âmes apaisées : ${CLIENT_ORDER.filter(k=>["apaise","staff"].includes(S.clients[k].state)).length}/${CLIENT_ORDER.length}</p>`);
   // âmes : une page chacune
   add("habitues","habitues","Les âmes",`<p class="bnote">${known} / ${CLIENT_ORDER.length} âmes rencontrées</p><div class="bgrid">${CLIENT_ORDER.map((k,i)=>{ const r=reg(k), d=CL[k];
@@ -126,7 +126,7 @@ function regEntry(k){
     ${regGoals(k)}
     <div class="sect">Ingrédients appréciés (${r.likes.length}/${total})</div><div>${ingList(r.likes)}</div>
     <div class="sect" style="margin-top:8px">À éviter</div><div>${ingList(r.dislikes)}</div>
-    <div class="sect" style="margin-top:8px">La gelée qui l'aide</div><div class="small">${r.wound?`<span class="gel" style="--g:${ESS[r.wound].c};vertical-align:middle"></span> ${ESS[r.wound].n}, une seule : en face de sa blessure, juste ce qu'il faut.`:`<span class="muted">Pas encore découverte.</span>`}</div>
+    <div class="sect" style="margin-top:8px">La gelée qui l'aide</div><div class="small">${r.wound?`<span class="gel" style="--g:${ESS[r.wound].c};vertical-align:middle"></span> ${ESS[r.wound].n} (${ESS[r.wound].ap.toLowerCase()}), une seule : en face de sa blessure, juste ce qu'il faut.`:`<span class="muted">Pas encore découverte.</span>`}</div>
     <div class="sect" style="margin-top:8px">Mots-clés de son histoire (${kw.length}/${d.stages.filter(x=>x.kw).length})</div><div>${kw.length?kw.map(w=>`<span class="kw">${esc(w)}</span>`).join(""):`<span class="small muted">Aucun pour l'instant.</span>`}</div>
     <div class="sect" style="margin-top:8px">Ce qu'il t'a confié</div><div class="small">${r.lines.length?r.lines.map(l=>`« ${l.replace(/<i>.*?<\/i>\s*/g,"")} »`).join("<br>"):`<span class="muted">Rien encore.</span>`}</div>
     <div class="sect" style="margin-top:8px">Ce que tu as remarqué</div><div class="small">${r.hints.length?r.hints.join("<br>"):`<span class="muted">Rien encore. Essaie de te taire et de l'observer.</span>`}</div>

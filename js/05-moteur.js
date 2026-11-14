@@ -180,6 +180,8 @@ function staffFx(name, ...args){ let r=0; S.staff.forEach(k=>{ const f=CL[k] && 
 // On peut posséder tous les artefacts (S.owned), mais on n'en porte que RELIC_MAX à la fois (S.equip = artefacts portés).
 // L'Éclat de la Faille (RELIC_EXTRA) est toujours actif et ne compte pas.
 const RELIC_MAX = 5;
+// Employés (âmes apaisées qui restent travailler, en plus du co-gérant) : 5 au maximum
+const STAFF_MAX = 5;
 function relicKeys(){ return CLIENT_ORDER.map(k=>CL[k].gift).filter(Boolean).map(g=>g.key); }
 function wornCount(){ return relicKeys().filter(k=>S.equip[k]).length; }
 function relicInit(){

@@ -625,7 +625,7 @@ function renderRecap(){
   U.inDungeon=false;
   const N=U.night||{out:{},recruits:[],earned0:S.stats.earned,served0:S.stats.served,perfect0:S.stats.perfect};
   const earned=S.stats.earned-N.earned0, served=S.stats.served-N.served0, perfect=S.stats.perfect-N.perfect0;
-  const slots=2, pending=N.recruits.filter(k=>!N.decided || !N.decided[k]);
+  const slots=STAFF_MAX, pending=N.recruits.filter(k=>!N.decided || !N.decided[k]);
   const st=Object.keys(S.stock).filter(k=>S.stock[k]>0).map(k=>k.startsWith("gel_")?`${ESS[k.slice(4)].n} ×${S.stock[k]}`:`${ING[k].n} ×${S.stock[k]}`).join(", ")||"vide";
   $app.innerHTML=`${hud()}<div class="pad scroll" style="flex:1;display:flex;flex-direction:column;gap:12px">
     <h2 class="px" style="color:var(--candle);margin:2px 0">Récap de la nuit ${S.night}</h2>
@@ -636,7 +636,7 @@ function renderRecap(){
     ${N.recruits.length?`<div class="card"><div class="px" style="color:var(--candle)">Recrutement</div><div class="small muted">Leur Labyrinthe est terminé. Ils peuvent repartir, ou rester travailler à la taverne (${S.staff.length}/${slots} postes occupés).</div>
       ${N.recruits.map(k=>{ const dec=N.decided&&N.decided[k]; return `<div class="row" style="margin-top:8px"><div style="width:44px;height:44px">${sprite(CL[k].id,CL[k].n,CL[k].c,{anim:true})}</div><div class="grow"><b>${CL[k].n}</b><div class="small">Poste : ${CL[k].staff.n}, ${CL[k].staff.d}</div><div class="small" style="color:var(--candle)">Salaire : ${wageOf(k)} ₽ par jour</div>
         ${dec?`<div class="small" style="color:var(--good)">${dec==="hire"?"Engagé !":"Parti, entouré d'un halo doré."}</div>`:`<div class="row" style="margin-top:4px"><button class="sm" data-act="rHire" data-k="${k}" ${S.staff.length>=slots?"disabled":""}>Engager</button><button class="sm alt" data-act="rLetGo" data-k="${k}">Laisser partir</button></div>`}</div></div>`; }).join("")}</div>`:""}
-    <div class="card"><div class="px" style="color:var(--candle)">Le personnel</div>${S.staff.length?`<div class="small muted">Salaires de demain matin : ${S.staff.reduce((a,k)=>a+wageOf(k),0)} ₽ (caisse : ${S.money} ₽)</div>`:""}${S.staff.length?S.staff.map(k=>`<div class="row" style="margin-top:6px"><div style="width:40px;height:40px">${sprite(CL[k].id,CL[k].n,CL[k].c,{anim:true})}</div><div class="grow"><b>${CL[k].n}</b> · ${CL[k].staff.n} · ${hearts(S.clients[k].aff)}<div class="small muted">${CL[k].staff.d} · ${wageOf(k)} ₽/jour${(S.unpaid||[]).includes(k)?" · <b style='color:var(--bad)'>non payé</b>":""}</div></div><button class="sm alt" data-act="fire" data-k="${k}">Renvoyer</button></div>`).join(""):`<div class="small muted">Personne pour l'instant, à part ${cog().n}.</div>`}</div>
+    <div class="card"><div class="px" style="color:var(--candle)">Le personnel · ${S.staff.length}/${STAFF_MAX}</div>${S.staff.length?`<div class="small muted">Salaires de demain matin : ${S.staff.reduce((a,k)=>a+wageOf(k),0)} ₽ (caisse : ${S.money} ₽)</div>`:""}${S.staff.length?S.staff.map(k=>`<div class="row" style="margin-top:6px"><div style="width:40px;height:40px">${sprite(CL[k].id,CL[k].n,CL[k].c,{anim:true})}</div><div class="grow"><b>${CL[k].n}</b> · ${CL[k].staff.n} · ${hearts(S.clients[k].aff)}<div class="small muted">${CL[k].staff.d} · ${wageOf(k)} ₽/jour${(S.unpaid||[]).includes(k)?" · <b style='color:var(--bad)'>non payé</b>":""}</div></div><button class="sm alt" data-act="fire" data-k="${k}">Renvoyer</button></div>`).join(""):`<div class="small muted">Personne pour l'instant, à part ${cog().n}.</div>`}</div>
     ${postCardHTML()}
     <div class="card"><div class="px" style="color:var(--candle)">Le stock</div><div class="small">${st}</div><div class="small muted" style="margin-top:4px">Fragments de Mémoire : ${S.fragments.length}</div></div>
     <button data-act="recapDone" ${pending.length?"disabled":""}>${pending.length?"Décide d'abord pour le recrutement":"Aller dormir"}</button>
@@ -658,7 +658,7 @@ function postPicker(){
 }
 function recapDecide(k, how){
   const N=U.night; N.decided=N.decided||{};
-  if(how==="hire"){ if(S.staff.length>=2) return; S.clients[k].state="staff"; S.staff.push(k); S.pages+=0.5; toast(`${CL[k].n} rejoint le personnel !`); }
+  if(how==="hire"){ if(S.staff.length>=STAFF_MAX) return; S.clients[k].state="staff"; S.staff.push(k); S.pages+=0.5; toast(`${CL[k].n} rejoint le personnel !`); }
   else { S.clients[k].state="apaise"; S.pages+=1; toast("Une page s'écrit au Grand Registre."); }
   N.decided[k]=how; cry(CL[k].id,"",false); renderRecap();
 }

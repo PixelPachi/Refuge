@@ -35,14 +35,14 @@ function startDay(){
 }
 function marketRow(k){
   const g=k.startsWith("gel_"), it = g ? null : ING[k], e = g ? ESS[k.slice(4)] : null;
-  const name = g ? e.n : it.n, price = g ? gelPrice() : ingPrice(k), desc = g ? `Goût ${e.ty}` : it.d;
+  const name = g ? e.n : it.n, price = g ? gelPrice() : ingPrice(k), desc = g ? `${e.ap} : ${e.d}` : it.d;
   const icon = g ? gelIcon(k.slice(4)) : itemIcon(k);
   return `<div class="card row">${icon}<div class="grow"><b>${name}</b> <span class="small muted">· ×${S.stock[k]||0}</span><div class="small muted">${desc}</div></div>
     <button class="sm" data-act="buy" data-k="${k}" ${S.money<price?"disabled":""}>${price} ₽</button></div>`;
 }
 const MARKET_TABS = [
   {k:"base",n:"Bases",say:"Les bases, c'est le cœur du verre. Le lait pour réconforter, la liqueur pour réchauffer… avec modération !"},
-  {k:"gel",n:"Gelées",say:"Des gelées, comme dans les grands donjons ! Chacune a le goût d'un type. Pas chères, mais il en faut."},
+  {k:"gel",n:"Gelées",say:"Des gelées, comme dans les grands donjons ! Chacune apaise quelque chose : le chagrin, la peur, la honte… Pas chères, mais il en faut."},
   {k:"baie",n:"Baies",say:"Mes baies sont cueillies du matin. Enfin, d'un matin."},
   {k:"fruit",n:"Fruits",say:"Les pommes de Galar, très recherchées. Sucrées ou acidulées, à vous de voir."},
   {k:"garn",n:"Garnitures",say:"Le petit plus qui change tout. Le Vieux Gâteau, c'est pour les grandes occasions."},

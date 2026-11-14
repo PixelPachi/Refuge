@@ -52,8 +52,13 @@ const COG_MIDNIGHT = {
 const GEL_BASE = 15;
 function gelPrice(){ return Math.round(GEL_BASE*((typeof S!=="undefined"&&S&&S.staff&&staffOn("psykokwak"))?0.8:1)); }
 const ESS = {
-  normal:{n:"Gelée Blanche",c:"#f2efe6",ty:"Normal"}, feu:{n:"Gelée Rouge",c:"#e8463a",ty:"Feu"}, eau:{n:"Gelée Bleue",c:"#4a86e8",ty:"Eau"},
-  combat:{n:"Gelée Orange",c:"#f08a2a",ty:"Combat"}, psy:{n:"Gelée Rose",c:"#f478b8",ty:"Psy"}, vol:{n:"Gelée Ciel",c:"#8fd0f8",ty:"Vol"}
+  // ap : ce que la gelée apaise (affiché au marché et au comptoir, à la place d'un type)
+  normal:{n:"Gelée Blanche",c:"#f2efe6",ap:"Réconfort",d:"apaise ceux qui se sentent oubliés ou inutiles"},
+  feu:{n:"Gelée Rouge",c:"#e8463a",ap:"Chaleur",d:"apaise la colère et les cœurs qui se sont refroidis"},
+  eau:{n:"Gelée Bleue",c:"#4a86e8",ap:"Calme",d:"apaise l'angoisse et les larmes retenues"},
+  combat:{n:"Gelée Orange",c:"#f08a2a",ap:"Courage",d:"apaise la honte d'avoir perdu ou d'avoir fui"},
+  psy:{n:"Gelée Rose",c:"#f478b8",ap:"Douceur",d:"apaise les pensées qui tournent en rond et la peur"},
+  vol:{n:"Gelée Ciel",c:"#8fd0f8",ap:"Légèreté",d:"apaise le poids du passé et les rêves abandonnés"}
 };
 const ING = {
   eau:{n:"Eau Fraîche",cat:"base",force:0,price:0,sell:40,c:"#bfe3f2",free:true,item:"fresh-water",d:"Neutre et gratuite"},

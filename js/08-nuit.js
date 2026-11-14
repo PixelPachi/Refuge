@@ -356,7 +356,7 @@ function renderBuilder(){
     <div class="sect">1 · La base</div>
     <div class="ings">${BASES.filter(ingOk).map(k=>{const it=ING[k];const st=it.free?"":"×"+(S.stock[k]||0);const dis=(!it.free&&!S.stock[k])||(noPC&&k!=="eau");return `<button class="ing ${b.base===k?"on":""}" data-act="bBase" data-k="${k}" ${dis?"disabled":""}>${itemIcon(k)}${it.n}<span class="q2">${st}</span></button>`;}).join("")}</div>
     <div class="sect">2 · Les gelées (2 max : une = léger, deux = fort)</div>
-    <div class="ings">${Object.keys(ESS).map(k=>{const n=b.ess[k]||0;const st=S.stock["gel_"+k]||0;return `<button class="ing ${n?"on":""}" data-act="bEss" data-k="${k}" ${noPC||(!st&&!n)?"disabled":""}>${gelIcon(k)}${ESS[k].n.replace("Gelée ","")}<span class="q2">${n?n+"/":""}×${st}</span></button>`;}).join("")}</div>
+    <div class="ings">${Object.keys(ESS).map(k=>{const n=b.ess[k]||0;const st=S.stock["gel_"+k]||0;return `<button class="ing ${n?"on":""}" data-act="bEss" data-k="${k}" ${noPC||(!st&&!n)?"disabled":""}>${gelIcon(k)}${ESS[k].n.replace("Gelée ","")}<span class="gw">${ESS[k].ap}</span><span class="q2">${n?n+"/":""}×${st}</span></button>`;}).join("")}</div>
     <div class="sect">3 · Ingrédients (2 max)</div>
     <div class="ings">${adds.map(k=>{const it=ING[k];const st=S.stock[k]||0;const on=b.add.includes(k);return `<button class="ing ${on?"on":""}" data-act="bAdd" data-k="${k}" ${(!st&&!on)||noPC?"disabled":""}>${itemIcon(k)}${it.n}<span class="q2">×${st}</span></button>`;}).join("")}</div>
     ${talent()==="flambee"&&b.ctx==="client"&&!U.night.flambeeUsed?`<label class="row small" style="margin-bottom:8px"><input type="checkbox" data-act="bFlambe" ${b.flambe?"checked":""}> Flambée (1×/nuit) : double l'effet des essences</label>`:""}
