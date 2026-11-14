@@ -52,7 +52,7 @@ function drinkKey(d){
   if(!d) return null;
   if(S && S.recipes && S.recipes.includes("shake") && d.base==="lait" && d.add.includes("sitrus")) return "drink-shake";
   if(S && S.recipes && S.recipes.includes("remede") && d.base==="limonade" && d.add.includes("menthe") && d.add.includes("wiki") && ARTOK["drink-remede"]) return "drink-remede";
-  const fk = Object.keys(FAV).find(k=>orderMatch(FAV[k], d));
+  const fk = Object.keys(FAV).find(k=>orderMatch(FAV[k], d)) || Object.keys(SOUL_FAV).find(k=>orderMatch(SOUL_FAV[k], d));
   if(fk) return "drink-fav-"+fk;
   const f=drinkFlavor(d);
   if(f && ARTOK[`drink-${d.base}-${f}`]) return `drink-${d.base}-${f}`;
@@ -62,7 +62,7 @@ function drinkName(d){
   const k=drinkKey(d)||"";
   if(k==="drink-shake") return "Protéine Shake de Machopeur";
   if(S && S.recipes && S.recipes.includes("remede") && d.base==="limonade" && d.add.includes("menthe") && d.add.includes("wiki")) return "Remède de Psykokwak";
-  if(k.startsWith("drink-fav-")){ const n=FAV[k.slice(10)].n.replace(/^(le |la |l')/,""); return n.charAt(0).toUpperCase()+n.slice(1); }
+  if(k.startsWith("drink-fav-")){ const n=anyFav(k.slice(10)).n.replace(/^(le |la |l')/,""); return n.charAt(0).toUpperCase()+n.slice(1); }
   const f=drinkFlavor(d);
   return f && DRINK_NAMES[d.base] ? DRINK_NAMES[d.base][f] : ING[d.base].n;
 }

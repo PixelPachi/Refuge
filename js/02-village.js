@@ -10,7 +10,12 @@ const ORDERS = {
   chaglam:[{base:"eau",add:["menthe"]},{base:"limonade",add:["menthe"]},{base:"soda",add:["wiki"]}],
   wattouat:[{base:"lait",add:[]},{base:"lait",add:["miel"]},{base:"the",add:["poudremetal"]}],
   mysdibule:[{base:"soda",add:[]},{base:"soda",add:["poudre"]},{base:"limonade",add:["superbonbon"]}],
-  chetiflor:[{base:"the",add:[]},{base:"eau",add:["racine"]},{base:"the",add:["petitchampi"]}]
+  chetiflor:[{base:"the",add:[]},{base:"eau",add:["racine"]},{base:"the",add:["petitchampi"]}],
+  ponyta:[{base:"eau",add:[]},{base:"eau",add:["pommesucree"]},{base:"soda",add:["plume"]}],
+  sorbebe:[{base:"limonade",add:[]},{base:"limonade",add:["glace"]},{base:"eau",add:["fraive"]}],
+  marill:[{base:"soda",add:[]},{base:"soda",add:["oran"]},{base:"eau",add:["pecha"]}],
+  chuchmur:[{base:"the",add:[]},{base:"the",add:["miel"]},{base:"the",add:["ceriz"]}],
+  nounourson:[{base:"jusbaie",add:[]},{base:"jusbaie",add:["miel"]},{base:"lait",add:["miel"]}]
 };
 const ART = {the:"un Thé de Safrania",eau:"une Eau Fraîche",lait:"un Lait Meumeu",soda:"un Soda Cool",limonade:"une Limonade",liqueur:"une Liqueur de Baie Ceriz"};
 function orderAsk(v){ const o=orderText(U.order);
@@ -33,8 +38,27 @@ const FAV = {
   wattouat:{n:"le Bol du Berger",base:"lait",add:["poudremetal","miel"],say:"<i>Sa laine crépite doucement, pleine d'électricité statique.</i> Chez nous, à la bergerie, on boit le Bol du Berger : un Lait Meumeu avec des Flocons d'Avoine et du Miel. Ça réchauffe jusqu'au bout de la laine !"},
   mysdibule:{n:"la Bombe Pétillante",base:"soda",add:["poudre","superbonbon"],say:"<i>Sa grande mâchoire arrière claque, gourmande.</i> Mon secret de pâtissière ? La Bombe Pétillante : un Soda Cool avec du Sucre Pétillant et un Super Bonbon. Ça pique la langue et ça fait rire !"},
   chetiflor:{n:"l'Infusion du Sous-Bois",base:"the",add:["racine","petitchampi"],say:"<i>Il se balance doucement, comme une fleur dans le vent.</i> Mon infusion préférée… l'Infusion du Sous-Bois. Un Thé de Safrania avec une Racine Énergie et un Petit Champi. Ça sent la forêt après la pluie."},
+  ponyta:{n:"le Galop Doré",base:"eau",add:["plume","pommesucree"],say:"<i>Sa crinière de flammes se met à danser.</i> Avant chaque tournée de diligence, je bois le Galop Doré : de l'Eau Fraîche avec du Gingembre Confit et de la Pomme Sucrée. Ça donne des ailes aux sabots !"},
+  sorbebe:{n:"le Sorbet Givré",base:"limonade",add:["glace","fraive"],say:"<i>Un petit flocon tombe de sa tête dans ton verre.</i> Oups ! Mon péché mignon, c'est le Sorbet Givré : une Limonade avec de la Glace Volute et de la Baie Fraive. Comme ma charrette à glaces, mais à boire !"},
+  marill:{n:"la Bulle du Lac",base:"soda",add:["pecha","oran"],say:"<i>Elle fait rebondir sa queue en forme de bulle.</i> Moi, j'adore la Bulle du Lac ! Un Soda Cool avec de la Baie Pêcha et de la Baie Oran. Ça fait des bulles partout, comme quand je plonge !"},
+  chuchmur:{n:"le Thé du Crieur",base:"the",add:["ceriz","plume"],say:"<i>Il prend une grande inspiration… puis se retient de crier.</i> (tout bas) Pour ma voix, je bois le Thé du Crieur : un Thé avec de la Baie Ceriz et du Gingembre Confit. Après, je peux annoncer les nouvelles jusqu'au bout du village !"},
+  nounourson:{n:"le Pot de Miel",base:"jusbaie",add:["miel","muffin"],say:"<i>Il lèche sa patte pleine de miel, gêné.</i> Le Pot de Miel… c'est un Jus de Baies avec beaucoup de Miel et un Muffin dedans. Le boulanger dit que c'est trop sucré. Moi je dis que c'est parfait."},
   pijako:{n:"le Cocktail Perroquet",base:"limonade",add:["framby"],say:"<i>Il gonfle ses plumes.</i> Pijako adore Limonade et Baie Framby ! Limonade et Baie Framby !"}
 };
+// Boissons uniques de huit âmes : elles la confient à 3 cœurs d'affinité ; la leur servir rapporte un gros pourboire.
+const SOUL_FAV = {
+  ronflex:{n:"la Sieste Éternelle",base:"lait",add:["gateau","pommesucree"],say:"<i>Il bâille si fort que les verres tintent.</i> Tu veux savoir ? Le secret d'une bonne sieste… c'est la Sieste Éternelle. Un Lait Meumeu avec du Vieux Gâteau et de la Pomme Sucrée. Après ça… zzz… on dort comme un bébé."},
+  rondoudou:{n:"la Berceuse Rose",base:"limonade",add:["kika","miel"],say:"<i>Elle fredonne tout bas.</i> Quand je chante, après, j'ai la gorge toute sèche. Alors je bois la Berceuse Rose : une Limonade avec de la Baie Kika et du Miel. C'est doux comme une chanson."},
+  magicarpe:{n:"le Grand Saut",base:"soda",add:["oran","fraive"],say:"<i>Il fait un petit bond sur son tabouret.</i> Le Grand Saut ! Un Soda Cool avec de la Baie Oran et de la Baie Fraive. Ça pétille tellement qu'on a l'impression de pouvoir sauter jusqu'à la lune !"},
+  goupix:{n:"la Flamme aux Six Queues",base:"liqueur",add:["mepo","ceriz"],say:"<i>Ses six queues frémissent.</i> Chez nous, au terrier, on se réchauffait avec la Flamme aux Six Queues : une Liqueur avec de la Baie Mepo et de la Baie Ceriz. Ça brûle un peu, et après on n'a plus jamais froid."},
+  lokhlass:{n:"le Chant des Vagues",base:"eau",add:["glace","fraive"],say:"<i>Elle ferme les yeux, comme si elle entendait la mer.</i> Le Chant des Vagues. De l'Eau Fraîche, de la Glace Volute et de la Baie Fraive. Ça a le goût du large, le jour où j'ai retrouvé ma route."},
+  ramoloss:{n:"la Grande Flemme",base:"the",add:["eaumystique","pommesucree"],say:"<i>Il met un très, très long moment à répondre.</i> … La Grande Flemme. Un Thé avec de l'Eau Mystique… et de la Pomme Sucrée. On la boit… lentement. Très lentement. C'est tout l'intérêt."},
+  evoli:{n:"l'Arc des Évolutions",base:"limonade",add:["sitrus","pomroz","baieprine"],say:"<i>Ses oreilles se dressent, toutes contentes.</i> Mon préféré, c'est l'Arc des Évolutions ! Une Limonade avec de la Baie Sitrus, de la Baie Pomroz et de la Baie Prine. Trois couleurs, comme tous les chemins que je pourrai prendre un jour."},
+  jirachi:{n:"le Vœu des Mille Ans",base:"jusbaie",add:["sable","coeursucre"],say:"<i>Ses petites bandelettes flottent doucement.</i> Une fois tous les mille ans, je bois le Vœu des Mille Ans : un Jus de Baies avec du Sablé et du Cœur Sucré. Mais pour toi… je veux bien en boire un peu plus souvent."}
+};
+function soulFavKnown(k){ return S.soulFav && S.soulFav[k]; }
+// toutes les boissons fétiches, villageois et âmes
+function anyFav(k){ return FAV[k] || SOUL_FAV[k]; }
 function favKnown(k){ return S.villFav && S.villFav[k]; }
 function orderShort(o){ return o ? [ING[o.base].n].concat(o.add.map(k=>ING[k].n)).join(" + ") : "n'importe quoi"; }
 function orderMatch(o, d){ return !o || (d.base===o.base && o.add.every(k=>d.add.includes(k))); }
@@ -48,6 +72,13 @@ const VILLAGERS = [
   {key:"wattouat",id:179,season:3,n:"Wattouat",c:"#f0e8b0",line:"<i>Elle entre en trottinant, et sa laine fait se dresser les cheveux de tout le monde près de la porte.</i> Bêêê ! Bonjour ! Je descends de la bergerie sur la colline. Il fait froid, là-haut… Tu as quelque chose de chaud ?",want:d=>d.base==="lait"||d.base==="the",ok:"<i>Elle boit à petites gorgées, et sa laine se met à briller doucement.</i> Oh, ça réchauffe… Je vais faire des étincelles toute la journée !",ko:"<i>Elle frissonne.</i> Bêê… c'est un peu froid, ça. Tant pis, je garderai ma laine bien serrée."},
   {key:"mysdibule",id:303,season:5,n:"Mysdibule",c:"#a8a0a8",line:"<i>Elle pose sur le comptoir une boîte de petits gâteaux, et sa grande mâchoire arrière sourit toute seule.</i> Bonjour ! J'ai ouvert la pâtisserie près de la fontaine. J'ai goûté à tout le village, il me manquait ta taverne !",want:d=>d.base==="soda"||d.add.some(k=>["poudre","superbonbon","biscuit","gateau"].includes(k)),ok:"<i>Sa mâchoire arrière claque de plaisir.</i> Délicieux ! Je vais en faire un gâteau, de ce verre. Si si, je trouverai comment.",ko:"<i>Elle fait la moue, polie.</i> Pas assez sucré pour moi… mais je suis difficile, c'est le métier qui veut ça."},
   {key:"chetiflor",id:69,season:8,n:"Chétiflor",c:"#88c060",line:"<i>Il entre en se balançant comme une tige dans le vent, de la terre encore sur les racines.</i> Bonjour… Je m'occupe du jardin communal. Les fleurs vont bien. Moi, j'ai soif.",want:d=>d.base==="the"||d.base==="eau",ok:"<i>Ses feuilles se déplient d'un coup, toutes vertes.</i> Ahhh… comme une bonne pluie de printemps. Merci.",ko:"<i>Ses feuilles retombent un peu.</i> C'est… gentil. Mais les racines n'aiment pas trop ça."}
+,
+  // Après la fin : la renommée de la taverne attire de nouveaux habitants à Bourg-Brume
+  {key:"ponyta",id:77,season:13,n:"Ponyta",c:"#f0a040",line:"<i>On entend un galop dans la rue, puis la porte s'ouvre sur une crinière de flammes.</i> Bonjour ! Je conduis la nouvelle diligence entre Bourg-Brume et la côte. Avec tous ces voyageurs, je n'arrête plus de galoper !",want:d=>d.base==="eau"||d.base==="soda",ok:"<i>Sa crinière flambe de plaisir.</i> Parfait ! Je repars à fond de train !",ko:"<i>Elle piaffe, un peu déçue.</i> Bon… ça ira pour une étape."},
+  {key:"sorbebe",id:582,season:13,n:"Sorbébé",c:"#c8e8f8",line:"<i>Une petite charrette à glaces s'arrête devant la porte, et un minuscule cornet de glace entre en souriant.</i> Bonjour ! Je vends des glaces sur la place, maintenant qu'il y a du monde. Mais moi aussi, j'ai le droit d'avoir soif !",want:d=>d.base==="limonade"||d.add.includes("glace"),ok:"<i>De petits flocons tombent autour d'elle.</i> Rafraîchissant ! Je vais en faire un parfum de glace.",ko:"<i>Elle fond un tout petit peu.</i> C'est un peu chaud, pour moi…"},
+  {key:"marill",id:183,season:13,n:"Marill",c:"#5890e0",line:"<i>Elle entre en rebondissant sur sa queue ronde comme une balle.</i> Coucou ! Je fais traverser le lac aux voyageurs, sur mon radeau. Ils me parlent tous de ta taverne, alors je suis venue voir !",want:d=>d.base==="soda"||d.base==="eau",ok:"<i>Elle rebondit de joie.</i> Ça pétille comme le lac au soleil !",ko:"<i>Ses oreilles se baissent.</i> Hmm… pas tout à fait ce que j'imaginais."},
+  {key:"chuchmur",id:293,season:13,n:"Chuchmur",c:"#d8a8d0",line:"<i>Il entre sur la pointe des pieds… puis ne peut pas s'empêcher.</i> OYEZ, OYEZ ! … Pardon. Je suis le nouveau crieur public. Avec tous ces visiteurs, il faut bien quelqu'un pour annoncer les nouvelles.",want:d=>d.base==="the",ok:"<i>Il prend une grande inspiration.</i> EXCELLENT ! … pardon. Excellent.",ko:"<i>Il chuchote, vexé.</i> Bof. Ça ne fera pas une grande nouvelle."},
+  {key:"nounourson",id:216,season:13,n:"Nounourson",c:"#b07040",line:"<i>Il entre en serrant contre lui un pot vide, la truffe pleine de farine.</i> B-bonjour… Je suis l'apprenti du nouveau boulanger. J'ai fini ma fournée. Est-ce que vous avez quelque chose… de sucré ?",want:d=>d.add.includes("miel")||d.base==="jusbaie",ok:"<i>Il serre son pot, les yeux brillants.</i> C'est sucré ! C'est trop bien !",ko:"<i>Il regarde le fond de son verre.</i> Il manque… du miel. Mais merci quand même."}
 ];
 // Cadoizo, le facteur (saison 2) : il apporte les lettres des âmes apaisées
 

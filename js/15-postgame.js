@@ -2,7 +2,7 @@
 // Après la saison 12 : plus de service de nuit. Le jour, n'importe quel habitant peut passer (âmes apaisées, villageois,
 // voyageurs venus des quatre coins du monde). La nuit, la Faille ouvre un donjon inconnu, tiré au hasard,
 // où l'on envoie l'âme apaisée de son choix, ou le Tenancier lui-même. Les clients peuvent arriver chromatiques (1 chance sur 25).
-const PG_GUESTS = 4;
+const PG_GUESTS = 5;
 const SHINY_RATE = 1/25;
 function wst(k){ if(!S.clients[k]) S.clients[k]={aff:0,state:"world",carryOuv:0,carryTen:0,visits:0,shake:false}; return S.clients[k]; }
 function giftOwners(){ return typeof WORLD_ORDER!=="undefined" ? CLIENT_ORDER.concat(WORLD_ORDER) : CLIENT_ORDER; }
@@ -47,7 +47,7 @@ function pgPickGuests(){
   world.slice(0,nw).forEach(k=>{ guests.push(pgGuest(k)); used.add(k); });
   // des âmes apaisées, n'importe lesquelles
   souls.filter(k=>!used.has(k)).slice(0, 1+rnd(2)).forEach(k=>{ if(guests.length<PG_GUESTS){ guests.push(pgGuest(k)); used.add(k); } });
-  const pool = shuffle(VILLAGERS.slice(1));
+  const pool = shuffle(VILLAGERS.slice());
   while(guests.length<PG_GUESTS && pool.length) guests.push(villGuest(pool.shift()));
   U.day = {guests: shuffle(guests), i:0};
   U.dayNight=S.night;

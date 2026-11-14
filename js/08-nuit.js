@@ -315,11 +315,13 @@ function reachConfidence(msg){
   cry(d.id,"",true);
   playDialog(lines, ()=>{ U.night.idx++; nextClient(); }, ()=>renderClientScene());
 }
+function soulFavCheck(k, lines){ const st=S.clients[k], d=CL[k]; if(!(st && st.aff>=3 && SOUL_FAV[k] && !soulFavKnown(k))) return; S.soulFav=S.soulFav||{}; S.soulFav[k]=true; lines.push({who:clientSp2(k),t:SOUL_FAV[k].say},{who:"narr",t:`${drinkIcon(SOUL_FAV[k],"big")}Boisson unique de ${d.n} notée au Registre : <b>${SOUL_FAV[k].n}</b> (${orderShort(SOUL_FAV[k])}).`}); }
 function gainAff(k, lines){
   const st=S.clients[k], d=CL[k];
   if(st.aff>=AFF_MAX) return;
   st.aff++;
   lines.push({who:"narr",t:`Affinité avec ${d.n} : ${hearts(st.aff)}`});
+  soulFavCheck(k, lines);
   if(st.aff===2 && d.affCard && !st.affCardGiven){ st.affCardGiven=true; ensureDeck(); deckAdd(d.affCard); lines.push({who:clientSp2(k),t:`Tiens. Chez moi, on offre ça aux gens qu'on aime bien. Garde-la.`},{who:"narr",t:`<div class="giftcard"><span class="small">Carte de voyageur, rien qu'à ${d.n} :</span>${cardHTML(d.affCard)}</div>`}); }
   if(st.aff===2 && d.recipe && !S.recipes.includes(d.recipe.key)){ S.recipes.push(d.recipe.key); lines.push({who:clientSp2(k),t:`Tiens, je te donne ma recette. <b>${d.recipe.n}</b> : ${d.recipe.d}.`}); }
   relicInit();

@@ -89,7 +89,7 @@ function buy(k){
   S.money-=price; S.stock[k]=(S.stock[k]||0)+1; renderMarket();
   const el=document.querySelector(".pad.scroll"); if(el) el.scrollTop=y;
 }
-function regularGuest(k){ const d=CL[k], r=REGULARS[k]; return {key:k, regular:k, id:d.id, n:d.n, c:d.c, line:r.line, ok:r.ok, ko:r.ko, order:r.order}; }
+function regularGuest(k){ const d=CL[k], r=REGULARS[k]; const fav=SOUL_FAV[k]&&soulFavKnown(k)&&Math.random()<0.35; return {key:k, regular:k, id:d.id, n:d.n, c:d.c, line:r.line, ok:r.ok, ko:r.ko, order:fav?{base:SOUL_FAV[k].base,add:SOUL_FAV[k].add.slice()}:r.order}; }
 function villGuest(v){ const list=ORDERS[v.key]; return Object.assign({}, v, {order: list ? list[rnd(list.length)] : null}); }
 function pickVillager(){
   if(U.day && U.dayNight===S.night){ return; }
@@ -169,7 +169,7 @@ function renderVillager(){
   ${!S.tutoDone?`<div class="small muted center">Choisis une base, des gelées et jusqu'à 2 ingrédients. Puis trois gestes : maintenir, tapoter, glisser.</div>`:""}</div>`;
 }
 function villagerServed(res){
-  const v=U.vill, o=U.order, fav=v.regular?null:FAV[v.key], isFav=!!fav && orderMatch(fav, res.drink), ok=orderMatch(o, res.drink);
+  const v=U.vill, o=U.order, fav=v.regular?(soulFavKnown(v.regular)?SOUL_FAV[v.regular]:null):FAV[v.key], isFav=!!fav && orderMatch(fav, res.drink), ok=orderMatch(o, res.drink);
   let price = ING[res.drink.base].sell;
   let bonus = ok && o ? Math.round(price*0.5) + 10*o.add.length : 0;
   let tip = res.q==="P" ? price : res.q==="J" ? Math.round(price*0.5) : 0;
@@ -184,10 +184,10 @@ function villagerServed(res){
   if(!S.tutoDone) lines.push({who:"cog",t: res.q==="P" ? "Un verre parfait ! Ça rapporte le double. On fait une sacrée équipe." : res.q==="J" ? "Pas mal du tout ! Avec des gestes parfaits, le pourboire aurait doublé." : "Aïe, un verre raté : pas de pourboire. On fera mieux la prochaine fois !"});
   if(v.regular){
     const st=S.clients[v.regular]; st.dayVisits=(st.dayVisits||0)+1;
-    if(ok && res.q!=="R"){ const before=st.aff; gainAff(v.regular, lines); if(st.aff===before) lines.push({who:"narr",t:`${v.n} est déjà l'un${CL[v.regular].fem?"e":""} de tes plus fidèles habitué${CL[v.regular].fem?"e":""}s. (Affinité ${hearts(st.aff)})`}); }
+    if(ok && res.q!=="R"){ const before=st.aff; gainAff(v.regular, lines); soulFavCheck(v.regular, lines); if(st.aff===before) lines.push({who:"narr",t:`${v.n} est déjà l'un${CL[v.regular].fem?"e":""} de tes plus fidèles habitué${CL[v.regular].fem?"e":""}s. (Affinité ${hearts(st.aff)})`}); }
     else lines.push({who:"narr",t: ok ? "Le verre est raté : l'affinité ne bouge pas cette fois." : "Ce n'était pas sa commande : l'affinité ne bouge pas cette fois."});
   }
-  if(fav && !favKnown(v.key)){ S.villFav=S.villFav||{}; S.villFav[v.key]=true; lines.push({who:{id:v.id,n:v.n},t:fav.say}); lines.push({who:"narr",t:`Boisson fétiche de ${v.n} notée : ${fav.n} (${orderShort(fav)}).`}); }
+  if(fav && !v.regular && !favKnown(v.key)){ S.villFav=S.villFav||{}; S.villFav[v.key]=true; lines.push({who:{id:v.id,n:v.n},t:fav.say}); lines.push({who:"narr",t:`Boisson fétiche de ${v.n} notée : ${fav.n} (${orderShort(fav)}).`}); }
   if((ok||isFav) && v.rumor){
     const k = CLIENT_ORDER.find(k=>isAvailable(k));
     if(k) lines.push({who:{id:v.id,n:v.n},t:`Il paraît qu'un certain ${CL[k].n} traîne à la taverne la nuit. Mon petit doigt me dit : ${CL[k].hints[CL[k].hints.length-1].toLowerCase()} Je dis ça, je dis rien.`});

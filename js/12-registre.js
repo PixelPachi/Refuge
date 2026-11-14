@@ -28,7 +28,7 @@ function bookPages(){
     add("c-"+k,"habitues",`N°${String(i+1).padStart(3,"0")} · ${d.n}`,regEntry(k)); });
   // villageois
   S.villLeg=S.villLeg||{};
-  add("villageois","villageois","Les villageois",VILLAGERS.map(v=>`<div class="brow" style="margin-bottom:8px"><div class="bspr sm">${sprite(v.id,v.n,v.c,{anim:false})}</div><div><b>${v.n}</b>${S.villLeg[v.key]?` <span class="bleg">★ légendaire offerte</span>`:""}<br><small>Boisson fétiche : ${favKnown(v.key)?`${drinkIcon(FAV[v.key],"sm")}${FAV[v.key].n} (${orderShort(FAV[v.key])})`:"pas encore découverte"}</small></div></div>`).join("")+`<p class="bnote">Bien servis, les villageois offrent une carte. Très rarement, leur carte légendaire.</p>`);
+  add("villageois","villageois","Les villageois",VILLAGERS.filter(v=>v.season!==13||S.pg).map(v=>`<div class="brow" style="margin-bottom:8px"><div class="bspr sm">${sprite(v.id,v.n,v.c,{anim:false})}</div><div><b>${v.n}</b>${S.villLeg[v.key]?` <span class="bleg">★ légendaire offerte</span>`:""}<br><small>Boisson fétiche : ${favKnown(v.key)?`${drinkIcon(FAV[v.key],"sm")}${FAV[v.key].n} (${orderShort(FAV[v.key])})`:"pas encore découverte"}</small></div></div>`).join("")+`<p class="bnote">Bien servis, les villageois offrent une carte. Très rarement, leur carte légendaire.</p>`);
   recipePages(add);
   pgRegPages(add);
   // souvenirs
@@ -181,12 +181,17 @@ function recipePages(add){
   const recipeDrink={shake:{base:"lait",add:["sitrus"]},remede:{base:"limonade",add:["menthe","wiki"]}};
   const recs=all.map(r=>{ const own=S.recipes.includes(r.key), d=recipeDrink[r.key];
     return `<div class="brow" style="margin-bottom:8px"><div class="bspr sm">${own&&d?drinkIcon(d):"❔"}</div><div><b>${own?r.n:"Recette inconnue"}</b><br><small>${own?r.d:"Offerte par une âme apaisée qui t'apprécie (2 cœurs)."}</small></div></div>`; }).join("");
-  const favs=VILLAGERS.filter(v=>FAV[v.key]).map(v=>{ const f=FAV[v.key], k=favKnown(v.key);
+  const VV=VILLAGERS.filter(v=>v.season!==13||S.pg);
+  const favs=VV.filter(v=>FAV[v.key]).map(v=>{ const f=FAV[v.key], k=favKnown(v.key);
     return `<div class="brow" style="margin-bottom:8px"><div class="bspr sm">${k?drinkIcon(f):"❔"}</div><div><b>${k?f.n[0].toUpperCase()+f.n.slice(1):"???"}</b> · <small>${v.n}</small><br><small>${k?orderShort(f):"Sers bien "+v.n+" pour qu'il te confie sa boisson préférée."}</small></div></div>`; }).join("");
-  const nFav=VILLAGERS.filter(v=>FAV[v.key]&&favKnown(v.key)).length, nFavT=VILLAGERS.filter(v=>FAV[v.key]).length;
+  const souls=Object.keys(SOUL_FAV).map(k=>{ const f=SOUL_FAV[k], kn=soulFavKnown(k), d=CL[k];
+    return `<div class="brow" style="margin-bottom:8px"><div class="bspr sm">${kn?drinkIcon(f):"❔"}</div><div><b>${kn?f.n[0].toUpperCase()+f.n.slice(1):"???"}</b> · <small>${d.n}</small><br><small>${kn?orderShort(f):"Une âme qui te fait confiance (3 cœurs) te confiera sa recette."}</small></div></div>`; }).join("");
+  const nSoul=Object.keys(SOUL_FAV).filter(soulFavKnown).length;
+  const nFav=VV.filter(v=>FAV[v.key]&&favKnown(v.key)).length, nFavT=VV.filter(v=>FAV[v.key]).length;
   add("recettes","recettes","Recettes et boissons fétiches",`<div class="bh">Recettes offertes · ${S.recipes.length}/${all.length}</div>${recs}
     <div class="bh">Boissons fétiches des villageois · ${nFav}/${nFavT}</div>${favs}
-    <p class="bnote">Une boisson fétiche servie à son villageois rapporte un gros pourboire.</p>`);
+    <p class="bnote">Une boisson fétiche servie à celui ou celle qui l'aime rapporte un gros pourboire.</p>`);
+  add("recettesames","recettes",`Boissons uniques des âmes · ${nSoul}/${Object.keys(SOUL_FAV).length}`,`<p class="bnote">Huit âmes ont leur propre boisson. Elles te confient la recette quand elles te font vraiment confiance, puis la commandent de temps en temps.</p>${souls}`);
   // carte des boissons : chaque base, nature et dans ses six couleurs
   let made=0, tot=0;
   const rows=DRINK_BASES.filter(b=>ING[b]).map(b=>{ const cells=[null].concat(Object.keys(FLAVOR_LABEL)).map(f=>{ const key=f?`drink-${b}-${f}`:`drink-${b}`; if(!ARTOK[key]) return ""; tot++; const ok=book[key]; if(ok) made++;
