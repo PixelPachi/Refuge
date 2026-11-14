@@ -1,6 +1,6 @@
 // ---------- Actions ----------
 const ACT = {
-  newGame:()=>{ closeModal(); clearSave(); startNew(); }, newGameAsk:()=>newGameAsk(),
+  newGame:()=>{ closeModal(); clearSave(); startNew(); }, startPostgame:()=>startPostgame(), pgGo:(ds)=>pgGo(ds.k), pgSleep:()=>pgSleep(), newGameAsk:()=>newGameAsk(),
   saveCodeOpen:()=>saveCodeModal(), saveCodeCopy:()=>saveCodeCopy(), loadCodeOpen:()=>loadCodeModal(), loadCodeGo:()=>loadCodeGo(),
   continue:()=>{ const sv=loadSave(); if(!sv) return; S=sv; CLIENT_ORDER.forEach(k=>{ if(!S.clients[k]) S.clients[k]={aff:0,state:"new",carryOuv:0,carryTen:0,visits:0,shake:false}; }); U={}; if(S.seasonOver) endSeason(); else startDay(); },
   toggleSound:()=>{ if(!S){ S=newState(); } S.settings.sound=!S.settings.sound; if(S.ten){ showMenu(); } else screenTitle(); },
@@ -31,7 +31,7 @@ const ACT = {
   cineSkip:()=>{ if(U.cineNext) U.cineNext(); },
   fire:(ds)=>{ const k=ds.k; S.staff=S.staff.filter(x=>x!==k); S.clients[k].state="apaise"; toast(`${CL[k].n} quitte son poste. Il passera de temps en temps, en habitué.`); renderRecap(); },
   postOpen:()=>postPicker(),
-  invite:(ds)=>{ if(S.money<20||S.invite) return; S.money-=20; S.invite=ds.k; save(); closeModal(); toast(`Lettre confiée à Cadoizo pour ${CL[ds.k].n}.`); renderRecap(); },
+  invite:(ds)=>{ if(S.money<20||S.invite) return; S.money-=20; S.invite=ds.k; save(); closeModal(); toast(`Lettre confiée à Cadoizo pour ${CL[ds.k].n}.`); if(S.pg) renderPgNight(); else renderRecap(); },
   relicInfo:(ds)=>{ const D=U.dawn, g=allRelics().find(g=>g.key===ds.k); D.relicInfo = D.relicKey===ds.k&&D.relicInfo ? null : `${relicIc(g)} <b>${g.n}</b> : ${g.d}${ds.k==='collier'&&D.collierUsed?' <i>(déjà utilisé)</i>':''}`; D.relicKey=ds.k; renderDungeon(); },
   finaleGo:()=>finaleGo(), cogPick:(ds)=>cogPickToggle(Number(ds.i)), miaPick:(ds)=>miaPick(ds.c), finaleSkip:()=>{ S.finale=S.finale||{}; S.finale[S.season||1]="skip"; endSeason(); },
   goPath:(ds)=>enterNode(ds.t), restPick:(ds)=>restPick(ds.k), eventPick:(ds)=>eventPick(Number(ds.i)),

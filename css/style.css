@@ -689,3 +689,12 @@ body.desk .handzone{position:sticky!important;bottom:0!important;z-index:6;backg
 body.desk .handzone .dhand.fight{flex-wrap:nowrap!important;gap:6px!important;padding:14px 4px 4px!important}
 body.desk .handzone .dhand.fight .dcard{flex:1 1 0;width:auto!important;max-width:118px;min-width:0}
 body.desk .handzone .dhand.fight .dcard:not(.dragging):not(.aiming):hover{transform:translateY(-16px) scale(1.18);z-index:12}
+/* ---- Après la fin : cartes chromatiques et cartes de voyageurs ---- */
+.dcard.chroma{box-shadow:0 0 0 2px #fff6,0 0 10px 2px #b8f0ff99,inset 0 0 14px #ffffff55;background-image:linear-gradient(135deg,#ffd6f0 0%,#d6f4ff 35%,#fff7c8 65%,#e0d6ff 100%)}
+.dcard.chroma .dn{color:#5a2a7a}
+.dcard.voyage{box-shadow:0 0 0 2px #7ac8ff88}
+.dleg.chroma{color:#8a2aa8}
+.dleg.voyage{color:#1a6a9a}
+.dcard.art .dleg.chroma{background:linear-gradient(90deg,#ffc6ec,#c6f0ff,#fff2b0);color:#5a2a7a}
+.dcard.art .dleg.voyage{background:#8fd0ff;color:#0a3a5a}
+.spr.shiny img{filter:drop-shadow(0 0 4px #fff8)}

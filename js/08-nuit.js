@@ -38,7 +38,7 @@ const CINE_TOWN = `<svg class="ctown" viewBox="0 0 400 150" preserveAspectRatio=
 function cine(kind, next){
   const night = kind==="nuit", O = night && omen() ? OMENS[omen()] : null;
   const title = night ? `Nuit ${S.night}` : `Jour ${S.night}`;
-  const sub = night ? (S.night===NIGHTS_PER_SEASON?"La dernière nuit de la saison":"Minuit approche à Bourg-Brume") : "Le soleil se lève sur Bourg-Brume";
+  const sub = night ? (S.pg?"La Faille rêve sous la taverne":S.night===NIGHTS_PER_SEASON?"La dernière nuit de la saison":"Minuit approche à Bourg-Brume") : "Le soleil se lève sur Bourg-Brume";
   const el=document.createElement("div"); el.id="cine"; el.className="dncine "+(night?"to-night":"to-day"); el.dataset.act="cineSkip";
   el.innerHTML=`<div class="csky"></div><div class="cstars"></div><div class="csun"></div><div class="cmoon"></div>
     ${ARTOK["cine-"+kind]?`<img class="cimg" src="${artSrc("cine-"+kind)}" alt="">`:CINE_TOWN}
@@ -320,6 +320,7 @@ function gainAff(k, lines){
   if(st.aff>=AFF_MAX) return;
   st.aff++;
   lines.push({who:"narr",t:`Affinité avec ${d.n} : ${hearts(st.aff)}`});
+  if(st.aff===2 && d.affCard && !st.affCardGiven){ st.affCardGiven=true; ensureDeck(); S.deck.push(d.affCard); lines.push({who:clientSp2(k),t:`Tiens. Chez moi, on offre ça aux gens qu'on aime bien. Garde-la.`},{who:"narr",t:`<div class="giftcard"><span class="small">Carte de voyageur, rien qu'à ${d.n} :</span>${cardHTML(d.affCard)}</div>`}); }
   if(st.aff===2 && d.recipe && !S.recipes.includes(d.recipe.key)){ S.recipes.push(d.recipe.key); lines.push({who:clientSp2(k),t:`Tiens, je te donne ma recette. <b>${d.recipe.n}</b> : ${d.recipe.d}.`}); }
   relicInit();
   if(st.aff===AFF_MAX && d.gift && !S.owned[d.gift.key]){ const worn=gainRelic(d.gift.key); lines.push({who:clientSp2(k),t:`Je veux que tu gardes ça. Ça m'a porté chance, là-dessous.`},{who:"narr",t:`Artefact obtenu : ${d.gift.i} <b>${d.gift.n}</b> (${d.gift.d}). `+(worn?`Tu le portes : il accompagnera chaque client dans son Labyrinthe.`:`Tu portes déjà ${RELIC_MAX} artefacts : il est rangé dans le Registre, où tu peux choisir lesquels porter.`)}); }

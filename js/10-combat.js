@@ -13,6 +13,9 @@ const STATUS = {
   para:{n:"Paralysie",i:"⚡",d:v=>`à 3, il est paralysé et passe son tour (${v}/3)`},
   fear:{n:"Peur",i:"😨",d:v=>`ses coups font ${v} dégât${v>1?"s":""} de moins ; baisse de 1 à chaque tour`},
   elan:{n:"Élan",i:"🪶",d:v=>`ses attaques font +${v} dégâts ; baisse de 1 à chaque tour`},
+  poison:{n:"Poison",i:"☠️",d:v=>`perd ${v} PV au début de chaque tour, jusqu'à la fin du combat`},
+  frost:{n:"Gel",i:"❄️",d:v=>`${v} énergie de moins au prochain tour`},
+  confus:{n:"Confusion",i:"💫",d:v=>`pioche ${2*v} carte${v>1?"s":""} de moins au prochain tour`},
   str:{n:"Force",i:"💪",d:v=>`+${v} dégâts par coup`},
   weak:{n:"Faible",i:"☁️",d:v=>`fait 25 % de dégâts en moins (${v} tour${v>1?"s":""})`},
   vuln:{n:"Vulnérable",i:"💔",d:v=>`subit 50 % de dégâts en plus (${v} tour${v>1?"s":""})`}
@@ -70,7 +73,7 @@ function cardDesc(id, cd){
 const CARD_ART = new Set(ART_FILES.filter(k=>k.startsWith("card-")).map(k=>k.slice(5)));
 function cardHTML(id, opts={}){
   const c = opts.cd || CARDS[id];
-  const cls = (c.t==="atk"?"atk":c.t==="power"?"pow":c.t==="curse"?"curse":"skl")+(c.r==="legende"?" leg":"");
+  const cls = (c.t==="atk"?"atk":c.t==="power"?"pow":c.t==="curse"?"curse":"skl")+(c.r==="legende"?" leg":"")+(c.r==="chroma"?" chroma":c.r==="voyage"?" voyage":"");
   const attrs = `${opts.act?`data-act="${opts.act}" data-i="${opts.i}"`:""} ${opts.drag?`data-hi="${opts.i}" data-tgt="${opts.tgt?1:0}"`:""}`;
   const base = String(id).split(":")[0];
   // Cartes souvenir et mots-clés : un dessin commun par type d'émotion (souvenir-<émotion>), et leur propre cadre
@@ -82,11 +85,11 @@ function cardHTML(id, opts={}){
     const typ = c.r==="frag" ? `Souvenir · ${EMO[c.emo]?EMO[c.emo].n:""}` : c.r==="kw" ? "Mot-clé" : c.t==="atk"?"Attaque":c.t==="power"?"Pouvoir":c.t==="curse"?"Malédiction":"Technique";
     return `<div class="dcard art ${cls}${svArt?" sv":""} ${opts.dis?"dis":""} ${opts.eff?"eff":""}" ${attrs}>
     <img class="dart" src="assets/art/${artKey}.webp" alt="" draggable="false"><img class="dframe" src="assets/art/${svArt && ART_SET.has("frame-souvenir") ? "frame-souvenir" : `frame-${c.r==="legende"?"leg-":""}${fr}`}.webp" alt="" draggable="false">
-    ${odd?`<div class="dcost2">${c.unplayable?"–":c.x?"X":c.c}</div>`:""}${c.r==="legende"?`<div class="dleg">Légendaire</div>`:""}
+    ${odd?`<div class="dcost2">${c.unplayable?"–":c.x?"X":c.c}</div>`:""}${c.r==="legende"?`<div class="dleg">Légendaire</div>`:c.r==="chroma"?`<div class="dleg chroma">✦ Chromatique</div>`:c.r==="voyage"?`<div class="dleg voyage">Voyageur</div>`:""}
     <div class="dtxt ${(()=>{const L=String(cardDesc(id,c)).replace(/<[^>]+>/g,"").length;return L>95?"xxl":L>65?"xl":L>40?"lg":"";})()}"><div class="dn">${c.n}</div><div class="dty">${typ}</div><div class="dd">${cardDesc(id,c)}</div></div>${opts.tag?`<div class="dtag">${opts.tag}</div>`:""}</div>`;
   }
   return `<div class="dcard ${cls} ${opts.dis?"dis":""} ${opts.eff?"eff":""}" ${attrs}>
-    <div class="dcost">${c.unplayable?"–":c.x?"X":c.c}</div>${c.r==="legende"?`<div class="dleg">Légendaire</div>`:""}<div class="dic">${c.i||"✦"}</div>
+    <div class="dcost">${c.unplayable?"–":c.x?"X":c.c}</div>${c.r==="legende"?`<div class="dleg">Légendaire</div>`:c.r==="chroma"?`<div class="dleg chroma">✦ Chromatique</div>`:c.r==="voyage"?`<div class="dleg voyage">Voyageur</div>`:""}<div class="dic">${c.i||"✦"}</div>
     <div class="dn">${c.n}</div><div class="dd">${cardDesc(id,c)}</div>${opts.tag?`<div class="dtag">${opts.tag}</div>`:""}</div>`;
 }
 function addCard(id, why){ ensureDeck(); S.deck.push(id); save(); toast(`Nouvelle carte : ${CARDS[id].n}${why?` (${why})`:""}`); }
@@ -133,6 +136,7 @@ function runHPBonus(x){ const _b=runHPBonus0(x); _b.push(...relicHP()); if(S.equ
 function runHPBonus0(x){
   const st=S.clients[x.k], out=[];
   if(x.duo){ out.push({t:`Le Tenancier et ${finaleMate().n}, ensemble`, hp:20}); return out; }
+  if(x.pg && x.k==="__ten"){ out.push({t:"Le Tenancier en personne", hp:10},{t:`Niveau ${S.level}`, hp:Math.min(20,S.level*2)}); return out; }
   const obs=Math.min(2, st.obs||0);
   if(obs) out.push({t:`${obs} observation${obs>1?"s":""} en silence au comptoir`, hp:4*obs});
   if(st.aff>=1) out.push({t:`Affinité ${hearts(st.aff)}`, hp:5*st.aff});
@@ -156,7 +160,7 @@ function deckForRun(x){ const d=S.deck.slice().concat(x.hector?HECTOR_CARDS:[]);
 function setupDungeon(){
   U.inDungeon=true; ensureDeck(); relicInit();
   const D=U.dawn, x=D.list[D.i], d=CL[x.k];
-  D.finale=!!x.finale; D.map = x.finale ? (FINALE_MAPS[S.season||1] || FINALE_MAP) : null;
+  D.finale=!!x.finale; D.map = x.pg ? x.map : x.finale ? (FINALE_MAPS[S.season||1] || FINALE_MAP) : null;
   const bon=runHPBonus(x);
   const maxhp = 40 + bon.reduce((a,b)=>a+(b.hp||0),0);
   Object.assign(D,{x, node:null, prev:null, visited:[], phase:"intro", out:null, bonuses:bon, seenTypes:{}, hp:maxhp, maxhp,
@@ -176,7 +180,7 @@ function setupDungeon(){
 }
 function miniHP(hp,max,block){ const p=Math.max(0,hp)/max*100; return `<div class="minihp ${block?"sh":""}">${block?`<span class="blk">🛡${block}</span>`:""}<div class="bar"><i style="width:${p}%"></i></div></div><div class="hpt">${Math.max(0,hp)}/${max}</div>`; }
 function hpBar(hp,max,block){ const p=Math.max(0,hp)/max*100; return `<div class="hpbar"><i style="width:${p}%"></i><span>${Math.max(0,hp)}/${max}${block?` · 🛡️${block}`:""}</span></div>`; }
-function stHTML(o){ const s=[]; ["burn","seed","soak","para","fear","elan"].forEach(k=>{ if(o[k]) s.push(`<span class="st s-${k}">${STATUS[k].i}${o[k]}</span>`); }); if(o.str) s.push(`<span class="st str">💪${o.str}</span>`); if(o.weak) s.push(`<span class="st weak">☁️${o.weak}</span>`); if(o.vuln) s.push(`<span class="st vuln">💔${o.vuln}</span>`); if(o.stun) s.push(`<span class="st">💤</span>`); if(o.regen) s.push(`<span class="st str">✚${o.regen}</span>`); if(o.blockTurn) s.push(`<span class="st">🔷${o.blockTurn}</span>`); return s.join(""); }
+function stHTML(o){ const s=[]; ["burn","seed","soak","para","fear","elan","poison","frost","confus"].forEach(k=>{ if(o[k]) s.push(`<span class="st s-${k}">${STATUS[k].i}${o[k]}</span>`); }); if(o.str) s.push(`<span class="st str">💪${o.str}</span>`); if(o.weak) s.push(`<span class="st weak">☁️${o.weak}</span>`); if(o.vuln) s.push(`<span class="st vuln">💔${o.vuln}</span>`); if(o.stun) s.push(`<span class="st">💤</span>`); if(o.regen) s.push(`<span class="st str">✚${o.regen}</span>`); if(o.blockTurn) s.push(`<span class="st">🔷${o.blockTurn}</span>`); return s.join(""); }
 function enterNode(id){
   const D=U.dawn, d=CL[D.x.k], n=dmap().nodes[id];
   D.prev=D.node; D.node=id; D.visited.push(id); D.msg=null;
@@ -192,8 +196,8 @@ const DIFF = {hp:1.25, atk:1.6, hp1:1.1, atk1:1.15, hpSe:0.12, atkSe:0.05, fin:1
 function seN(){ return S.season||1; }
 function scaleHP(v){ return Math.round(v*(seN()===1?DIFF.hp1:DIFF.hp)*(1+DIFF.hpSe*(seN()-1))); }
 function scaleDmg(v){ return Math.round(v*(seN()===1?DIFF.atk1:DIFF.atk)*(1+DIFF.atkSe*(seN()-1))); }
-function scaleMoves(moves){ return moves.map(m=>Object.assign({},m, (m.a==="atk"||m.a==="def")&&m.v?{v:scaleDmg(m.v)}:{}, m.dmg?{dmg:scaleDmg(m.dmg)}:{})); }
-function makeEnemy(n,id){ const en=makeEnemy0(n,id);
+function scaleMoves(moves){ return moves.map(m=>Object.assign({},m, ["atk","def","drain","shatter","heal"].includes(m.a)&&m.v?{v:scaleDmg(m.v)}:{}, m.dmg?{dmg:scaleDmg(m.dmg)}:{})); }
+function makeEnemy(n,id){ if(U.dawn&&U.dawn.pg) return makeEnemyPG(n); const en=makeEnemy0(n,id);
   // ombre finale d'un Grand Écho : ses coups sont déjà réglés à la main pour sa saison, seul le multiplicateur de base s'applique
   if(U.dawn&&U.dawn.finale&&en.boss){ const a=DIFF.fin; en.moves=en.moves.map(m=>Object.assign({},m,(m.a==="atk"||m.a==="def")&&m.v?{v:Math.round(m.v*a)}:{},m.dmg?{dmg:Math.round(m.dmg*a)}:{})); }
   else en.moves=scaleMoves(en.moves);
@@ -239,7 +243,10 @@ function startTurn(){
   if(C.regen){ D.hp=Math.min(D.maxhp,D.hp+C.regen); }
   if(C.turn>1 && C.elan) C.elan--;
   if(C.burn){ D.hp-=C.burn; C.log=(C.log?C.log+" · ":"")+`🔥 Il brûle : -${C.burn} PV`; C.burn--; if(koCheck()) return; }
-  drawCards(5 + (C.turn===1 && S.equip.echarpe ? 2 : 0) + relicFx("draw", C, D));
+  if(C.frost){ C.energy=Math.max(1,C.energy-C.frost); C.log=(C.log?C.log+" · ":"")+`❄️ Gelé : −${C.frost} énergie`; C.frost=0; }
+  if(C.poison){ D.hp-=C.poison; C.log=(C.log?C.log+" · ":"")+`☠️ Poison : -${C.poison} PV`; if(koCheck()) return; }
+  const confus=C.confus?2*C.confus:0; C.confus=0;
+  drawCards(Math.max(1, 5 + (C.turn===1 && S.equip.echarpe ? 2 : 0) + relicFx("draw", C, D) - confus));
   renderDungeon();
 }
 function cardOf(e){ return e.id==="_x" ? e.cd : CARDS[e.id]; }
@@ -267,7 +274,7 @@ function playCard(i, tg){
   if(cd.kw){ const roomKw=(ROOM_KW[D.x.k]||{})[D.node]; if(roomKw===cd.kw){ const t=hitEnemy(10); log.push(`il reconnaît la salle ! ${t} dégâts`); } }
   if(cd.block){ C.block+=k(cd.block); }
   if(cd.dmgBlock){ const t=hitEnemy(C.block); log.push(`${t} dégâts (Bouclier)`); if(C.burnOnAtk) C.en.burn+=C.burnOnAtk; }
-  if(cd.cleanse){ C.weak=0; C.vuln=0; C.burn=0; }
+  if(cd.cleanse){ C.weak=0; C.vuln=0; C.burn=0; C.poison=0; C.frost=0; C.confus=0; }
   if(cd.steal){ const b=C.en.block||0; C.block+=b; C.en.block=0; let f=0; if(C.en.str>0){ C.en.str--; C.str++; f=1; } log.push(`vole ${b} de Bouclier${f?" et 1 Force":""}`); }
   if(cd.metronome){ const all=POOL.commune.concat(POOL.peu,POOL.rare); const pick=CARDS[all[rnd(all.length)]]; log.push(`le doigt désigne… <b>${pick.n}</b> !`); applyCard(pick, C.en, log); if(pick.blockTurn) C.blockTurn+=pick.blockTurn; if(pick.regen) C.regen+=pick.regen; }
   if(cd.thorns){ C.thorns=(C.thorns||0)+cd.thorns; }
@@ -365,6 +372,7 @@ function statusLegend(C){
   ["burn","seed","soak","para","fear"].forEach(k=>{ if(C.en[k]) rows.push(`${STATUS[k].i} <b>${STATUS[k].n} ${C.en[k]}</b> (ombre) : ${STATUS[k].d(C.en[k])}`); });
   if(C.burn) rows.push(`🔥 <b>Brûlure ${C.burn}</b> (${CL[U.dawn.x.k].n}) : ${STATUS.burn.d(C.burn)}`);
   if(C.elan) rows.push(`🪶 <b>Élan ${C.elan}</b> : ${STATUS.elan.d(C.elan)}`);
+  ["poison","frost","confus"].forEach(k=>{ if(C[k]) rows.push(`${STATUS[k].i} <b>${STATUS[k].n} ${C[k]}</b> (${CL[U.dawn.x.k].n}) : ${STATUS[k].d(C[k])}`); });
   return rows.length?`<div class="legend small">${rows.join("<br>")}</div>`:"";
 }
 function intentText(m, en){
@@ -376,6 +384,13 @@ function intentText(m, en){
   if(m.a==="weak") return `☁️ Faible${m.dmg?` · ⚔️ ${dmg(m.dmg)}`:""}`;
   if(m.a==="vuln") return `💔 Vulnérable${m.dmg?` · ⚔️ ${dmg(m.dmg)}`:""}`;
   if(m.a==="burn") return `🔥 Brûlure${m.dmg?` · ⚔️ ${dmg(m.dmg)}`:""}`;
+  if(m.a==="poison") return `☠️ Poison${m.dmg?` · ⚔️ ${dmg(m.dmg)}`:""}`;
+  if(m.a==="frost") return `❄️ Gel${m.dmg?` · ⚔️ ${dmg(m.dmg)}`:""}`;
+  if(m.a==="confus") return `💫 Confus${m.dmg?` · ⚔️ ${dmg(m.dmg)}`:""}`;
+  if(m.a==="hex") return `🌀 Maléfice${m.dmg?` · ⚔️ ${dmg(m.dmg)}`:""}`;
+  if(m.a==="drain") return `🩸 Drain ⚔️ ${dmg(m.v)}`;
+  if(m.a==="shatter") return `💥 Brise ⚔️ ${dmg(m.v)}`;
+  if(m.a==="heal") return `✚ Soin ${m.v}`;
   return "?";
 }
 function hitClient(v){
@@ -407,6 +422,13 @@ function endTurn(){
     if(m.a==="weak"){ C.weak+=m.v; if(m.dmg) t=hitClient(m.dmg); log=`${en.n} le fait douter : Faible${t?`, ${t} dégâts`:""}.`; }
     if(m.a==="vuln"){ C.vuln+=m.v; if(m.dmg) t=hitClient(m.dmg); log=`${en.n} l'effraie : Vulnérable${t?`, ${t} dégâts`:""}.`; }
     if(m.a==="burn"){ C.burn+=m.v; if(m.dmg) t=hitClient(m.dmg); log=`${en.n} le brûle de colère : Brûlure ${m.v}${t?`, ${t} dégâts`:""}.`; }
+    if(m.a==="poison"){ C.poison=(C.poison||0)+m.v; if(m.dmg) t=hitClient(m.dmg); log=`${en.n} l'empoisonne : Poison ${C.poison}${t?`, ${t} dégâts`:""}.`; }
+    if(m.a==="frost"){ C.frost=(C.frost||0)+m.v; if(m.dmg) t=hitClient(m.dmg); log=`${en.n} le glace : −${m.v} énergie au prochain tour${t?`, ${t} dégâts`:""}.`; }
+    if(m.a==="confus"){ C.confus=(C.confus||0)+m.v; if(m.dmg) t=hitClient(m.dmg); log=`${en.n} le désoriente : il piochera moins${t?`, ${t} dégâts`:""}.`; }
+    if(m.a==="hex"){ for(let h=0;h<m.v;h++) C.draw.splice(rnd(C.draw.length+1),0,{id:"doute"}); if(m.dmg) t=hitClient(m.dmg); log=`${en.n} murmure une malédiction : un Doute se glisse dans sa pioche${t?`, ${t} dégâts`:""}.`; }
+    if(m.a==="drain"){ t=hitClient(m.v); const h=Math.min(t,en.maxhp-en.hp); en.hp+=h; log=`${en.n} draine ses forces : ${t} dégâts${h?`, et récupère ${h} PV`:""}.`; }
+    if(m.a==="shatter"){ const b=C.block; C.block=0; t=hitClient(m.v); log=`${en.n} brise sa garde${b?` (−${b} Bouclier)`:""} : ${t} dégâts.`; }
+    if(m.a==="heal"){ const h=Math.min(m.v,en.maxhp-en.hp); en.hp+=h; log=`${en.n} se referme sur elle-même : +${h} PV.`; }
     en.mi++;
   }
   if(en.weak) en.weak--; if(en.vuln) en.vuln--; if(en.soak) en.soak--; if(en.fear) en.fear--;
@@ -433,7 +455,7 @@ function koCheck(){
   loseRun(); return true;
 }
 const RELIC_EXTRA=[{key:"faille",n:"Éclat de la Faille",i:"🔮",d:"Le client descend avec +6 PV dans chaque Labyrinthe"}];
-function allRelics(){ return CLIENT_ORDER.map(c=>CL[c].gift).filter(Boolean).concat(RELIC_EXTRA); }
+function allRelics(){ return giftOwners().map(c=>CL[c].gift).filter(Boolean).concat(RELIC_EXTRA); }
 function relicIc(g){ return ARTOK['relic-'+g.key] ? `<img class="relimg" src="${artSrc('relic-'+g.key)}" alt="">` : g.i; }
 function relicList(){ const r=allRelics().filter(g=>S.equip[g.key]); return r.length?`<div class="px" style="color:var(--candle);margin-top:8px">Artefacts</div>${r.map(g=>`<div class="small" style="margin-top:3px">${g.i} <b>${g.n}</b> : ${g.d}</div>`).join("")}`:""; }
 function relicBar(){ const r=allRelics().filter(g=>S.equip[g.key]); return r.length?`<div class="relics">${r.map(g=>`<span class="relic ${g.key==='collier'&&U.dawn&&U.dawn.collierUsed?'used':''}" title="${g.n} : ${g.d}" data-act="relicInfo" data-k="${g.key}">${relicIc(g)}</span>`).join("")}</div>`:""; }
@@ -497,13 +519,14 @@ function renderDungeon(){
   if(U.dlg){ body = dialogBubble(); }
   else if(D.phase==="intro"){
     const deck=D.run.length;
-    body = `<div class="card"><div class="px" style="color:var(--candle)">Ce que tu as appris au comptoir</div>
+    body = `<div class="card"><div class="px" style="color:var(--candle)">${D.pg?"Avant de descendre":"Ce que tu as appris au comptoir"}</div>
       ${D.bonuses.map(b=>`<div class="small" style="margin-top:4px">${b.hp>0?`<b style="color:var(--good)">+${b.hp} PV</b>`:b.hp<0?`<b style="color:var(--bad)">${b.hp} PV</b>`:"•"} ${b.t}</div>`).join("")}
       ${relicList()}
       <div class="small" style="margin-top:6px">PV de ${d.n} : <b>${D.maxhp}</b> · Deck : <b>${deck} cartes</b> dont <b>${D.run.filter(e=>e.id==="_x").length}</b> souvenirs et mots-clés</div>
+      ${D.pg?`<div class="small" style="margin-top:8px;color:#c9a8ff">✦ <b>Un donjon rêvé par la Faille</b> : des salles venues de tous les Labyrinthes, des ombres au hasard. Méfie-toi de leurs nouveaux tours : ☠️ poison, ❄️ gel, 💫 confusion, 🌀 malédiction, 🩸 drain, 💥 brise-garde.</div>`:""}
       ${D.finale?`<div class="small" style="margin-top:8px;color:#c9a8ff">🌀 <b>Le Grand Écho</b> : toutes les âmes de la saison ont laissé une trace ici. <b>Tous les souvenirs</b> de la saison sont utilisables, quel que soit leur propriétaire.</div>`:""}
       <div class="small" style="margin-top:6px;color:#e9b8ff">💠 Chaque souvenir ne sert qu'<b>une fois</b> : joué, il disparaît. Ceux qui ne sont pas utilisés s'évanouissent à la fin de ce Labyrinthe.</div>
-      <div class="small muted" style="margin-top:8px;border-top:1px solid #4a3324;padding-top:6px">Il affronte les ombres de son passé avec ton deck. S'il tombe à 0 PV, il remonte et le Labyrinthe est un échec.</div></div>
+      <div class="small muted" style="margin-top:8px;border-top:1px solid #4a3324;padding-top:6px">${D.pg?"Il affronte les ombres de la Faille avec ton deck.":"Il affronte les ombres de son passé avec ton deck."} S'il tombe à 0 PV, il remonte et le Labyrinthe est un échec.</div></div>
       <div class="row"><button class="alt grow" data-act="showRunDeck">Voir le deck</button><button class="grow" data-act="dStart">Commencer la descente</button></div>`;
   } else if(D.phase==="combat"){
     const C=D.combat, en=C.en, m=en.moves[en.mi%en.moves.length];
@@ -545,7 +568,7 @@ function renderDungeon(){
       bottom: ev.done?`<div class="rnarr">${ev.done}</div><button class="rbtn go" data-act="leaveRoom">Continuer</button>`:
       ev.opts.map((o,i)=>`<button class="rbtn" data-act="eventPick" data-i="${i}"><span>${o.l}</span></button>`).join("")});
   } else if(D.phase==="bosswin"){
-    body = roomScene(n,{bottom:`<div class="rnarr">L'ombre vacille, puis se défait en une pluie de lumière. Au centre de la salle, le Cœur du Regret s'illumine. ${d.n} le regarde enfin en face.</div><button class="rbtn go" data-act="dRunEnd">Voir le résultat</button>`});
+    body = roomScene(n,{bottom:`<div class="rnarr">${D.pg?`Le cauchemar vacille, puis se défait en une pluie d'étincelles. Au centre de la salle, le cœur du rêve s'illumine : un trésor attend ${d.n}.`:`L'ombre vacille, puis se défait en une pluie de lumière. Au centre de la salle, le Cœur du Regret s'illumine. ${d.n} le regarde enfin en face.`}</div><button class="rbtn go" data-act="dRunEnd">Voir le résultat</button>`});
   } else if(D.phase==="lost"){
     body = roomScene(n,{noClient:true, bottom:`<div class="rnarr">${d.n} s'effondre. Les ombres se referment… puis la lumière violette le ramène doucement vers le haut des marches.</div><button class="rbtn go" data-act="dRunEnd">Voir le résultat</button>`});
   } else if(D.phase==="end"){
@@ -557,7 +580,7 @@ function renderDungeon(){
   const art = n && D.phase!=="combat" && !SCENE ? roomArt(n) : "";
   $app.innerHTML = `${hud()}<div class="pad scroll dun" style="flex:1;display:flex;flex-direction:column;gap:8px">
     <div class="row"><div style="width:44px;height:44px">${sprite(d.id,d.n,d.c,{anim:true})}</div>
-      <div class="grow"><div class="px" style="color:var(--candle);font-size:15px">${D.finale?"Le Grand Écho":`Le Labyrinthe de ${d.n}`}${n?` · ${n.n}`:""}</div>
+      <div class="grow"><div class="px" style="color:var(--candle);font-size:15px">${D.finale?"Le Grand Écho":D.pg?`Donjon de la Faille · prof. ${S.pg.depth+1}`:`Le Labyrinthe de ${d.n}`}${n?` · ${n.n}`:""}</div>
       ${D.phase!=="combat"?`<div class="small">PV ${hpBar(D.hp,D.maxhp,0)}</div>`:""}</div></div>
     ${relicBar()}${D.relicInfo?`<div class="advice small">${D.relicInfo}</div>`:""}
     ${art}
@@ -587,6 +610,7 @@ function dRunEnd(){ endRun(); }
 function dungeonNext(){
   const D=U.dawn, x=D.list[D.i], d=CL[x.k], st=S.clients[x.k];
   if(D.finale){ finaleEnd(D.out==="apaise"); return; }
+  if(D.pg){ pgAfterRun(); return; }
   if(D.out==="apaise"){
     const lines=[{who:clientSp2(x.k),t:d.thanks}];
     S.stats.apaise++; addXP(150); scInc("apaise");
@@ -644,14 +668,15 @@ function renderRecap(){
 }
 function postCardHTML(){
   if(!S.postKnown) return "";
-  const can=CLIENT_ORDER.filter(k=>S.clients[k].state==="apaise" && REGULARS[k]);
+  const can=postCan();
   return `<div class="card"><div class="px" style="color:var(--candle)">📮 La Poste de Cadoizo</div>
     <div class="small muted">Pour 20 ₽, une âme apaisée reçoit ton invitation et passe à coup sûr demain, en journée.</div>
     ${S.invite?`<div class="small" style="margin-top:6px;color:var(--good)">✉️ Lettre envoyée à <b>${CL[S.invite].n}</b>. ${CL[S.invite].fem?"Elle":"Il"} passera demain.</div>`:
     `<button class="sm" style="margin-top:8px;width:100%" data-act="postOpen" ${S.money<20||!can.length?"disabled":""}>✉️ Envoyer une lettre <small>20 ₽</small></button>${!can.length?`<div class="small muted" style="margin-top:4px">Aucune âme apaisée à inviter pour l'instant.</div>`:S.money<20?`<div class="small muted" style="margin-top:4px">Pas assez dans la caisse.</div>`:""}`}</div>`;
 }
+function postCan(){ const c=CLIENT_ORDER.filter(k=>S.clients[k].state==="apaise" && REGULARS[k]); return S.pg ? c.concat(WORLD_ORDER.filter(k=>wst(k).dayVisits>0)) : c; }
 function postPicker(){
-  const can=CLIENT_ORDER.filter(k=>S.clients[k].state==="apaise" && REGULARS[k]);
+  const can=postCan();
   openModal(`<h3>✉️ À qui écrire ?</h3><p class="small muted">Cadoizo portera ta lettre cette nuit. L'âme choisie passera demain à la taverne. (20 ₽)</p>
     <div class="answers">${can.map(k=>`<button class="dopt postpick" data-act="invite" data-k="${k}"><span class="row" style="align-items:center;gap:10px"><span style="width:42px;height:42px;display:inline-block">${sprite(CL[k].id,CL[k].n,CL[k].c,{anim:true})}</span><span class="grow"><b>${CL[k].n}</b><br><small>${hearts(S.clients[k].aff)}${S.clients[k].aff>=AFF_MAX?" · affinité au maximum":""}</small></span></span></button>`).join("")}</div>
     <button class="alt" style="width:100%;margin-top:8px" data-act="closeModal">Annuler</button>`);

@@ -9,7 +9,7 @@ function bookPages(){
     <div class="bcov-spr">${sprite(S.ten.id,S.ten.n,S.ten.c,{anim:true})}</div>
     <div class="bcov-p">${S.pages} page${S.pages>1?"s":""} écrite${S.pages>1?"s":""} · Saison ${S.season||1}</div>
     <div class="bcov-hint">${typeof isDesk==="function"&&isDesk()?"Clique ▶ ou flèche droite pour ouvrir":"Glisse ou touche ▶ pour ouvrir"}</div></div>`);
-  const sections=[["tenancier","Le Tenancier"],["habitues","Les âmes"],["villageois","Les villageois"],["souvenirs","Souvenirs"],["artefacts","Artefacts et recettes"],["deck","Le deck"],["saison","La saison"],["emotions","Les émotions"]];
+  const sections=[["tenancier","Le Tenancier"],["habitues","Les âmes"],["villageois","Les villageois"],...(S.pg||Object.keys(S.shinies||{}).length?[["voyageurs","Les voyageurs"],["chromatiques","Les couleurs rares"]]:[]),["souvenirs","Souvenirs"],["artefacts","Artefacts et recettes"],["deck","Le deck"],["saison","La saison"],["emotions","Les émotions"]];
   add("toc","toc","Sommaire",`<div class="btoc">${sections.map(([id,t])=>`<a data-act="bookGo" data-p="${id}"><span>${t}</span><i></i></a>`).join("")}</div>
     <p class="bnote">Chaque âme a sa page. Celles qu'on n'a pas encore rencontrées restent blanches.</p>`);
   // tenancier
@@ -29,12 +29,13 @@ function bookPages(){
   // villageois
   S.villLeg=S.villLeg||{};
   add("villageois","villageois","Les villageois",VILLAGERS.map(v=>`<div class="brow" style="margin-bottom:8px"><div class="bspr sm">${sprite(v.id,v.n,v.c,{anim:false})}</div><div><b>${v.n}</b>${S.villLeg[v.key]?` <span class="bleg">★ légendaire offerte</span>`:""}<br><small>Boisson fétiche : ${favKnown(v.key)?`${drinkIcon(FAV[v.key],"sm")}${FAV[v.key].n} (${orderShort(FAV[v.key])})`:"pas encore découverte"}</small></div></div>`).join("")+`<p class="bnote">Bien servis, les villageois offrent une carte. Très rarement, leur carte légendaire.</p>`);
+  pgRegPages(add);
   // souvenirs
   const byOwner={}; S.fragments.forEach(f=>{ const o=CL[f.from]?CL[f.from].n:"Étincelles du co-gérant"; (byOwner[o]=byOwner[o]||[]).push(f); });
   add("souvenirs","souvenirs","Fragments de Mémoire",Object.keys(byOwner).length?Object.keys(byOwner).map(o=>`<div class="bh">${o}</div><div>${byOwner[o].map(f=>`<span class="frag" style="background:${EMO[f.e].c}">${EMO[f.e].i} ${esc(f.n)}</span>`).join("")}</div>`).join(""):`<p class="bnote">Aucun souvenir pour l'instant. Les âmes les confient quand elles ont confiance.</p>`);
   // artefacts, recettes, bibelots
   relicInit();
-  const rel = CLIENT_ORDER.map(c=>CL[c].gift).filter(g=>g && S.owned[g.key]);
+  const rel = giftOwners().map(c=>CL[c].gift).filter(g=>g && S.owned[g.key]);
   const rec = S.recipes.map(r=>{ const d=CLIENT_ORDER.map(c=>CL[c].recipe).find(x=>x&&x.key===r); return d?`<p>${r==="shake"?drinkIcon({base:"lait",add:["sitrus"]},"sm"):"• "}<b>${d.n}</b> : ${d.d}</p>`:""; }).join("");
   add("artefacts","artefacts","Artefacts et recettes",`<div class="bh">Artefacts du Labyrinthe · ${wornCount()}/${RELIC_MAX} portés</div>${rel.length?`<p class="bnote">Tu peux en posséder autant que tu veux, mais tu n'en portes que ${RELIC_MAX} à la fois. Choisis ceux qui accompagnent les clients dans leur Labyrinthe.</p>`+rel.map(g=>`<p class="relrow ${S.equip[g.key]?"on":""}"><span class="brel">${relicIc(g)}</span> <b>${g.n}</b> : ${g.d}<br><button class="sm ${S.equip[g.key]?"alt":""}" data-act="relicWear" data-k="${g.key}" ${!S.equip[g.key]&&wornCount()>=RELIC_MAX?"disabled":""}>${S.equip[g.key]?"Ranger":"Porter"}</button></p>`).join(""):`<p class="bnote">Aucun. Une âme offre le sien quand son affinité atteint 3 cœurs.</p>`}${S.equip.faille?`<p><span class="brel">🔮</span> <b>Éclat de la Faille</b> : +6 PV dans chaque Labyrinthe (toujours actif)</p>`:""}
     <div class="bh">Recettes offertes</div>${rec||`<p class="bnote">Aucune recette pour l'instant.</p>`}
@@ -71,7 +72,7 @@ function showRegistre(focus, tab){
   bk.addEventListener("touchend",e=>{ if(x0==null) return; const dx=e.changedTouches[0].clientX-x0; x0=null; if(Math.abs(dx)>45) turnBook(dx<0?1:-1); });
 }
 function pageHTML(p, idx, total){
-  const secs=[["toc","📖"],["tenancier","🎩"],["habitues","👥"],["villageois","🏘️"],["souvenirs","💠"],["artefacts","🔮"],["deck","🃏"],["saison","🌙"]];
+  const secs=[["toc","📖"],["tenancier","🎩"],["habitues","👥"],["villageois","🏘️"],...(S.pg||Object.keys(S.shinies||{}).length?[["voyageurs","🧭"],["chromatiques","✨"]]:[]),["souvenirs","💠"],["artefacts","🔮"],["deck","🃏"],["saison","🌙"]];
   if(p.sec==="cover") return `<div class="bpage cover">${p.html}</div>`;
   return `<div class="bpage"><div class="bribbons">${secs.map(([s,ic])=>`<a class="brib ${p.sec===s?"on":""}" data-act="bookGo" data-p="${s}" title="${s}">${ic}</a>`).join("")}</div>
     <div class="btitle">${p.title}</div><div class="bbody">${p.html}</div><div class="bfoot">— ${idx} —</div></div>`;

@@ -115,7 +115,7 @@ const WATER_SOULS = ["magicarpe","psykokwak","tiplouf"];
 function omenFor(n){ S.omens=S.omens||{}; const key=`${S.season||1}-${n}`; if(n<=1) return null;
   if(!(key in S.omens)){ const ks=Object.keys(OMENS); const prev=S.omens[`${S.season||1}-${n-1}`]; let o; do{ o=ks[rnd(ks.length)]; }while(o===prev); S.omens[key]=o; }
   return S.omens[key]; }
-function omen(){ return omenFor(S.night); }
+function omen(){ return S.pg ? null : omenFor(S.night); }
 const COMMANDS = {
   apaise:{n:"Apaiser 3 âmes",goal:3},
   perfect:{n:"Servir 3 verres parfaits",goal:3},

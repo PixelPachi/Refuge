@@ -75,7 +75,7 @@ function renderMarket(){
       <div class="stallboard"><span class="crate"></span><span class="crate b"></span><span class="crate c"></span></div>
     </div>
     <div class="small muted" style="font-style:italic;margin-top:-4px">Kecleon : « ${tab.say} »</div>
-    <div class="order">Aujourd'hui à la taverne :${U.day.guests.map(g=>`<div style="margin-top:4px">• <b>${g.n}</b>${g.regular?` <span class="small" style="color:var(--good)">(habitué${CL[g.regular].fem?"e":""} · ${hearts(S.clients[g.regular].aff)})</span>`:""} : ${g.order?`${drinkIcon(g.order,"sm")}<b>${orderShort(g.order)}</b>`:"n'importe quoi"}${favKnown(g.key)?` · fétiche : <b>${orderShort(FAV[g.key])}</b>`:""}</div>`).join("")}</div>
+    <div class="order">Aujourd'hui à la taverne :${U.day.guests.map(g=>`<div style="margin-top:4px">• <b>${g.n}</b>${g.shiny?" ✦":""}${g.regular?` <span class="small" style="color:var(--good)">(${g.world?"voyageu"+(CL[g.regular].fem?"se":"r"):"habitué"+(CL[g.regular].fem?"e":"")} · ${hearts(S.clients[g.regular].aff)})</span>`:""} : ${g.order?`${drinkIcon(g.order,"sm")}<b>${orderShort(g.order)}</b>`:"n'importe quoi"}${favKnown(g.key)?` · fétiche : <b>${orderShort(FAV[g.key])}</b>`:""}</div>`).join("")}</div>
     <div class="mtabs">${MARKET_TABS.map(t=>`<button class="mtab ${t.k===U.mTab?"on":""}" data-act="mTab" data-t="${t.k}">${t.n}</button>`).join("")}</div>
     ${U.mTab==="cartes" ? marketCardsHTML() : `<div class="cards">${keys.map(marketRow).join("")}</div>`}
     ${U.mTab==="base"?`<p class="small muted" style="margin:0">L'Eau Fraîche est gratuite.</p>`:""}
@@ -93,6 +93,7 @@ function regularGuest(k){ const d=CL[k], r=REGULARS[k]; return {key:k, regular:k
 function villGuest(v){ const list=ORDERS[v.key]; return Object.assign({}, v, {order: list ? list[rnd(list.length)] : null}); }
 function pickVillager(){
   if(U.day && U.dayNight===S.night){ return; }
+  if(S.pg){ pgPickGuests(); return; }
   const guests=[];
   if(!S.tutoDone){
     guests.push(Object.assign({}, VILLAGERS[0], {order:{base:"lait",add:[]}}));
@@ -140,7 +141,9 @@ function guestArrives(){
   }
   if(U.day.i>0) lines.push({who:"narr",t:"La cloche de la porte tinte de nouveau."});
   if(v.invited) lines.push({who:{id:v.id,n:v.n},t:"<i>Il brandit une enveloppe un peu froissée.</i> J'ai reçu ton invitation ! Cadoizo l'a glissée sous ma porte au lever du jour. Me voilà !".replace("Il brandit", CL[v.regular].fem?"Elle brandit":"Il brandit")});
-  if(v.regular && S.clients[v.regular].dayVisits===undefined){ S.clients[v.regular].dayVisits=0; lines.push({who:"cog",t:`${v.n}, en plein jour ! Les âmes qu'on a aidées reviennent parfois en habituées. Si on lui sert ce qu'il lui faut, on se rapprochera encore.`}); }
+  if(v.shiny) lines.push(...shinyArriveLines(v));
+  if(v.world && !S.clients[v.regular].dayVisits) lines.push({who:"cog",t:`Un voyageur ! ${v.n}, venu${CL[v.regular].fem?"e":""} de ${CL[v.regular].from}. Patron, on est célèbres !`});
+  if(v.regular && !CL[v.regular].world && S.clients[v.regular].dayVisits===undefined){ S.clients[v.regular].dayVisits=0; lines.push({who:"cog",t:`${v.n}, en plein jour ! Les âmes qu'on a aidées reviennent parfois en habituées. Si on lui sert ce qu'il lui faut, on se rapprochera encore.`}); }
   if(!S.tutoDone && U.day.i===0){
     lines.push({who:"narr",t:"De retour à la taverne, vous ouvrez les volets. La cloche de la porte tinte presque aussitôt."});
     lines.push({who:"cog",t:"Notre tout premier client ! Un habitant du village. Le jour, c'est simple : on écoute sa commande, on prépare, on encaisse."});
@@ -155,11 +158,11 @@ function guestArrives(){
   playDialog(lines, ()=>renderVillager(), ()=>renderDayScene(v));
 }
 function renderDayScene(v){
-  $app.innerHTML = `${hud()}${scene({doorOpen:true,client:sprite(v.id,v.n,v.c,{anim:true,h:"110px"})})}<div class="panel">${U.dlg?dialogBubble():""}</div>`;
+  $app.innerHTML = `${hud()}${scene({doorOpen:true,client:sprite(v.id,v.n,v.c,{anim:true,h:"110px",shiny:v.shiny})})}<div class="panel">${U.dlg?dialogBubble():""}</div>`;
 }
 function renderVillager(){
   const v=U.vill;
-  $app.innerHTML = `${hud()}${scene({doorOpen:true,client:sprite(v.id,v.n,v.c,{anim:true,h:"110px"})})}
+  $app.innerHTML = `${hud()}${scene({doorOpen:true,client:sprite(v.id,v.n,v.c,{anim:true,h:"110px",shiny:v.shiny})})}
   <div class="panel"><div class="bubble" style="cursor:default">${spkHTML(v.n,v.c)}${orderAsk(v)}</div>
   <div class="order">Commande : ${drinkIcon(U.order,"sm")}<b>${orderShort(U.order)}</b>${U.order?` · bonus si elle est respectée`:""}${favKnown(v.key)?`<br>Boisson fétiche, ${FAV[v.key].n} : ${drinkIcon(FAV[v.key],"sm")}<b>${orderShort(FAV[v.key])}</b> · gros pourboire, même à la place de la commande`:""}</div>
   <div class="actions"><button class="full" data-act="openBuilder" data-ctx="vill">Préparer sa commande</button></div>
@@ -204,7 +207,7 @@ function villagerServed(res){
     if(k){ addKeyword(k, CL[k].stages[0].kw); lines.push({who:{id:v.id,n:v.n},t:`« ${CL[k].stages[0].kw.toUpperCase()} ! ${CL[k].stages[0].kw.toUpperCase()} ! » (Mot-clé noté dans le Ledger pour ${CL[k].n}.)`}); }
   }
   const cardOk = ok || isFav;
-  const after = ()=>{ if(!cardOk){ nextGuest(); return; }
+  const after = ()=>{ if(v.shiny){ pgShinyAfter(v, cardOk, nextGuest); return; } if(!cardOk){ nextGuest(); return; }
     const leg = !v.regular && VILL_LEGEND[v.key];
     S.villLeg=S.villLeg||{};
     if(leg && !S.villLeg[v.key]){
@@ -224,6 +227,6 @@ function villagerServed(res){
 }
 function nextGuest(){
   U.day.i++;
-  if(U.day.i>=U.day.guests.length){ cine("nuit", startNight); return; }
+  if(U.day.i>=U.day.guests.length){ if(S.pg){ pgNight(); return; } cine("nuit", startNight); return; }
   setGuest(); save(); guestArrives();
 }

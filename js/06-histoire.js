@@ -6,9 +6,9 @@ function screenTitle(){
     <div style="width:110px;height:110px">${sprite(HECTOR.id,"Hector",HECTOR.c,{anim:true})}</div>
     <h1>Tavern Keeper's Ledger</h1>
     <h2>Le Refuge des Âmes Égarées</h2>
-    <p class="muted small" style="max-width:320px">Version 1.2 · ${LAST_SEASON} saisons de ${NIGHTS_PER_SEASON} nuits, ${CLIENT_ORDER.length} âmes à écouter, 6 chapitres.</p>
+    <p class="muted small" style="max-width:320px">Version 1.3 · ${LAST_SEASON} saisons de ${NIGHTS_PER_SEASON} nuits, ${CLIENT_ORDER.length} âmes à écouter, 6 chapitres, et l'après.</p>
     <button data-act="${sv&&sv.ten?"newGameAsk":"newGame"}" style="width:240px">Nouvelle partie</button>
-    ${sv&&sv.ten&&!sv.seasonOver?`<button class="alt" data-act="continue" style="width:240px">Continuer (nuit ${sv.night})</button>`:""}
+    ${sv&&sv.ten&&!sv.seasonOver?`<button class="alt" data-act="continue" style="width:240px">Continuer (${sv.pg?"jour":"nuit"} ${sv.night})</button>`:""}
     <button class="ghost sm" data-act="loadCodeOpen">Charger une sauvegarde</button>
     <button class="ghost sm" data-act="toggleSound">Son : ${(S?S.settings.sound:true)?"activé":"coupé"}</button>
     <div class="small muted">${typeof isDesk==='function'&&isDesk()?'Clique n\'importe où':'Touche l\'écran'} pour lancer la musique.</div>

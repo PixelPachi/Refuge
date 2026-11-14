@@ -6,7 +6,7 @@ function sprUrl(id, shiny, animated){
   return SPR_BASE+"pokemon/"+(shiny?"shiny/":"")+id+".png";
 }
 function localSpr(id, shiny, animated){
-  if(shiny) return sprUrl(id, true, animated); // les sprites chromatiques (rares) viennent de PokeAPI en ligne
+  if(shiny) return id<=649 ? "assets/anim-shiny/"+id+".gif" : sprUrl(id, true, animated); // chromatiques : intégrés pour les clients, sinon PokeAPI en ligne
   return "assets/"+(id<=649?"anim":"static")+(shiny?"-shiny":"")+"/"+id+(id<=649?".gif":".png"); // les sprites fixes ont été retirés : le gif animé sert partout
 }
 function itemUrl(name){ return SPR_BASE+"items/"+name+".png"; }

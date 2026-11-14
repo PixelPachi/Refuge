@@ -69,3 +69,10 @@ Les saisons 1 et 2 gardent quelques effets historiques codés directement dans l
 - `js/14-ordi.js` : sur grand écran en paysage (`min-width:1000px` et `min-aspect-ratio:5/4`), ajoute `body.desk`, agrandit la colonne de téléphone avec un zoom (`--z`), affiche deux panneaux sur les côtés (saison, personnel, artefacts portés, âmes de la saison, raccourcis) et gère les raccourcis clavier (Espace/Entrée, 1 à 9, F, D, R, Échap).
 - Les styles sont à la fin de `css/style.css` (bloc « Affichage ordinateur »). Sur téléphone, rien ne change.
 - Le glisser des cartes divise le déplacement par `deskZoom()`.
+
+## Après la fin (post-game)
+- Bouton « La suite : après la fin » dans la chronique de la saison 12 → `startPostgame()` (js/15-postgame.js). `S.pg = {depth,best,runs,wins,tired}`.
+- Jour : `pgPickGuests()` remplace `pickVillager()` (âmes apaisées, voyageurs `WORLD` de js/saisons/postgame.js, villageois ; `PG_GUESTS`). Chaque client peut arriver chromatique (`SHINY_RATE` = 1/25, `shinyRoll()`) : page au Registre (`S.shinies`), cartes `SHINY_CARDS` (rareté `chroma`, exclusives).
+- Voyageurs : entrées `CL[k].world` hors `CLIENT_ORDER` ; carte à 2 cœurs (`affCard`, dans `gainAff`), artefact à 5 cœurs. `giftOwners()` = âmes + voyageurs pour tous les artefacts.
+- Nuit : pas de service. `renderPgNight()` → `pgGo(k)` (une âme apaisée ou `__ten`, le Tenancier) → `pgMakeMap(depth)` (carte procédurale, salles prises dans tous les Labyrinthes) → `makeEnemyPG()` (`PG_MOVES` : poison, drain, gel, malédiction, brise-garde, soin, confusion) → `pgAfterRun()`. Profondeur +1 par victoire : PV ×(1+0,06·prof.), dégâts ×(1+0,04·prof.).
+- Test : `python3 tests/postgame.py $PWD/index.html <snapshot.json> [jours] [captures]`.

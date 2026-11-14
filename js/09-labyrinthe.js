@@ -92,7 +92,7 @@ function migrateFrags(){
 function ownFrag(f,k){ if(U.dawn && U.dawn.finale) return true; return f.from===k || !CL[f.from]; }
 // Les conséquences des choix ne sont pas annoncées : on devine à partir de ce qu'on a appris
 // (émotion de l'Écho, souvenir qui manque, mots-clés du comptoir). Un mauvais choix fait monter la Terreur.
-function tutoRun(){ const D=U.dawn; return D && (D.x.k==="machopeur" || !S.dungeonTuto); }
+function tutoRun(){ const D=U.dawn; return D && !D.pg && (D.x.k==="machopeur" || !S.dungeonTuto); }
 function endRun(){
   const D=U.dawn, x=D.x, d=CL[x.k], st=S.clients[x.k];
   // les souvenirs restants de ce Labyrinthe s'évanouissent avec lui
@@ -101,6 +101,7 @@ function endRun(){
   if(D.finale){ D.out = D.out==="apaise"?"apaise":"echec";
     D.endTxt = D.out==="apaise" ? `L'Ombre de la Faille se dissout. ${d.n} remonte les marches en souriant : toute la saison est remontée avec lui.` : `${d.n} remonte, épuisé. L'Ombre de la Faille s'est refermée sur elle-même… pour cette fois.`;
     D.phase="end"; jingle(D.out==="apaise"?"apaise":"triste"); renderDungeon(); return; }
+  if(D.pg){ pgEndRun(); return; }
   S.dungeonTuto=true;
   if(U.night) U.night.out[x.k] = D.out==="apaise"?"Apaisé":D.out==="partiel"?"Retour partiel (reviendra)":"Rechute (reviendra)";
   if(D.out==="apaise") D.endTxt=`${d.n} a fait la paix avec son regret.`;
