@@ -606,12 +606,12 @@ function finService(){
 function renderFinChoice(){
   const c=cog();
   $app.innerHTML=`${hud()}${scene({night:true})}<div class="panel">
-    <div class="bubble" style="cursor:default">${spkHTML(c.n,c.c)}${FIN_Q[(S.night-1)%FIN_Q.length].q}</div>
-    <div class="answers"><button data-act="finChoice" data-v="0">${FIN_Q[(S.night-1)%FIN_Q.length].a[0]}</button><button data-act="finChoice" data-v="1">${FIN_Q[(S.night-1)%FIN_Q.length].a[1]}</button></div></div>`;
+    <div class="bubble" style="cursor:default">${spkHTML(c.n,c.c)}${finQ().q}</div>
+    <div class="answers"><button data-act="finChoice" data-v="0">${finQ().a[0]}</button><button data-act="finChoice" data-v="1">${finQ().a[1]}</button></div></div>`;
 }
 function finChoice(v){
   S.duoAff++;
   const c=cog();
-  const rep = FIN_Q[(S.night-1)%FIN_Q.length].r[Number(v)];
+  const rep = finQ().r[Number(v)];
   playDialog([{who:"cog",t:rep},{who:"narr",t:`Votre lien de duo grandit. (${S.duoAff})`}], startDawn, ()=>{ $app.innerHTML=`${hud()}${scene({night:true})}<div class="panel">${dialogBubble()}</div>`; });
 }
