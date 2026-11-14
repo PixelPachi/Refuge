@@ -307,7 +307,7 @@ function finaleEnd(win){
     lines.push({who:"hector",t:"<i>Le mur tremble, et une main violette fait un petit signe avant de disparaître.</i> Pas mal, Tenancier. Pas mal du tout. …Un jour, il faudra que je te parle de cette ombre-là. Pas aujourd'hui. Hé hé."});
   } else {
     lines.push({who:"narr",t:"La lumière reflue toute seule, à contrecœur. La trappe claque. Le silence revient, mais quelque chose gratte encore, très loin en dessous."});
-    lines.push({who:"cog",t:"On a tenu bon, patron. La prochaine fois, on sera plus forts."});
+    lines.push({who:"cog",t:cogSay("defaite")});
   }
   playDialog(lines, (!win && se===12) ? renderFinaleChoice : endSeason, ()=>{ $app.innerHTML=`${hud()}${scene({night:false,doorOpen:false})}<div class="panel">${dialogBubble()}</div>`; });
 }
@@ -434,7 +434,7 @@ function startNextSeason(){
       {who:"narr",t:"Chapitre 2 · La saison des pluies. Saison 3."},
       {who:"narr",t:"La pluie ne s'arrête plus sur Bourg-Brume. Elle coule des toits, remplit les tonneaux, efface les chemins. Les villageois disent que c'est la saison où les âmes pleurent ce qu'elles ont perdu."}
     ]:[{who:"narr",t:`Saison ${S.season}. Les premières pluies d'automne tambourinent sur le toit de la taverne.`}]),
-    {who:"cog",t:"Une nouvelle saison ! Ceux qu'on a aidés passeront sûrement de jour. Et les autres… ils reviendront, la nuit. On sera prêts."},
+    {who:"cog",t:cogSay("saison")},
     ...((SEASON_NEW[S.season]||[]).length?[{who:"kecleon",t:`Nouvel arrivage à l'étal, patron ! ${(SEASON_NEW[S.season]).map(k=>ING[k].n).join(", ")}. Personne d'autre au village n'en a !`}]:[]),
     S.season===12 ? {who:"cog",t:"Dernière saison du chapitre. On finit ce qu'on a commencé, patron. Pour elles. Et pour lui."} : S.season===11 ? {who:"cog",t:"Une saison pour ceux qui restent sur le pas de la porte. On leur garde la porte ouverte."} : S.season===10 ? {who:"cog",t:"Dernière saison du chapitre. On garde la porte de la cave à l'œil."} : S.season===9 ? {who:"cog",t:"Une saison pour ceux qui n'ont pas fini quelque chose. On va les aider à finir, patron. Et Hector aussi, peut-être."} : S.season===8 ? {who:"cog",t:"Dernière saison du chapitre. Et à la fin, la fête ! On aura un stand, patron. Un vrai."} : S.season===7 ? {who:"cog",t:"Une saison pour ceux qui sont seuls. On leur gardera une place à la fête."} : S.season===6 ? {who:"cog",t:"Dernière saison du chapitre. On garde un tabouret libre, au cas où."} : S.season===5 ? {who:"cog",t:"Une saison de changements. On sera là, quoi qu'ils deviennent."} : S.season===4 ? {who:"cog",t:"Et cette saison, ceux qui ont perdu quelqu'un continuent d'arriver. On reste à côté d'eux, comme dit Hector."} : S.season===3
       ? {who:"hector",t:"<i>La voix traverse le mur, plus basse que d'habitude.</i> Hé… Cette saison, ils ne viendront pas parce qu'ils ont échoué, ou parce qu'on les a laissés. Ils viendront parce qu'ils ont perdu quelqu'un. Ceux-là, petit, il ne faut pas les réparer. Il faut juste rester à côté."}

@@ -75,7 +75,7 @@ function startNight(){
       {who:"ten",t:"Entrez. La taverne est ouverte."}
     ];
   } else {
-    lines=[{who:"narr",t:"Minuit. Les bougies vacillent, et la porte s'illumine de violet : la Faille est de nouveau ouverte."},{who:"cog",t:"C'est l'heure, patron. On ouvre ?"}];
+    lines=[{who:"narr",t:"Minuit. Les bougies vacillent, et la porte s'illumine de violet : la Faille est de nouveau ouverte."},{who:"cog",t:cogSay("ouvrir")}];
   }
   if(omen()){ const O=OMENS[omen()]; lines.push({who:"narr",t:`Présage de la nuit : ${O.i} <b>${O.n}</b>. ${O.d}`}); }
   const q=U.night.queue, newOnes=q.filter(k=>S.clients[k].visits===0).length, back=q.length-newOnes;
@@ -121,7 +121,7 @@ function nextClient(){
   if(st.visits===1 && S.night<=2) lines.push({who:"cog",t:`<i>Il se penche vers toi et chuchote.</i> ${d.cogHint}`});
   if(S.cog==="marcacrin" || staffOn("ponchiot")){
     const ing = d.comfort[rnd(d.comfort.length)]; regAdd(k,"likes",ing);
-    lines.push({who:"cog",t:`*renifle* ${d.n} aime bien ${ING[ing]?ING[ing].n:ing}. Je le sens d'ici.`});
+    lines.push({who:"cog",t:cogSay("flair",{n:d.n,i:ING[ing]?ING[ing].n:ing})});
   }
   U.away = true;
   if(!S.counterTuto){
@@ -285,7 +285,7 @@ function pifeuilAct(){
   U.night.pifeuilUsed=true;
   st.carryOuv=Math.min(c.ouv,3); st.carryTen=Math.max(0,c.ten-1);
   st.state="partial"; U.night.out[c.k]="Renvoyé poliment (reviendra)";
-  playDialog([{who:"cog",t:"Un petit courant d'air… Reviens demain soir, l'ami. On te gardera ta place."},{who:"narr",t:`${CL[c.k].n} repart sans rancune. Il reviendra.`}], ()=>{U.night.idx++; nextClient();}, ()=>renderClientScene());
+  playDialog([{who:"cog",t:cogSay("courantAir")},{who:"narr",t:`${CL[c.k].n} repart sans rancune. Il reviendra.`}], ()=>{U.night.idx++; nextClient();}, ()=>renderClientScene());
 }
 function reachConfidence(msg){
   const c=U.cur, d=CL[c.k], st=S.clients[c.k];
@@ -581,10 +581,10 @@ function finService(){
     if(N.confident.length){
       lines.push({who:"narr",t:`${names} ${N.confident.length>1?"se sont assoupis":"s'est assoupi"} dans un coin de la salle. Sur le comptoir, les Fragments brillent de plus en plus fort.`});
       lines.push({who:"cog",t:"Patron… Ces souvenirs, qu'est-ce qu'on en fait ? On ne peut pas juste les ranger avec les verres."});
-    } else lines.push({who:"cog",t:"Quelle nuit… Ils sont tous repartis dans cette lumière violette. Tu crois qu'ils reviendront ?"});
+    } else lines.push({who:"cog",t:cogSay("finVide")});
   } else {
-    if(N.confident.length) lines.push({who:"cog",t:`${names} ${N.confident.length>1?"attendent":"attend"} près de la trappe. À l'aube, on les guidera avec leurs souvenirs.`});
-    else lines.push({who:"cog",t:"Personne n'est prêt à descendre ce soir… Ce n'est pas grave. Ils reviendront."});
+    if(N.confident.length){ const pl=N.confident.length>1; lines.push({who:"cog",t:cogSay("finConfiance",{n:names,v:pl?"attendent":"attend",s:pl?"se sont":"s'est",o:pl?"sont":"est",e:pl?"s":""}).replace(/prêts?s/g,pl?"prêts":"prêt").replace(/Ses souvenirs/g,pl?"Leurs souvenirs":"Ses souvenirs").replace(/ les guidera avec leurs/,pl?" les guidera avec leurs":" le guidera avec ses").replace(/On les accompagne/,pl?"On les accompagne":"On l'accompagne")}); }
+    else lines.push({who:"cog",t:cogSay("finPersonne")});
   }
   const noted=CLIENT_ORDER.filter(k=>isAvailable(k) && !N.confident.find(x=>x.k===k) && S.clients[k].visits>0 && CL[k].cogHint && !(S.cogNotes||{})[k]);
   if(noted.length){ S.cogNotes=S.cogNotes||{}; noted.forEach(k=>S.cogNotes[k]=true);

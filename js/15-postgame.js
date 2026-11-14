@@ -139,7 +139,7 @@ function pgAfterRun(){
     playDialog(lines, ()=>offerCards(ids, ()=>pgNextDay(), shine?"✦ Un éclat chromatique au fond du Cœur":"Le trésor du Cœur", "Une carte pour ton deck, pour de bon."), ()=>{ $app.innerHTML=`${hud()}${scene({doorOpen:false})}<div class="panel">${dialogBubble()}</div>`; });
     return;
   }
-  lines.push({who:"cog",t:"Ce donjon-là était coriace. Pas grave : la Faille en rêvera un autre demain soir."});
+  lines.push({who:"cog",t:cogSay("pgDefaite")});
   pgNextDay(lines);
 }
 
