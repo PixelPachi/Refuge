@@ -85,3 +85,7 @@ Les saisons 1 et 2 gardent quelques effets historiques codés directement dans l
 - Malédictions (`CURSES`, js/10-combat.js) : Doute, Regret (−2 PV en fin de tour), Remords (Faible 1), Cauchemar (−1 énergie à la pioche, éphémère), Poids du Passé (retenue), Hésitation (ne fait rien). Ajoutées par les marchés risqués des salles à choix (`curseBargains`) et par le coup Maléfice des ombres (`hexCurse`). Le sanctuaire retire d'abord une malédiction.
 - `js/16-equilibrage.js` : `COST_FIX` (coûts relevés) et `STAT_FIX` (cartes gardées à 1 énergie mais réduites).
 - `jusbaie` ajouté à `BASES` (le Jus de Baies n'était pas sélectionnable au comptoir).
+
+## Effets de combat
+- `js/17-fx.js` : sons synthétiques `sfx(kind)` (draw, play, hit, crit, hurt, block, clang, heal, buff, debuff, burn, energy), chiffres flottants, éclats de coups, icône de bouclier, pioche animée. Enveloppes autour de hitEnemy, hitClient, drawCards, playCard et renderDungeon (`combatFx` compare l'état avant et après).
+- `fitCardText` réduit la police des descriptions qui débordent ; appui long sur une carte : aperçu en grand.

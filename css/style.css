@@ -716,3 +716,38 @@ body.desk .handzone .dhand.fight .dcard:not(.dragging):not(.aiming):hover{transf
 .title.hasart .tbot{gap:9px}
 .title.hasart h1{text-shadow:0 3px 0 #3a2050,0 0 18px #000a}
 .title.hasart h2{text-shadow:0 2px 6px #000}
+/* ---- Combats vivants ---- */
+.foe,.me{position:relative}
+.fxpop{position:absolute;top:18%;transform:translateX(-50%);font-weight:900;font-size:22px;pointer-events:none;z-index:30;white-space:nowrap;text-shadow:0 2px 0 #000,0 0 6px #000;animation:fxup 1.2s ease-out forwards}
+.fxpop.dmg{color:#ff5a48}.fxpop.dmg.big{font-size:30px;color:#ff3020}
+.fxpop.dot{color:#ff9a48;font-size:18px}
+.fxpop.blk{color:#9cd2ff;font-size:17px}
+.fxpop.heal{color:#7dff9a}
+.fxpop.st{color:#e6c8ff;font-size:13px;top:40%}
+.fxpop.buff{color:#ffd76a;font-size:14px;top:40%}
+@keyframes fxup{0%{opacity:0;transform:translate(-50%,10px) scale(.6)}15%{opacity:1;transform:translate(-50%,-6px) scale(1.25)}30%{transform:translate(-50%,-10px) scale(1)}100%{opacity:0;transform:translate(-50%,-48px) scale(.95)}}
+.fxicon{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);font-size:48px;pointer-events:none;z-index:29;filter:drop-shadow(0 0 10px #6ab8ff);animation:fxshield .85s ease-out forwards}
+.fxicon.hitb{animation:fxshieldhit .6s ease-out forwards}
+.fxicon.sparkle{filter:drop-shadow(0 0 10px #7dff9a);font-size:40px}
+@keyframes fxshield{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.25)}45%{transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.1)}}
+@keyframes fxshieldhit{0%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}30%{transform:translate(-50%,-50%) scale(.9) rotate(-8deg)}60%{transform:translate(-50%,-50%) scale(1.05) rotate(6deg)}100%{opacity:0;transform:translate(-50%,-50%) scale(.8)}}
+.fxslash{position:absolute;left:50%;top:45%;width:140%;height:6px;margin-left:-70%;border-radius:6px;pointer-events:none;z-index:28;background:linear-gradient(90deg,transparent,#fff 40%,#ffe2c0 60%,transparent);box-shadow:0 0 12px #fff,0 0 22px #ff8a5a;animation:fxslash .38s ease-out forwards}
+.fxslash.big{height:10px;box-shadow:0 0 16px #fff,0 0 30px #ff4a2a}
+@keyframes fxslash{0%{opacity:0;clip-path:inset(0 100% 0 0)}30%{opacity:1;clip-path:inset(0 0 0 0)}100%{opacity:0;clip-path:inset(0 0 0 100%)}}
+.fxhit{animation:fxhit .42s ease-out}
+@keyframes fxhit{0%{filter:brightness(3) saturate(0)}20%{transform:translateX(-7px)}40%{transform:translateX(6px);filter:brightness(1.6) sepia(1) hue-rotate(-30deg) saturate(4)}60%{transform:translateX(-4px)}100%{transform:none;filter:none}}
+.fxhurt .mespr{animation:fxhurt .45s ease-out}
+@keyframes fxhurt{0%{filter:brightness(2.5) sepia(1) hue-rotate(-40deg) saturate(5)}25%{transform:translateX(-6px)}50%{transform:translateX(5px)}100%{transform:none;filter:none}}
+.fxshake{animation:fxshake .28s ease-out}
+@keyframes fxshake{0%,100%{transform:none}25%{transform:translate(3px,-2px)}50%{transform:translate(-3px,2px)}75%{transform:translate(2px,1px)}}
+.fxpulse{animation:fxpulse .5s ease-out}
+@keyframes fxpulse{0%{transform:scale(1)}40%{transform:scale(1.35);filter:brightness(1.6)}100%{transform:scale(1)}}
+.dhand.fight .dcard.fxdraw{animation:fxdraw .5s cubic-bezier(.2,.9,.3,1.2) backwards}
+@keyframes fxdraw{0%{opacity:0;transform:translate(-140px,40px) rotate(-25deg) scale(.4)}60%{opacity:1}100%{transform:none}}
+.dcard.art .dtxt{overflow:hidden}
+.cardpeek{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(10,6,8,.55);pointer-events:none;animation:fxpeek .15s ease-out}
+.cardpeek .dcard{width:min(62vw,250px)!important;min-height:0!important;transform:none!important}
+.cardpeek .dcard.art .dtxt{font-size:15px!important}
+.cardpeek .dcard.art .dn{font-size:19px!important}.cardpeek .dcard.art .dty{font-size:10px!important}
+.cardpeek .dcard:not(.art){width:200px!important;min-height:280px!important;font-size:16px}
+@keyframes fxpeek{from{opacity:0}to{opacity:1}}
