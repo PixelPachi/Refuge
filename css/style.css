@@ -709,3 +709,10 @@ body.desk .handzone .dhand.fight .dcard:not(.dragging):not(.aiming):hover{transf
 .dbk span{width:46px;height:46px;border-radius:50%;background:#0002;display:flex;align-items:center;justify-content:center;font-weight:bold;opacity:.5}
 .dbk small{font-size:9px;line-height:1.1}
 .dbk.locked img{filter:brightness(0) opacity(.35)}
+/* Écran titre : la taverne est dans l'illustration, le texte se range en haut et en bas */
+.title .ttop,.title .tbot{display:flex;flex-direction:column;align-items:center;gap:10px}
+.title.hasart{justify-content:space-between;padding-top:34px;padding-bottom:18px;gap:10px}
+.title.hasart .tgap{flex:1;min-height:180px}
+.title.hasart .tbot{gap:9px}
+.title.hasart h1{text-shadow:0 3px 0 #3a2050,0 0 18px #000a}
+.title.hasart h2{text-shadow:0 2px 6px #000}
