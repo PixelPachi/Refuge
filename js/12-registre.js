@@ -188,12 +188,10 @@ function recipePages(add){
     <div class="bh">Boissons fétiches des villageois · ${nFav}/${nFavT}</div>${favs}
     <p class="bnote">Une boisson fétiche servie à son villageois rapporte un gros pourboire.</p>`);
   // carte des boissons : chaque base, nature et dans ses six couleurs
-  const flav={}; Object.keys(FLAVOR).forEach(i=>{ if(ING[i]) (flav[FLAVOR[i]]=flav[FLAVOR[i]]||[]).push(ING[i].n); });
   let made=0, tot=0;
   const rows=DRINK_BASES.filter(b=>ING[b]).map(b=>{ const cells=[null].concat(Object.keys(FLAVOR_LABEL)).map(f=>{ const key=f?`drink-${b}-${f}`:`drink-${b}`; if(!ARTOK[key]) return ""; tot++; const ok=book[key]; if(ok) made++;
       const nm=f?(DRINK_NAMES[b]||{})[f]:ING[b].n;
       return `<div class="dbk${ok?"":" locked"}" title="${ok?nm:"???"}">${ok?`<img src="${artSrc(key)}" alt="">`:"<span>?</span>"}<small>${ok?nm:"???"}</small></div>`; }).join("");
     return `<div class="bh">${ING[b].n}</div><div class="dbkrow">${cells}</div>`; }).join("");
-  add("carteboissons","recettes",`Carte des boissons · ${made}/${tot}`,`<p class="bnote">Chaque verre servi s'inscrit ici. La base choisit le verre ; le premier ingrédient parfumé lui donne sa couleur.</p>
-    <p class="small">${Object.keys(FLAVOR_LABEL).map(f=>`<b>${FLAVOR_LABEL[f]}</b> : ${(flav[f]||[]).slice(0,6).join(", ")}`).join("<br>")}</p>${rows}`);
+  add("carteboissons","recettes",`Carte des boissons · ${made}/${tot}`,`<p class="bnote">Chaque verre servi s'inscrit ici. À toi de découvrir comment obtenir les autres.</p>${rows}`);
 }
