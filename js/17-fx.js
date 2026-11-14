@@ -117,3 +117,13 @@ addEventListener("resize",()=>{ document.querySelectorAll(".dcard.art .dtxt").fo
   document.addEventListener("pointerup",hide,true); document.addEventListener("pointercancel",hide,true);
   document.addEventListener("contextmenu",e=>{ if(e.target.closest(".dcard")) e.preventDefault(); });
 })();
+// Coup fatal : on montre d'abord les dégâts sur l'ombre (et elle s'efface), puis on passe à la victoire
+const _winCombat=winCombat; winCombat=function(){
+  const D=U.dawn, C=D&&D.combat;
+  if(!C || C.fxKill || D.phase!=="combat" || typeof document==="undefined" || window.FX_INSTANT) return _winCombat.apply(this,arguments);
+  C.fxKill=true; C.over=true; C.en.hp=Math.max(0,C.en.hp);
+  try{ renderDungeon(); }catch(e){ console.warn(e); }
+  const spr=document.querySelector(".foe .foespr"); if(spr) setTimeout(()=>spr.classList.add("fxko"),380);
+  document.body.classList.add("fxlock");
+  setTimeout(()=>{ document.body.classList.remove("fxlock"); if(U.dawn===D && D.combat===C) _winCombat(); }, 1150);
+};

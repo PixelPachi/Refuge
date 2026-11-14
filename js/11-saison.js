@@ -218,8 +218,7 @@ function cogRowHTML(){
   const D=U.dawn, C=D.combat; if(!D.x.duo || !(D.x.cogCards||[]).length) return "";
   const K=finaleMate(), spent=C.cogSpent||[], left=D.x.cogCards.length-spent.length;
   return `<div class="cogrow"><div class="small cogtitle"><span class="cogav">${sprite(K.id,K.n,K.c,{anim:true})}</span><span><b>${K.n}</b> choisit seul sa carte à la fin de ton tour${left?` (${left} restante${left>1?"s":""})`:" : plus de carte pour ce combat"}.</span></div>
-    ${C.cogMsg?`<div class="small cogmsg">${C.cogMsg}</div>`:""}
-    <div class="dhand cog">${D.x.cogCards.map((id,j)=>cardHTML(id,{dis:spent.includes(j)})).join("")}</div></div>`;
+    ${C.cogMsg?`<div class="small cogmsg">${C.cogMsg}</div>`:""}</div>`;
 }
 function finaleEnd(win){
   const se=S.season||1; S.finale=S.finale||{}; S.finale[se]=win?"win":"lose"; U.inDungeon=false;

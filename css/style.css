@@ -768,3 +768,7 @@ body.desk .handzone .dhand.fight .dcard:not(.dragging):not(.aiming):hover{transf
 .kwspr{width:36px;height:36px;flex:none}
 .kwgw{display:flex;flex-wrap:wrap;gap:6px}
 .kwb{flex:0 0 auto}
+/* Coup fatal : l'ombre s'efface avant l'écran de victoire */
+body.fxlock #app{pointer-events:none}
+.foespr.fxko{animation:fxko .75s ease-in forwards}
+@keyframes fxko{0%{opacity:1;filter:brightness(1)}35%{filter:brightness(2.2)}100%{opacity:0;transform:translateY(10px) scale(.85);filter:brightness(2) blur(3px)}}

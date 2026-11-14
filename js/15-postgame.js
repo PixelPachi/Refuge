@@ -47,9 +47,10 @@ function pgPickGuests(){
   world.slice(0,nw).forEach(k=>{ guests.push(pgGuest(k)); used.add(k); });
   // des âmes apaisées, n'importe lesquelles
   souls.filter(k=>!used.has(k)).slice(0, 1+rnd(2)).forEach(k=>{ if(guests.length<PG_GUESTS){ guests.push(pgGuest(k)); used.add(k); } });
+  guests.length=Math.min(guests.length, PG_GUESTS-2); // au moins deux villageois chaque jour
   const pool = shuffle(VILLAGERS.slice());
   while(guests.length<PG_GUESTS && pool.length) guests.push(villGuest(pool.shift()));
-  U.day = {guests: shuffle(guests), i:0};
+  U.day = {guests: villFirst(guests), i:0};
   U.dayNight=S.night;
   setGuest();
 }

@@ -92,6 +92,9 @@ function buy(k){
 }
 function regularGuest(k){ const d=CL[k], r=REGULARS[k]; const fav=SOUL_FAV[k]&&soulFavKnown(k)&&Math.random()<0.35; return {key:k, regular:k, id:d.id, n:d.n, c:d.c, line:r.line, ok:r.ok, ko:r.ko, order:fav?{base:SOUL_FAV[k].base,add:SOUL_FAV[k].add.slice()}:r.order}; }
 function villGuest(v){ const list=(ORDERS[v.key]||[]).filter(o=>ingOk(o.base)&&o.add.every(ingOk)); return Object.assign({}, v, {order: list.length ? list[rnd(list.length)] : null}); }
+// Clients de jour : 2 pendant la première saison, 3 ensuite ; le premier de la journée est toujours un villageois
+function dayGuests(){ return (S.season||1)>1 ? 3 : DAY_GUESTS; }
+function villFirst(gs){ const v=gs.filter(g=>!g.regular), r=gs.filter(g=>g.regular); if(!v.length) return shuffle(gs); const first=v.splice(rnd(v.length),1)[0]; return [first].concat(shuffle(v.concat(r))); }
 function pickVillager(){
   if(U.day && U.dayNight===S.night){ return; }
   if(S.pg){ pgPickGuests(); return; }
@@ -113,8 +116,10 @@ function pickVillager(){
     U.day={guests, i:0}; U.dayNight=S.night; setGuest(); return;
   }
   const pool = shuffle(VILLAGERS.slice(1).filter(v=>(v.season||1)<=(S.season||1)));
-  while(guests.length<DAY_GUESTS && pool.length) guests.push(villGuest(pool.shift()));
-  U.day = {guests: S.tutoDone ? shuffle(guests) : guests, i:0};
+  const nDay = dayGuests();
+  guests.length = Math.min(guests.length, nDay-1); // toujours au moins une place pour un villageois
+  while(guests.length<nDay && pool.length) guests.push(villGuest(pool.shift()));
+  U.day = {guests: S.tutoDone ? villFirst(guests) : guests, i:0};
   U.dayNight=S.night;
   setGuest();
 }
