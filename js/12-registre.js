@@ -132,6 +132,7 @@ function regEntry(k){
     <div class="sect" style="margin-top:8px">Mots-clés de son histoire (${kw.length}/${d.stages.filter(x=>x.kw).length})</div><div>${kw.length?kw.map(w=>`<span class="kw">${esc(w)}</span>`).join(""):`<span class="small muted">Aucun pour l'instant.</span>`}</div>
     <div class="sect" style="margin-top:8px">Ce qu'il t'a confié</div><div class="small">${r.lines.length?r.lines.map(l=>`« ${l.replace(/<i>.*?<\/i>\s*/g,"")} »`).join("<br>"):`<span class="muted">Rien encore.</span>`}</div>
     <div class="sect" style="margin-top:8px">Ce que tu as remarqué</div><div class="small">${r.hints.length?r.hints.join("<br>"):`<span class="muted">Rien encore. Essaie de te taire et de l'observer.</span>`}</div>
+    ${(S.cogNotes||{})[k]&&d.cogHint?`<div class="sect" style="margin-top:8px">Ce que ${cog()?cog().n:"ton co-gérant"} a remarqué</div><div class="small">${d.cogHint}</div>`:""}
     ${r.frags.length?`<div class="sect" style="margin-top:8px">Ses souvenirs</div><div class="small">${r.frags.join(", ")}</div>`:""}`;
 }
 function stateLabel(s){ return {new:"nouveau client",partial:"reviendra",rechute:"reviendra, fermé",apaise:"apaisé",staff:"personnel"}[s]||s; }
@@ -172,6 +173,7 @@ function newGameAsk(){
     <div class="answers"><button data-act="newGame">Effacer et recommencer</button><button class="alt" data-act="closeModal">Annuler</button></div>`);
 }
 
+function dframe(inner){ return `<div class="dfr">${ART_SET.has("frame-boisson")?`<img class="dfrimg" src="${artSrc('frame-boisson')}" alt="">`:""}<div class="dfrin">${inner}</div></div>`; }
 // ---- Le chapitre des recettes : recettes offertes, boissons fétiches, carte des boissons ----
 const DRINK_BASES = ["eau","lait","soda","limonade","the","jusbaie","liqueur"];
 const FLAVOR_LABEL = {rouge:"Rouge",bleu:"Bleu",jaune:"Jaune",rose:"Rose",vert:"Vert",miel:"Miel"};
@@ -180,23 +182,22 @@ function recipePages(add){
   const all=CLIENT_ORDER.map(c=>CL[c].recipe).filter(Boolean);
   const recipeDrink={shake:{base:"lait",add:["sitrus"]},remede:{base:"limonade",add:["menthe","wiki"]}};
   const recs=all.map(r=>{ const own=S.recipes.includes(r.key), d=recipeDrink[r.key];
-    return `<div class="brow" style="margin-bottom:8px"><div class="bspr sm">${own&&d?drinkIcon(d):"❔"}</div><div><b>${own?r.n:"Recette inconnue"}</b><br><small>${own?r.d:"Offerte par une âme apaisée qui t'apprécie (2 cœurs)."}</small></div></div>`; }).join("");
+    return `<div class="drow">${dframe(own&&d?drinkIcon(d):"<span class=\"dq\">?</span>")}<div><b>${own?r.n:"Recette inconnue"}</b><br><small>${own?r.d:"Offerte par une âme apaisée qui t'apprécie (2 cœurs)."}</small></div></div>`; }).join("");
   const VV=VILLAGERS.filter(v=>v.season!==13||S.pg);
   const favs=VV.filter(v=>FAV[v.key]).map(v=>{ const f=FAV[v.key], k=favKnown(v.key);
-    return `<div class="brow" style="margin-bottom:8px"><div class="bspr sm">${k?drinkIcon(f):"❔"}</div><div><b>${k?f.n[0].toUpperCase()+f.n.slice(1):"???"}</b> · <small>${v.n}</small><br><small>${k?orderShort(f):"Sers bien "+v.n+" pour qu'il te confie sa boisson préférée."}</small></div></div>`; }).join("");
+    return `<div class="drow">${dframe(k?drinkIcon(f):"<span class=\"dq\">?</span>")}<div><b>${k?f.n[0].toUpperCase()+f.n.slice(1):"???"}</b> · <small>${v.n}</small><br><small>${k?orderShort(f):"Sers bien "+v.n+" pour qu'il te confie sa boisson préférée."}</small></div></div>`; }).join("");
   const souls=Object.keys(SOUL_FAV).map(k=>{ const f=SOUL_FAV[k], kn=soulFavKnown(k), d=CL[k];
-    return `<div class="brow" style="margin-bottom:8px"><div class="bspr sm">${kn?drinkIcon(f):"❔"}</div><div><b>${kn?f.n[0].toUpperCase()+f.n.slice(1):"???"}</b> · <small>${d.n}</small><br><small>${kn?orderShort(f):"Une âme qui te fait confiance (3 cœurs) te confiera sa recette."}</small></div></div>`; }).join("");
+    return `<div class="drow">${dframe(kn?drinkIcon(f):"<span class=\"dq\">?</span>")}<div><b>${kn?f.n[0].toUpperCase()+f.n.slice(1):"???"}</b> · <small>${d.n}</small><br><small>${kn?orderShort(f):"Une âme qui te fait confiance (3 cœurs) te confiera sa recette."}</small></div></div>`; }).join("");
   const nSoul=Object.keys(SOUL_FAV).filter(soulFavKnown).length;
   const nFav=VV.filter(v=>FAV[v.key]&&favKnown(v.key)).length, nFavT=VV.filter(v=>FAV[v.key]).length;
-  add("recettes","recettes","Recettes et boissons fétiches",`<div class="bh">Recettes offertes · ${S.recipes.length}/${all.length}</div>${recs}
-    <div class="bh">Boissons fétiches des villageois · ${nFav}/${nFavT}</div>${favs}
+  add("recettes","recettes","Boissons fétiches des villageois",`<div class="bh">Boissons fétiches des villageois · ${nFav}/${nFavT}</div>${favs}
     <p class="bnote">Une boisson fétiche servie à celui ou celle qui l'aime rapporte un gros pourboire.</p>`);
-  add("recettesames","recettes",`Boissons uniques des âmes · ${nSoul}/${Object.keys(SOUL_FAV).length}`,`<p class="bnote">Huit âmes ont leur propre boisson. Elles te confient la recette quand elles te font vraiment confiance, puis la commandent de temps en temps.</p>${souls}`);
+  add("recettesames","recettes",`Recettes des âmes`,`<div class="bh">Recettes offertes · ${S.recipes.length}/${all.length}</div>${recs}<div class="bh">Boissons uniques · ${nSoul}/${Object.keys(SOUL_FAV).length}</div><p class="bnote">Huit âmes ont leur propre boisson. Elles te confient la recette quand elles te font vraiment confiance, puis la commandent de temps en temps.</p>${souls}`);
   // carte des boissons : chaque base, nature et dans ses six couleurs
   let made=0, tot=0;
   const rows=DRINK_BASES.filter(b=>ING[b]).map(b=>{ const cells=[null].concat(Object.keys(FLAVOR_LABEL)).map(f=>{ const key=f?`drink-${b}-${f}`:`drink-${b}`; if(!ARTOK[key]) return ""; tot++; const ok=book[key]; if(ok) made++;
       const nm=f?(DRINK_NAMES[b]||{})[f]:ING[b].n;
-      return `<div class="dbk${ok?"":" locked"}" title="${ok?nm:"???"}">${ok?`<img src="${artSrc(key)}" alt="">`:"<span>?</span>"}<small>${ok?nm:"???"}</small></div>`; }).join("");
+      return `<div class="dbk${ok?"":" locked"}" title="${ok?nm:"???"}">${dframe(ok?`<img class="drinkic" src="${artSrc(key)}" alt="">`:"<span class=\"dq\">?</span>")}<small>${ok?nm:"???"}</small></div>`; }).join("");
     return `<div class="bh">${ING[b].n}</div><div class="dbkrow">${cells}</div>`; }).join("");
   add("carteboissons","recettes",`Carte des boissons · ${made}/${tot}`,`<p class="bnote">Chaque verre servi s'inscrit ici. À toi de découvrir comment obtenir les autres.</p>${rows}`);
 }

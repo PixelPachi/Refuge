@@ -706,7 +706,7 @@ body.desk .handzone .dhand.fight .dcard:not(.dragging):not(.aiming):hover{transf
 .dbkrow{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:6px}
 .dbk{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px}
 .dbk img{width:46px;height:46px;object-fit:contain}
-.dbk span{width:46px;height:46px;border-radius:50%;background:#0002;display:flex;align-items:center;justify-content:center;font-weight:bold;opacity:.5}
+
 .dbk small{font-size:9px;line-height:1.1}
 .dbk.locked img{filter:brightness(0) opacity(.35)}
 /* Écran titre : la taverne est dans l'illustration, le texte se range en haut et en bas */
@@ -751,3 +751,13 @@ body.desk .handzone .dhand.fight .dcard:not(.dragging):not(.aiming):hover{transf
 .cardpeek .dcard.art .dn{font-size:19px!important}.cardpeek .dcard.art .dty{font-size:10px!important}
 .cardpeek .dcard:not(.art){width:200px!important;min-height:280px!important;font-size:16px}
 @keyframes fxpeek{from{opacity:0}to{opacity:1}}
+/* Registre : cadres des boissons */
+.dfr{position:relative;width:58px;height:58px;flex:none}
+.dfrimg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+.dfrin{position:absolute;inset:13%;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,#fff6e0,#ead6b0);border-radius:2px}
+.dfrin img,.dfrin .drinkic{width:92%!important;height:92%!important;object-fit:contain;margin:0!important}
+.dfr .dq{font-weight:900;font-size:20px;color:#8a6a48;opacity:.6}
+.drow{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.dbk .dfr{width:54px;height:54px}
+.dbk.locked .dfrin img{filter:brightness(0) opacity(.35)}
+.dbk small{min-height:2.2em}

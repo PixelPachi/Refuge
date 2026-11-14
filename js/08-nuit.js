@@ -586,8 +586,9 @@ function finService(){
     if(N.confident.length) lines.push({who:"cog",t:`${names} ${N.confident.length>1?"attendent":"attend"} près de la trappe. À l'aube, on les guidera avec leurs souvenirs.`});
     else lines.push({who:"cog",t:"Personne n'est prêt à descendre ce soir… Ce n'est pas grave. Ils reviendront."});
   }
-  if(CLIENT_ORDER.some(k=>isAvailable(k) && !N.confident.find(x=>x.k===k) && S.clients[k].visits>0)) lines.push({who:"cog",t:"Pour ceux qui reviendront, j'ai remarqué deux ou trois choses…"});
-  CLIENT_ORDER.filter(k=>isAvailable(k) && !N.confident.find(x=>x.k===k) && S.clients[k].visits>0).forEach(k=>lines.push({who:"cog",t:CL[k].cogHint}));
+  const noted=CLIENT_ORDER.filter(k=>isAvailable(k) && !N.confident.find(x=>x.k===k) && S.clients[k].visits>0 && CL[k].cogHint && !(S.cogNotes||{})[k]);
+  if(noted.length){ S.cogNotes=S.cogNotes||{}; noted.forEach(k=>S.cogNotes[k]=true);
+    lines.push({who:"cog",t:`J'ai découvert des choses sur ${noted.length>1?"nos habitués":CL[noted[0]].n} ce soir. Je les ai écrites dans le Registre, à ${noted.length>1?"leurs pages":"sa page"} : ${noted.map(k=>CL[k].n).join(", ")}.`}); }
   U.fsDone=false;
   playDialog(lines, renderFinChoice, ()=>{ $app.innerHTML=`${hud()}${scene({night:true})}<div class="panel">${dialogBubble()}</div>`; });
 }
