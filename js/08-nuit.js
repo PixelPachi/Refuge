@@ -59,7 +59,7 @@ function startNight(){
   U.waiting = avail.filter(k=>!pick.includes(k));
   U.rivalTook = null;
   if(rivalOpen() && U.waiting.length){ const k=U.waiting[0]; S.clients[k].rival=true; U.rivalTook=k; }
-  U.night = {queue, idx:0, confident:[], flambeeUsed:false, otariaUsed:false, pifeuilUsed:false, feunnecUsed:false, doudouUsed:false, served:[], out:{}, recruits:[], earned0:S.stats.earned, served0:S.stats.served, perfect0:S.stats.perfect};
+  U.night = {queue, idx:0, confident:[], flambeeUsed:false, otariaUsed:false, pifeuilUsed:false, gruikuiUsed:false, doudouUsed:false, served:[], out:{}, recruits:[], earned0:S.stats.earned, served0:S.stats.served, perfect0:S.stats.perfect};
   if(U.night.queue.length===0){ seasonClose(); return; }
   let lines;
   if(!S.tutoDone){
@@ -91,7 +91,7 @@ function nextClient(){
   const k=N.queue[N.idx], d=CL[k], st=S.clients[k];
   st.visits++; reg(k).met=true;
   const shiny = Math.random()<0.01;
-  const c = U.cur = {k, ouv:0, ten:0, stage:0, turns:MAX_TURNS+(S.cog==="brindibou"?1:0), hintI:0, hang:0, euph:false, shiny, lieShown:false, lieCalled:false, qUsed:false, reformed:{}, done:false, revealed:[]};
+  const c = U.cur = {k, ouv:0, ten:0, stage:0, turns:MAX_TURNS+(S.cog==="hoothoot"?1:0), hintI:0, hang:0, euph:false, shiny, lieShown:false, lieCalled:false, qUsed:false, reformed:{}, done:false, revealed:[]};
   c.ouv = st.carryOuv; c.ten = st.carryTen; c.stage = st.stage||0; c.confTonight = 0;
   if(talent()==="bavardage") c.ouv++;
   if(!S.shiny && (k==="ponchiot"||k==="magicarpe")) c.ouv++;
@@ -109,7 +109,7 @@ function nextClient(){
   if(omen()==="lune") c.ten++;
   if(omen()==="fete") c.turns--;
   const fromRival = st.rival && st.visits>1; if(st.rival){ st.rival=false; if(fromRival){ c.ten++; c.hang=(c.hang||0)+1; } }
-  if(S.cog==="feunnec" && U.night && !U.night.feunnecUsed){ U.night.feunnecUsed=true; c.ouv++; }
+  if(S.cog==="gruikui" && U.night && !U.night.gruikuiUsed){ U.night.gruikuiUsed=true; c.ouv++; }
   c.ouv=clamp(c.ouv,0,4); c.ten=clamp(c.ten,0,4);
   const lines=[];
   if(fromRival){ lines.push({who:"narr",t:`${d.n} revient du Pourboire d'Or, les yeux rouges et la démarche incertaine. Une gueule de bois dorée, et un peu plus de Tension. Mais quelque chose s'est déposé au fond : un souvenir amer, qu'il te confie sans le vouloir.`}); S.fragments.push({n:`Nuit dorée et amère de ${d.n}`,e:"tristesse",from:k,amer:true}); }
