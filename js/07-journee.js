@@ -213,7 +213,7 @@ function villagerServed(res){
     if(leg && !S.villLeg[v.key]){
       const tries=(S.villLegTries=S.villLegTries||{})[v.key]||0;
       const chance=(isFav?0.2:0.08)+tries*0.03;
-      if(Math.random()<chance){ S.villLeg[v.key]=true; ensureDeck(); S.deck.push(leg); scInc("legend"); save(); jingle("apaise");
+      if(Math.random()<chance){ S.villLeg[v.key]=true; ensureDeck(); deckAdd(leg); scInc("legend"); save(); jingle("apaise");
         playDialog([{who:{id:v.id,n:v.n},t:VILL_LEGEND_LINE[v.key]},{who:"narr",t:`<div class="giftcard"><span class="small">Carte légendaire, rien qu'à ${v.n} :</span>${cardHTML(leg)}</div>`}], nextGuest, ()=>renderDayScene(v)); return; }
       S.villLegTries[v.key]=tries+1;
     }

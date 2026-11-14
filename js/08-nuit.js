@@ -211,7 +211,7 @@ function relancer(){
     if(st.kw && !S.kwTuto){ S.kwTuto=true; tip=`<br><span class="small"><i>Ce mot compte pour lui : il est noté dans le Registre des habitués. Tu pourras le « reformuler » plus tard pour lui montrer que tu l'as écouté.</i></span>`; }
     let gift="";
     const cc=CLIENT_CARD[c.k];
-    if(cc && !S.clients[c.k].cardGiven){ S.clients[c.k].cardGiven=true; ensureDeck(); S.deck.push(cc); gift=`<div class="giftcard"><span class="small"><i>En parlant, il t'a montré un geste qu'il connaît par cœur. Nouvelle carte pour ton deck :</i></span>${cardHTML(cc)}</div>`; }
+    if(cc && !S.clients[c.k].cardGiven){ S.clients[c.k].cardGiven=true; ensureDeck(); deckAdd(cc); gift=`<div class="giftcard"><span class="small"><i>En parlant, il t'a montré un geste qu'il connaît par cœur. Nouvelle carte pour ton deck :</i></span>${cardHTML(cc)}</div>`; }
     afterAction({t:t+(st.kw?` <span class="kw">mot-clé : ${st.kw}</span>`:"")+tip+gift, lie});
   } else {
     if(talent()==="question" && !c.qUsed){ c.qUsed=true; afterAction({narr:true,t:"Ta question tombe juste, sans le brusquer. Il ouvre la bouche… puis la referme. Pas encore. (Question juste)"}); return; }
@@ -320,7 +320,7 @@ function gainAff(k, lines){
   if(st.aff>=AFF_MAX) return;
   st.aff++;
   lines.push({who:"narr",t:`Affinité avec ${d.n} : ${hearts(st.aff)}`});
-  if(st.aff===2 && d.affCard && !st.affCardGiven){ st.affCardGiven=true; ensureDeck(); S.deck.push(d.affCard); lines.push({who:clientSp2(k),t:`Tiens. Chez moi, on offre ça aux gens qu'on aime bien. Garde-la.`},{who:"narr",t:`<div class="giftcard"><span class="small">Carte de voyageur, rien qu'à ${d.n} :</span>${cardHTML(d.affCard)}</div>`}); }
+  if(st.aff===2 && d.affCard && !st.affCardGiven){ st.affCardGiven=true; ensureDeck(); deckAdd(d.affCard); lines.push({who:clientSp2(k),t:`Tiens. Chez moi, on offre ça aux gens qu'on aime bien. Garde-la.`},{who:"narr",t:`<div class="giftcard"><span class="small">Carte de voyageur, rien qu'à ${d.n} :</span>${cardHTML(d.affCard)}</div>`}); }
   if(st.aff===2 && d.recipe && !S.recipes.includes(d.recipe.key)){ S.recipes.push(d.recipe.key); lines.push({who:clientSp2(k),t:`Tiens, je te donne ma recette. <b>${d.recipe.n}</b> : ${d.recipe.d}.`}); }
   relicInit();
   if(st.aff===AFF_MAX && d.gift && !S.owned[d.gift.key]){ const worn=gainRelic(d.gift.key); lines.push({who:clientSp2(k),t:`Je veux que tu gardes ça. Ça m'a porté chance, là-dessous.`},{who:"narr",t:`Artefact obtenu : ${d.gift.i} <b>${d.gift.n}</b> (${d.gift.d}). `+(worn?`Tu le portes : il accompagnera chaque client dans son Labyrinthe.`:`Tu portes déjà ${RELIC_MAX} artefacts : il est rangé dans le Registre, où tu peux choisir lesquels porter.`)}); }

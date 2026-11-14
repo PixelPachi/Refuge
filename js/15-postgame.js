@@ -65,6 +65,7 @@ function shinyArriveLines(v){
 }
 function pgShinyAfter(v, cardOk, next){
   if(!cardOk){ next(); return; }
+  S.shinies=S.shinies||{}; if(!S.shinies[v.regular]) S.shinies[v.regular]={day:S.night};
   const st=S.shinies[v.regular]; const first=!st.gift; st.gift=true; save();
   if(!first && Math.random()>0.6){ next(); return; }
   const own=shinyCardFor(v.regular);

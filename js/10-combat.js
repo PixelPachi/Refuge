@@ -41,8 +41,11 @@ const FRAG_CARD = {
 };
 
 function starterDeck(){ const a=(S.ten&&S.ten.aura)||S.aura1||"lueur"; return ["frappe","frappe","frappe","frappe","garde","garde","garde","garde"].concat(AURA_DECK[a]||AURA_DECK.lueur); }
-function ensureDeck(){ if(!S.deck || !S.deck.length) S.deck=starterDeck();
-  Object.keys(LEGEND_CARD).forEach(k=>{ const st=S.clients&&S.clients[k]; if(st && (st.state==="apaise"||st.state==="staff") && !st.legendGiven){ st.legendGiven=true; S.deck.push(LEGEND_CARD[k]); } }); }
+const DECK_MAX = 30; // au-delà, les nouvelles cartes vont dans la réserve
+function deckAdd(id){ S.reserve=S.reserve||[]; if(S.deck.length>=DECK_MAX){ S.reserve.push(id); return false; } S.deck.push(id); return true; }
+function deckFit(){ S.reserve=S.reserve||[]; while(S.deck.length>DECK_MAX) S.reserve.push(S.deck.pop()); }
+function ensureDeck(){ if(!S.deck || !S.deck.length) S.deck=starterDeck(); deckFit();
+  Object.keys(LEGEND_CARD).forEach(k=>{ const st=S.clients&&S.clients[k]; if(st && (st.state==="apaise"||st.state==="staff") && !st.legendGiven){ st.legendGiven=true; deckAdd(LEGEND_CARD[k]); } }); }
 function cardDesc(id, cd){
   const c=cd||CARDS[id]; if(c.d) return c.d;
   const p=[];
@@ -92,11 +95,11 @@ function cardHTML(id, opts={}){
     <div class="dcost">${c.unplayable?"–":c.x?"X":c.c}</div>${c.r==="legende"?`<div class="dleg">Légendaire</div>`:c.r==="chroma"?`<div class="dleg chroma">✦ Chromatique</div>`:c.r==="voyage"?`<div class="dleg voyage">Voyageur</div>`:""}<div class="dic">${c.i||"✦"}</div>
     <div class="dn">${c.n}</div><div class="dd">${cardDesc(id,c)}</div>${opts.tag?`<div class="dtag">${opts.tag}</div>`:""}</div>`;
 }
-function addCard(id, why){ ensureDeck(); S.deck.push(id); save(); toast(`Nouvelle carte : ${CARDS[id].n}${why?` (${why})`:""}`); }
+function addCard(id, why){ ensureDeck(); const inDeck=deckAdd(id); save(); toast(inDeck?`Nouvelle carte : ${CARDS[id].n}${why?` (${why})`:""}`:`Deck plein (${DECK_MAX}) : ${CARDS[id].n} rangée dans la réserve.`); }
 // --- choisir 1 carte parmi 3 (jour : permanente) ---
 function offerCards(ids, onDone, title, sub){
   U.cardPick={ids, onDone};
-  openModal(`<h3>${title||"Une carte pour ton deck"}</h3><p class="small muted">${sub||"Choisis une carte à ajouter à ton deck, ou passe."}</p>
+  openModal(`<h3>${title||"Une carte pour ton deck"}</h3><p class="small muted">${sub||"Choisis une carte à ajouter à ton deck, ou passe."}</p>${(S.deck||[]).length>=DECK_MAX?`<p class="small" style="color:var(--candle)">Ton deck est plein (${DECK_MAX} cartes) : la carte choisie ira dans la réserve.</p>`:""}
     <div class="dhand pick">${ids.map((id,i)=>cardHTML(id,{act:"pickCard",i})).join("")}</div>
     <button class="alt" style="width:100%;margin-top:10px" data-act="pickCard" data-i="-1">Passer</button>`);
 }
@@ -112,9 +115,9 @@ function showDeck(tab){
   const locked = U.inDungeon;
   const list = U.deckTab==="deck" ? S.deck : S.reserve;
   const cnt={}; list.forEach(id=>cnt[id]=(cnt[id]||0)+1);
-  const tabs = `<div class="row" style="margin-bottom:8px"><button class="sm ${U.deckTab==="deck"?"":"alt"}" data-act="deckTab" data-t="deck">Deck (${S.deck.length})</button><button class="sm ${U.deckTab==="reserve"?"":"alt"}" data-act="deckTab" data-t="reserve">Réserve (${S.reserve.length})</button><span class="grow"></span><button class="sm ghost" data-act="closeModal">Fermer</button></div>`;
+  const tabs = `<div class="row" style="margin-bottom:8px"><button class="sm ${U.deckTab==="deck"?"":"alt"}" data-act="deckTab" data-t="deck">Deck (${S.deck.length}/${DECK_MAX})</button><button class="sm ${U.deckTab==="reserve"?"":"alt"}" data-act="deckTab" data-t="reserve">Réserve (${S.reserve.length})</button><span class="grow"></span><button class="sm ghost" data-act="closeModal">Fermer</button></div>`;
   const help = locked ? `<p class="small" style="color:var(--candle)">Un Labyrinthe est en cours : le deck est déjà entre les mains du client. Tu pourras le modifier après l'aube.</p>`
-    : U.deckTab==="deck" ? `<p class="small muted">Dans le Labyrinthe, c'est le client qui joue ces cartes. Touche une carte pour la ranger dans la réserve (minimum ${DECK_MIN} cartes dans le deck). Un deck plus léger pioche plus souvent tes meilleures cartes.</p>`
+    : U.deckTab==="deck" ? `<p class="small muted">Dans le Labyrinthe, c'est le client qui joue ces cartes. Touche une carte pour la ranger dans la réserve (minimum ${DECK_MIN}, maximum ${DECK_MAX} cartes dans le deck). Un deck plus léger pioche plus souvent tes meilleures cartes.</p>`
     : `<p class="small muted">Les cartes rangées ici ne sont pas jouées. Touche une carte pour la remettre dans le deck.</p>`;
   const grid = Object.keys(cnt).length ? `<div class="dgrid">${Object.keys(cnt).map(id=>`<div class="dwrap" ${locked?"":`data-act="moveCard" data-k="${id}"`}>${cardHTML(id)}${cnt[id]>1?`<span class="dcnt">×${cnt[id]}</span>`:""}</div>`).join("")}</div>`
     : `<p class="small muted center" style="margin:20px 0">${U.deckTab==="deck"?"Ton deck est vide.":"La réserve est vide."}</p>`;
@@ -126,7 +129,7 @@ function moveCard(id){
     if(S.deck.length<=DECK_MIN){ toast(`Le deck doit garder au moins ${DECK_MIN} cartes.`); return; }
     const i=S.deck.indexOf(id); if(i<0) return; S.deck.splice(i,1); S.reserve.push(id); toast(`${CARDS[id].n} rangée dans la réserve.`);
   } else {
-    const i=S.reserve.indexOf(id); if(i<0) return; S.reserve.splice(i,1); S.deck.push(id); toast(`${CARDS[id].n} remise dans le deck.`);
+    const i=S.reserve.indexOf(id); if(i<0) return; if(S.deck.length>=DECK_MAX){ toast(`Le deck est plein (${DECK_MAX} cartes). Range d'abord une carte dans la réserve.`); return; } S.reserve.splice(i,1); S.deck.push(id); toast(`${CARDS[id].n} remise dans le deck.`);
   }
   save(); showDeck();
 }
@@ -630,7 +633,7 @@ function dungeonNext(){
     gainAff(x.k, lines);
     if(S.cog==="pichu"){ S.fragments.push({n:"Étincelle de Pichu",e:"joie",from:"pichu"}); lines.push({who:"cog",t:"Pichu ! Une étincelle de joie, pour la suite ! (+1 Fragment de Joie)"}); }
     st.state="apaise"; U.night.recruits.push(x.k);
-    if(LEGEND_CARD[x.k] && !st.legendGiven){ st.legendGiven=true; ensureDeck(); S.deck.push(LEGEND_CARD[x.k]); scInc("legend");
+    if(LEGEND_CARD[x.k] && !st.legendGiven){ st.legendGiven=true; ensureDeck(); deckAdd(LEGEND_CARD[x.k]); scInc("legend");
       lines.push({who:clientSp2(x.k),t:"Là-dessous, j'ai retrouvé quelque chose qui m'appartenait. Je crois que c'est à toi de le garder, maintenant."},
         {who:"narr",t:`<div class="giftcard"><span class="small">Carte légendaire, rien qu'à ${d.n} :</span>${cardHTML(LEGEND_CARD[x.k])}</div>`}); }
     lines.push({who:clientSp2(x.k),t:"Je vais me reposer un peu, en haut, si vous permettez. On en reparlera ce soir ?"});

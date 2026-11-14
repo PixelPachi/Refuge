@@ -76,3 +76,7 @@ Les saisons 1 et 2 gardent quelques effets historiques codés directement dans l
 - Voyageurs : entrées `CL[k].world` hors `CLIENT_ORDER` ; carte à 2 cœurs (`affCard`, dans `gainAff`), artefact à 5 cœurs. `giftOwners()` = âmes + voyageurs pour tous les artefacts.
 - Nuit : pas de service. `renderPgNight()` → `pgGo(k)` (une âme apaisée ou `__ten`, le Tenancier) → `pgMakeMap(depth)` (carte procédurale, salles prises dans tous les Labyrinthes) → `makeEnemyPG()` (`PG_MOVES` : poison, drain, gel, malédiction, brise-garde, soin, confusion) → `pgAfterRun()`. Profondeur +1 par victoire : PV ×(1+0,06·prof.), dégâts ×(1+0,04·prof.).
 - Test : `python3 tests/postgame.py $PWD/index.html <snapshot.json> [jours] [captures]`.
+
+## Deck
+- `DECK_MAX = 30` (js/10-combat.js) : `deckAdd(id)` met la carte dans la réserve quand le deck est plein ; `deckFit()` (appelé par `ensureDeck`) range l'excédent des anciennes sauvegardes dans la réserve.
+- Test longue durée de l'après-fin : `/tmp/pglong.py` (300 jours simulés sans interface).
