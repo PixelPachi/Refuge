@@ -171,7 +171,7 @@ function renderCogPick(){
   $app.innerHTML = `<div class="pad fade scroll" style="flex:1">
     <h2 class="px" style="color:var(--candle);margin:4px 0 4px">Choisis ton co-gérant</h2>
     <p class="small muted" style="margin:0 0 10px">Un co-gérant de ton Aura secondaire (<b style="color:${AURAS[S.aura2].c}">${AURAS[S.aura2].n}</b>) forme un <b>Duo</b> : +3 PC max.</p>
-    <div class="cards">${COGS.map(c=>{
+    <div class="cards">${[...COGS].sort((a,b)=>AURA_ORDER.indexOf(a.aura)-AURA_ORDER.indexOf(b.aura)).map(c=>{
       const duo=c.aura===S.aura2, fric=c.aura===OPPOSITE[S.ten.aura];
       return `<div class="card cand" data-act="pickCog" data-k="${c.key}">
         <div class="pic">${sprite(c.id,c.n,c.c,{anim:true})}</div>

@@ -50,7 +50,7 @@ function addXP(n){
   S.xp += n;
   while(S.xp >= S.level*100){ S.xp -= S.level*100; S.level++; toast(`Niveau ${S.level} ! +1 PC max`); }
 }
-function tipBonus(){ let b=hasBib("bocal")?0.2:0; if(omen()==="fete") b+=1; if(staffOn("magicarpe")) b+=0.1; return b; }
+function tipBonus(){ let b=hasBib("bocal")?0.2:0; if(omen()==="fete") b+=1; if(staffOn("magicarpe")) b+=0.1; if(S.cog==="mustebouee") b+=0.25; return b; }
 
 // ---------- Rendu commun ----------
 function hud(){

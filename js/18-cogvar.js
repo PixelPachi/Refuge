@@ -3,6 +3,12 @@
 // dont une partie dépend du caractère du co-gérant (Tarsal ressent, Marcacrin renifle, Otaria rassure, Pichu s'enthousiasme, Sorbébé se tait, Pifeuil souffle).
 const COG_LINES = {
   ouvrir:{
+    doudouvet:["J'ai mis du coton sur les tabourets. Tout le monde sera bien installé.", "Le vent se calme. C'est le bon moment pour ouvrir."],
+    cornebre:["Croa. Les âmes arrivent avec leurs secrets. Ouvrons.", "La nuit est mon royaume, patron. Laisse-moi tenir la porte."],
+    pachirisu:["Bzzt ! J'ai trouvé une baie sous le tabouret. C'est un bon présage, non ?", "On ouvre, on ouvre ! J'ai les joues pleines d'électricité !"],
+    mustebouee:["Allez, on ouvre ! J'ai une nouvelle blague à tester ce soir.", "Prêt à faire sourire même le plus triste des fantômes !"],
+    brindibou:["Hou hou… Je suis bien réveillé, maintenant. On ouvre ?", "Je vois quelqu'un derrière la porte. Il hésite. On l'aide ?"],
+    feunnec:["J'ai rallumé la cheminée. Qu'ils entrent, il fait bon !", "Une petite flamme pour chaque âme qui passe la porte. J'en ai préparé plein."],
     all:["C'est l'heure, patron. On ouvre ?","Minuit pile. J'allume les dernières bougies ?","La porte brille… Quelqu'un attend déjà, j'en suis sûr.","Les verres sont propres, le comptoir est essuyé. On est prêts.","Encore une nuit. J'aime bien ce moment, juste avant qu'ils arrivent.","Tu entends ? Le silence de Bourg-Brume. Et puis… ce petit grincement de porte.","J'ai mis de l'eau à chauffer. On ne sait jamais qui va passer.","Allez, patron. Qui sait quelle histoire on va entendre ce soir ?"],
     tarsal:["Je… je sens déjà des émotions derrière la porte. Quelqu'un hésite à entrer.","Il y a beaucoup de peine dehors, ce soir. On va l'accueillir doucement."],
     marcacrin:["*renifle* Ça sent la pluie… et quelqu'un qui n'a pas mangé depuis longtemps.","Mon groin me chatouille. Il va y avoir du monde !"],
@@ -12,6 +18,12 @@ const COG_LINES = {
     pifeuil:["Un petit souffle sur les bougies… voilà. L'ambiance est parfaite.","Le vent tourne, patron. Quelqu'un arrive avec lui."]
   },
   finVide:{
+    doudouvet:["Ils sont repartis plus légers. Comme du coton dans le vent."],
+    cornebre:["Pas de secret ce soir. Ils les gardent encore un peu. Croa."],
+    pachirisu:["Bzz… je suis vidé. Je vais cacher quelques baies avant de dormir."],
+    mustebouee:["Personne n'a ri à ma blague… Demain, j'en trouve une meilleure !"],
+    brindibou:["Hou… la nuit était calme. J'ai tout vu, rien raté."],
+    feunnec:["Je garde les braises au chaud pour demain. Ils reviendront s'y réchauffer."],
     all:["Quelle nuit… Ils sont tous repartis dans cette lumière violette. Tu crois qu'ils reviendront ?","Personne ne s'est vraiment confié ce soir. Ce n'est pas grave : demain, peut-être.","Les tabourets sont vides. Mais on a semé quelque chose, je le sens.","Ils sont repartis, mais un peu moins lourds qu'en arrivant. C'est déjà ça.","Une nuit calme. Parfois, il faut juste qu'ils sachent que la porte est ouverte."],
     tarsal:["Ils partent toujours avec un peu moins de tristesse. Je l'ai senti, patron."],
     otaria:["On fera mieux demain ! Et puis, on a bien rigolé quand j'ai renversé le seau."],
@@ -19,6 +31,8 @@ const COG_LINES = {
     sorbebe:["…Ils reviendront. Ils reviennent toujours."]
   },
   finPersonne:{
+    cornebre:["La trappe reste close. Je compterai mes pièces brillantes en attendant."],
+    brindibou:["Pas de descente ? Je vais faire le guet, au cas où."],
     all:["Personne n'est prêt à descendre ce soir… Ce n'est pas grave. Ils reviendront.","Aucun souvenir n'est assez clair pour descendre. Il faudra encore les écouter.","Pas de Labyrinthe cette nuit. Je vais pouvoir dormir un peu, pour une fois.","La trappe reste fermée ce soir. On a toute l'aube pour souffler."],
     marcacrin:["Pas de descente ? Tant mieux, je vais finir les restes de gâteau."],
     pifeuil:["Pas de Labyrinthe… je vais aller compter les feuilles mortes dans la cour."]

@@ -761,3 +761,10 @@ body.desk .handzone .dhand.fight .dcard:not(.dragging):not(.aiming):hover{transf
 .dbk .dfr{width:54px;height:54px}
 .dbk.locked .dfrin img{filter:brightness(0) opacity(.35)}
 .dbk small{min-height:2.2em}
+/* Reformuler : mots-clés rangés par client */
+.kwgroups{display:flex;flex-direction:column;gap:8px;max-height:52vh;overflow:auto;margin:6px 0 10px}
+.kwg{background:#0002;border-radius:10px;padding:6px 8px}
+.kwgh{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.kwspr{width:36px;height:36px;flex:none}
+.kwgw{display:flex;flex-wrap:wrap;gap:6px}
+.kwb{flex:0 0 auto}

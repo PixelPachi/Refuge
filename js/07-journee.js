@@ -18,6 +18,7 @@ function startDay(){
   music("village");
   const dayKey=`${S.season||1}-${S.night}`;
   if(S.paidDay!==dayKey){ S.paidDay=dayKey; const pl=payroll(); if(pl.length){ save(); playDialog(pl, startDay, ()=>{ $app.innerHTML=`${hud()}${scene({doorOpen:false})}<div class="panel">${dialogBubble()}</div>`; }); return; } }
+  if(S.cog==="pachirisu" && S.pachiDay!==dayKey){ S.pachiDay=dayKey; const bs=Object.keys(ING).filter(k=>ING[k].cat==="baie"&&ingOk(k)); const b=bs[rnd(bs.length)]; if(b){ S.stock[b]=(S.stock[b]||0)+1; setTimeout(()=>toast(`Pachirisu a retrouvé une ${ING[b].n} !`),400); } }
   S.pc = pcMax();
   U.night = null; U.cur = null; U.dawn = null;
   save();

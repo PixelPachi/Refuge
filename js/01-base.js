@@ -38,7 +38,13 @@ const COGS = [
   {key:"otaria",id:86,n:"Otaria",aura:"maree",c:"#c8e0f0",p:"Épaule mouillée",pd:"La première hausse de Tension due à un verre, chaque nuit, est ignorée.",line:"Un verre raté ? Ça arrive ! On rit et on recommence."},
   {key:"pichu",id:172,n:"Pichu",aura:"lueur",c:"#f8e060",p:"Étincelle",pd:"+1 Fragment de Mémoire chaque fois qu'une âme est apaisée.",line:"Je peux rester debout toute la nuit ! Enfin… presque."},
   {key:"sorbebe",id:582,n:"Sorbébé",aura:"ombre",c:"#c8e8f8",p:"Lire entre les lignes",pd:"Affiche les mensonges dans les confidences.",line:"Je ne parle pas beaucoup. Mais j'entends quand on ment."},
-  {key:"pifeuil",id:273,n:"Pifeuil",aura:"brise",c:"#a87848",p:"Courant d'air",pd:"Une fois par nuit, renvoie un client sans pénalité : il reviendra tel quel.",line:"Si un client est de trop, je sais faire un courant d'air. Poliment."}
+  {key:"pifeuil",id:273,n:"Pifeuil",aura:"brise",c:"#a87848",p:"Courant d'air",pd:"Une fois par nuit, renvoie un client sans pénalité : il reviendra tel quel.",line:"Si un client est de trop, je sais faire un courant d'air. Poliment."},
+  {key:"feunnec",id:653,n:"Feunnec",aura:"braise",c:"#f0a050",p:"Accueil chaleureux",pd:"Le premier client de chaque nuit arrive avec +1 Ouverture.",line:"Je garde le feu de la cheminée bien vif. Personne n'a froid en entrant ici, promis !"},
+  {key:"brindibou",id:722,n:"Brindibou",aura:"racine",c:"#c8b088",p:"Veille nocturne",pd:"Chaque client de nuit reste un échange de plus.",line:"La nuit, c'est mon moment. Je peux écouter jusqu'à l'aube sans cligner des yeux."},
+  {key:"mustebouee",id:418,n:"Mustébouée",aura:"maree",c:"#e89048",p:"Bonne humeur",pd:"Les pourboires (jour et nuit) augmentent de 25 %.",line:"Un sourire, une petite blague, et hop : les clients laissent toujours un peu plus !"},
+  {key:"pachirisu",id:417,n:"Pachirisu",aura:"lueur",c:"#e8f0f8",p:"Réserve secrète",pd:"Chaque matin, une baie gratuite apparaît dans le stock.",line:"J'ai caché des baies un peu partout dans la taverne. Je ne me souviens plus où, mais j'en retrouve tous les matins !"},
+  {key:"cornebre",id:198,n:"Cornèbre",aura:"ombre",c:"#404868",p:"Trésor brillant",pd:"+15 ₽ à chaque confidence obtenue.",line:"Les secrets, c'est comme les pièces : ça brille dans le noir. Je sais où regarder."},
+  {key:"doudouvet",id:546,n:"Doudouvet",aura:"brise",c:"#f0f0e0",p:"Coton apaisant",pd:"Une fois par nuit, enveloppe le client dans du coton : −2 Tension, sans utiliser d'échange.",line:"Quand quelqu'un est trop crispé, je me pose sur son épaule. C'est tout doux, ça aide."},
 ];
 const COG_MIDNIGHT = {
   tarsal:"Je… je sens quelque chose derrière la porte. Beaucoup de tristesse. Beaucoup trop.",
@@ -46,7 +52,13 @@ const COG_MIDNIGHT = {
   otaria:"Ha ha ! La porte est violette ! C'est normal, ça ? C'est normal, hein ?",
   pichu:"Pi… Pichu ! La porte brille ! On se cache sous le comptoir ? Non ? D'accord…",
   sorbebe:"…Hector ne nous a pas tout dit.",
-  pifeuil:"Un courant d'air froid. Il vient d'ailleurs. De très loin."
+  pifeuil:"Un courant d'air froid. Il vient d'ailleurs. De très loin.",
+  feunnec:"La porte est violette… et elle est froide. Je vais rajouter une bûche, d'accord ?",
+  brindibou:"Hou… Hou ? Quelque chose bouge derrière la porte. Je le vois, même dans le noir.",
+  mustebouee:"Une porte qui brille ? Génial ! On va avoir des clients toute la nuit, alors !",
+  pachirisu:"Bzzt ! Mes poils se dressent tout seuls… Il y a de l'électricité dans l'air. Ou de la magie ?",
+  cornebre:"Cette lumière violette… On dirait un trésor. Mais les trésors, ça cache toujours quelque chose.",
+  doudouvet:"Le vent passe sous la porte. Il sent les larmes. On va les accueillir doucement."
 };
 
 const GEL_BASE = 15;

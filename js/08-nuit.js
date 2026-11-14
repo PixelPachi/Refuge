@@ -59,7 +59,7 @@ function startNight(){
   U.waiting = avail.filter(k=>!pick.includes(k));
   U.rivalTook = null;
   if(rivalOpen() && U.waiting.length){ const k=U.waiting[0]; S.clients[k].rival=true; U.rivalTook=k; }
-  U.night = {queue, idx:0, confident:[], flambeeUsed:false, otariaUsed:false, pifeuilUsed:false, served:[], out:{}, recruits:[], earned0:S.stats.earned, served0:S.stats.served, perfect0:S.stats.perfect};
+  U.night = {queue, idx:0, confident:[], flambeeUsed:false, otariaUsed:false, pifeuilUsed:false, feunnecUsed:false, doudouUsed:false, served:[], out:{}, recruits:[], earned0:S.stats.earned, served0:S.stats.served, perfect0:S.stats.perfect};
   if(U.night.queue.length===0){ seasonClose(); return; }
   let lines;
   if(!S.tutoDone){
@@ -91,7 +91,7 @@ function nextClient(){
   const k=N.queue[N.idx], d=CL[k], st=S.clients[k];
   st.visits++; reg(k).met=true;
   const shiny = Math.random()<0.01;
-  const c = U.cur = {k, ouv:0, ten:0, stage:0, turns:MAX_TURNS, hintI:0, hang:0, euph:false, shiny, lieShown:false, lieCalled:false, qUsed:false, reformed:{}, done:false, revealed:[]};
+  const c = U.cur = {k, ouv:0, ten:0, stage:0, turns:MAX_TURNS+(S.cog==="brindibou"?1:0), hintI:0, hang:0, euph:false, shiny, lieShown:false, lieCalled:false, qUsed:false, reformed:{}, done:false, revealed:[]};
   c.ouv = st.carryOuv; c.ten = st.carryTen; c.stage = st.stage||0; c.confTonight = 0;
   if(talent()==="bavardage") c.ouv++;
   if(!S.shiny && (k==="ponchiot"||k==="magicarpe")) c.ouv++;
@@ -109,6 +109,7 @@ function nextClient(){
   if(omen()==="lune") c.ten++;
   if(omen()==="fete") c.turns--;
   const fromRival = st.rival && st.visits>1; if(st.rival){ st.rival=false; if(fromRival){ c.ten++; c.hang=(c.hang||0)+1; } }
+  if(S.cog==="feunnec" && U.night && !U.night.feunnecUsed){ U.night.feunnecUsed=true; c.ouv++; }
   c.ouv=clamp(c.ouv,0,4); c.ten=clamp(c.ten,0,4);
   const lines=[];
   if(fromRival){ lines.push({who:"narr",t:`${d.n} revient du Pourboire d'Or, les yeux rouges et la démarche incertaine. Une gueule de bois dorée, et un peu plus de Tension. Mais quelque chose s'est déposé au fond : un souvenir amer, qu'il te confie sans le vouloir.`}); S.fragments.push({n:`Nuit dorée et amère de ${d.n}`,e:"tristesse",from:k,amer:true}); }
@@ -169,6 +170,7 @@ function renderClient(msg){
       <button data-act="essuyer">Essuyer <small>gratuit</small></button>
       <button data-act="taire">Se taire <small>gratuit</small></button>
       ${canLie?`<button data-act="callLie">Mensonge <small>le relever</small></button>`:`<button class="alt" data-act="registre" data-k="${c.k}">Registre <small>notes</small></button>`}
+      ${S.cog==="doudouvet"&&!U.night.doudouUsed&&c.ten>0?`<button class="ghost full sm" data-act="doudou">Coton apaisant : −2 Tension</button>`:""}
       ${S.cog==="pifeuil"&&!U.night.pifeuilUsed?`<button class="ghost full sm" data-act="pifeuil">Courant d'air : renvoyer sans pénalité</button>`:""}
     </div>
   </div>`;
@@ -202,7 +204,7 @@ function relancer(){
   if(c.stage>=d.stages.length){ afterAction({t:"<i>Il esquisse un sourire fatigué.</i> Je crois que je t'ai tout dit, ce soir."}); return; }
   const st=d.stages[c.stage];
   if(c.ouv>=st.req){
-    c.stage++; c.ouv++; c.confTonight++; S.clients[c.k].stage=Math.max(S.clients[c.k].stage||0,c.stage);
+    c.stage++; c.ouv++; c.confTonight++; if(S.cog==="cornebre"){ S.money+=15; toast("+15 ₽ · Trésor brillant"); } S.clients[c.k].stage=Math.max(S.clients[c.k].stage||0,c.stage);
     if(st.kw) addKeyword(c.k, st.kw);
     regAdd(c.k,"lines",st.t);
     let t=st.t, lie=false;
@@ -261,8 +263,13 @@ function essuyer(){
 function reformuler(){
   const kws=allKeywords();
   openModal(`<h3>Reformuler</h3><p class="small muted">Reprends un mot-clé qu'il t'a confié. Le plus récent touche juste.</p>
-    <div class="ings">${kws.map((x,i)=>`<button class="ing" data-act="reform" data-i="${i}">${esc(x.w)} <span class="q2">${CL[x.k].n}</span></button>`).join("")}</div>
+    <div class="kwgroups">${kwGroups(kws)}</div>
     <button class="ghost" data-act="closeModal">Annuler</button>`);
+}
+function kwGroups(kws){
+  const by={}; kws.forEach((x,i)=>{ (by[x.k]=by[x.k]||[]).push({w:x.w,i}); });
+  const ks=Object.keys(by).sort((a,b)=>(a===(U.cur&&U.cur.k)?-1:b===(U.cur&&U.cur.k)?1:CLIENT_ORDER.indexOf(a)-CLIENT_ORDER.indexOf(b)));
+  return ks.map(k=>`<div class="kwg"><div class="kwgh"><div class="kwspr">${sprite(CL[k].id,CL[k].n,CL[k].c,{anim:true})}</div><b>${CL[k].n}</b></div><div class="kwgw">${by[k].map(x=>`<button class="ing kwb" data-act="reform" data-i="${x.i}">${esc(x.w)}</button>`).join("")}</div></div>`).join("");
 }
 function doReform(i){
   if(U.cur) U.cur.lastAct=null;
@@ -279,6 +286,10 @@ function doReform(i){
 function callLie(){
   const c=U.cur; c.lieCalled=true; c.ouv++; useTurn();
   afterAction({t:`Tu demandes doucement : « Vraiment ? »<br><i>Un long silence. Le bois du tabouret craque.</i> …Non. Pas vraiment. <span class="delta p">+1 Ouverture</span>`});
+}
+function doudouAct(){
+  const c=U.cur; U.night.doudouUsed=true; const was=c.ten; c.ten=Math.max(0,c.ten-2);
+  afterAction({narr:true,t:`${cog().n} se pose sur l'épaule de ${CL[c.k].n}, tout doux. Ses épaules se relâchent. <span class="delta p">Tension −${was-c.ten}</span>`});
 }
 function pifeuilAct(){
   const c=U.cur, st=S.clients[c.k];

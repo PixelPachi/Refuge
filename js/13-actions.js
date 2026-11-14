@@ -23,7 +23,7 @@ const ACT = {
   openBuilder:(ds)=>openBuilder(ds.ctx),
   bBase:(ds)=>bBase(ds.k), bEss:(ds)=>bEss(ds.k), bAdd:(ds)=>bAdd(ds.k), bGo:()=>bGo(),
   relancer:()=>relancer(), taire:()=>taire(), reformuler:()=>reformuler(), reform:(ds)=>doReform(Number(ds.i)),
-  callLie:()=>callLie(), pifeuil:()=>pifeuilAct(),
+  callLie:()=>callLie(), pifeuil:()=>pifeuilAct(), doudou:()=>doudouAct(),
   finChoice:(ds)=>finChoice(ds.v),
   dStart:()=>enterNode(dmap().start), 
   dungeonNext:()=>dungeonNext(),
