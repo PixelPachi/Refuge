@@ -779,3 +779,6 @@ body.fxlock #app{pointer-events:none}
 .tipbub{position:fixed;z-index:9999;display:none;background:#241a14f2;color:#fbeedd;border:1px solid #c9a46a;border-radius:8px;padding:7px 10px;font-size:13px;line-height:1.35;box-shadow:0 4px 14px #0008;pointer-events:none;text-align:left}
 .st[data-tip]{cursor:help}
 .kwt{text-decoration:underline dotted;text-underline-offset:2px;cursor:help}
+/* Boutons secondaires dans les listes de réponses (menu…) : garder leur propre fond pour rester lisibles */
+.answers button.alt{background:#6b4b33;color:var(--paper);box-shadow:0 3px 0 #3d281b}
+.answers button.ghost{background:transparent;color:var(--paper);box-shadow:none;border:1.5px solid #6b4b33;text-align:center}

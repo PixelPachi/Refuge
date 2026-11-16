@@ -216,9 +216,10 @@ function villagerServed(res){
   const after = ()=>{ if(v.shiny){ pgShinyAfter(v, cardOk, nextGuest); return; } if(!cardOk){ nextGuest(); return; }
     const leg = !v.regular && VILL_LEGEND[v.key];
     S.villLeg=S.villLeg||{};
-    if(leg && !S.villLeg[v.key]){
+    // la carte légendaire d'un villageois ne s'obtient qu'en lui servant sa boisson fétiche
+    if(leg && !S.villLeg[v.key] && isFav){
       const tries=(S.villLegTries=S.villLegTries||{})[v.key]||0;
-      const chance=(isFav?0.2:0.08)+tries*0.03;
+      const chance=0.3+tries*0.1;
       if(Math.random()<chance){ S.villLeg[v.key]=true; ensureDeck(); deckAdd(leg); scInc("legend"); save(); jingle("apaise");
         playDialog([{who:{id:v.id,n:v.n},t:VILL_LEGEND_LINE[v.key]},{who:"narr",t:`<div class="giftcard"><span class="small">Carte légendaire, rien qu'à ${v.n} :</span>${cardHTML(leg)}</div>`}], nextGuest, ()=>renderDayScene(v)); return; }
       S.villLegTries[v.key]=tries+1;

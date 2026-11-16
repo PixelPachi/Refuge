@@ -56,7 +56,8 @@ function bookPages(){
     ${commandsHTML().replace('class="px" style="color:var(--candle);margin-top:12px"','class="bh"')}
     ${(S.chronicles||[]).length?`<div class="bh">Saisons passées</div>${S.chronicles.map(c=>`<p>Saison ${c.season} : ${c.apaise.length} âme${c.apaise.length>1?"s":""} apaisée${c.apaise.length>1?"s":""}${S.finale&&S.finale[c.season]==="win"?" · Faille apaisée":""}</p>`).join("")}`:""}`);
   add("emotions","emotions","Les émotions",`<p>Dans le Labyrinthe, un souvenir est <b>doublé</b> contre un Écho que son émotion dissout, et <b>divisé par deux</b> contre un Écho de la même émotion.</p>
-    ${Object.keys(EMO).map(e=>`<p><span class="frag" style="background:${EMO[e].c}">${EMO[e].i} ${EMO[e].n}</span> ${COUNTERS[e]&&COUNTERS[e].length?`dissout ${COUNTERS[e].map(x=>EMO[x].n).join(" et ")}`:""}</p>`).join("")}`);
+    ${Object.keys(EMO).map(e=>`<p><span class="frag" style="background:${EMO[e].c}">${EMO[e].i} ${EMO[e].n}</span> ${(()=>{ const by=Object.keys(COUNTERS).filter(x=>COUNTERS[x].includes(e)).map(x=>EMO[x].n); const d=(COUNTERS[e]||[]).map(x=>EMO[x].n);
+      return [d.length?`dissout ${d.join(" et ")}`:"ne dissout aucune émotion", by.length?`dissoute par ${by.join(" et ")}`:"rien ne la dissout"].join(" · "); })()}</p>`).join("")}`);
   return P;
 }
 function showRegistre(focus, tab){
