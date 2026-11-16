@@ -163,9 +163,9 @@ function runCards(x){
   const d=CL[x.k], extra=[];
   migrateFrags();
   S.fragments.filter(f=>ownFrag(f,x.k)).forEach(f=>{ const F=FRAG_CARD[f.e]||FRAG_CARD.joie;
-    extra.push(Object.assign({n:f.n.length>22?f.n.slice(0,21)+"…":f.n,full:f.n,c:0,t:F.dmg?"atk":"skill",exhaust:true,r:"frag",i:EMO[f.e].i,emo:f.e,frag:f,d:`Souvenir. ${F.txt}. Doublé contre un Écho que ${EMO[f.e].n} dissout. Usage unique.`},F)); });
+    extra.push(Object.assign({n:f.n.length>22?f.n.slice(0,21)+"…":f.n,full:f.n,c:0,t:F.dmg?"atk":"skill",exhaust:true,r:"frag",i:EMO[f.e].i,emo:f.e,frag:f,d:`${F.txt}.`},F)); });
   (S.keywords[x.k]||[]).forEach(k=>{ if(!d.reform[k]) return;
-    extra.push({n:`« ${k} »`,c:0,t:"skill",energy:1,draw:1,exhaust:true,r:"kw",i:"💬",kw:k,d:`Lui rappeler ce qu'il t'a confié. +1 énergie, pioche 1. Si c'est la salle dont il parle : 10 dégâts. Épuise.`}); });
+    extra.push({n:`« ${k} »`,c:0,t:"skill",energy:1,draw:1,exhaust:true,r:"kw",i:"💬",kw:k,d:`+1 énergie, pioche 1. 10 dégâts dans sa salle.`}); });
   return extra;
 }
 // Deck du Labyrinthe : celui du Tenancier, moins les cartes confiées à l'acolyte pour le Grand Écho
