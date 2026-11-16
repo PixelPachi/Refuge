@@ -775,3 +775,7 @@ body.fxlock #app{pointer-events:none}
 .dfr img.dfrimg{width:100%!important;height:100%!important;object-fit:fill;filter:none!important}
 .dfrin{overflow:hidden}
 .dfrin img{max-width:92%;max-height:92%}
+/* Infobulles des effets */
+.tipbub{position:fixed;z-index:9999;display:none;background:#241a14f2;color:#fbeedd;border:1px solid #c9a46a;border-radius:8px;padding:7px 10px;font-size:13px;line-height:1.35;box-shadow:0 4px 14px #0008;pointer-events:none;text-align:left}
+.st[data-tip]{cursor:help}
+.kwt{text-decoration:underline dotted;text-underline-offset:2px;cursor:help}
