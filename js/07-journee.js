@@ -57,8 +57,21 @@ function marketCardsHTML(){
   const sh=marketOffers(); ensureDeck();
   return `<div class="small muted">Elles rejoignent ton deck pour de bon. Ton deck : <b>${S.deck.length} cartes</b> · <a href="#" data-act="showDeck" style="color:var(--candle)">voir</a></div>
     <div class="dhand pick">${sh.ids.map((id,i)=>{ const pr=CARD_PRICE[CARDS[id].r]||60, sold=sh.bought.includes(i); return `<div class="dshop">${cardHTML(id,{dis:sold})}<button class="sm" data-act="buyCard" data-k="${i}" ${sold||S.money<pr?"disabled":""}>${sold?"Vendu":pr+" ₽"}</button></div>`; }).join("")}</div>
-    <button class="alt sm" style="width:100%" data-act="removeCardShop" ${S.money<50?"disabled":""}>Oublier une carte de mon deck (50 ₽)</button>`;
+    <button class="alt sm" style="width:100%" data-act="removeCardShop" ${S.money<50?"disabled":""}>Oublier une carte de mon deck (50 ₽)</button>
+    ${(S.season||1)>=2?`<button class="alt sm" style="width:100%;margin-top:6px" data-act="copyShop" ${copyDone()?"disabled":""}>🖨️ Photocopier une carte de mon deck${copyDone()?" (déjà fait aujourd'hui)":""}</button>`:""}`;
 }
+// ---- Photocopies de Kecleon (à partir de la saison 2) : dupliquer une carte du deck, une fois par jour ----
+const COPY_PRICE = {base:60, commune:80, peu:140, rare:220, jour:300, client:300, voyage:400, chroma:500, legende:650};
+function copyPrice(id){ const c=CARDS[id]; return c?COPY_PRICE[c.r]:null; }
+function copyDone(){ return S.copyDay===`${S.season||1}-${S.night}`; }
+function copyShop(){ ensureDeck(); if(copyDone()) return;
+  const ids=[...new Set(S.deck)].filter(id=>copyPrice(id)!=null).sort((a,b)=>copyPrice(b)-copyPrice(a)||CARDS[a].n.localeCompare(CARDS[b].n));
+  openModal(`<h3>🖨️ Photocopies</h3><p class="small muted">Kecleon recopie une carte de ton deck, trait pour trait. Une seule copie par jour ; plus la carte est rare, plus c'est cher. Ton deck : ${S.deck.length}/${DECK_MAX}${S.deck.length>=DECK_MAX?" (la copie ira dans ta réserve)":""}.</p>
+    <div class="dgrid">${ids.map(id=>{ const pr=copyPrice(id), ok=S.money>=pr; return `<div class="dshop"><div class="dwrap${ok?"":" dis"}" ${ok?`data-act="copyCard" data-k="${id}"`:""}>${cardHTML(id,{dis:!ok})}</div><div class="small center" style="font-weight:700;${ok?"":"opacity:.5"}">${pr} ₽</div></div>`; }).join("")}</div>
+    <button class="alt" style="width:100%;margin-top:10px" data-act="closeModal">Annuler</button>`); }
+function copyCard(id){ const pr=copyPrice(id); if(pr==null||S.money<pr||copyDone()) return;
+  S.money-=pr; S.copyDay=`${S.season||1}-${S.night}`; const inDeck=deckAdd(id); save(); closeModal(); cry(KECLEON.id);
+  toast(`${CARDS[id].n} photocopiée !${inDeck?"":" (dans ta réserve)"}`); renderMarket(); }
 function buyCard(i){ const sh=marketOffers(); i=Number(i); const id=sh.ids[i], pr=CARD_PRICE[CARDS[id].r]||60; if(sh.bought.includes(i)||S.money<pr) return; S.money-=pr; sh.bought.push(i); scInc("shop"); addCard(id); cry(KECLEON.id); renderMarket(); }
 function removeCardShop(){ ensureDeck(); if(S.deck.length<=DECK_MIN){ toast("Ton deck est déjà très léger."); return; }
   openModal(`<h3>Oublier une carte</h3><p class="small muted">Kecleon la reprend pour 50 ₽. Un deck plus léger, c'est de meilleures cartes plus souvent.</p><div class="dgrid">${S.deck.map((id,i)=>`<div class="dwrap" data-act="rmCard" data-i="${i}">${cardHTML(id)}</div>`).join("")}</div><button class="alt" style="width:100%;margin-top:10px" data-act="closeModal">Annuler</button>`); }

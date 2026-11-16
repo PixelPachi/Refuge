@@ -782,3 +782,4 @@ body.fxlock #app{pointer-events:none}
 /* Boutons secondaires dans les listes de réponses (menu…) : garder leur propre fond pour rester lisibles */
 .answers button.alt{background:#6b4b33;color:var(--paper);box-shadow:0 3px 0 #3d281b}
 .answers button.ghost{background:transparent;color:var(--paper);box-shadow:none;border:1.5px solid #6b4b33;text-align:center}
+.dwrap.dis{opacity:.55}

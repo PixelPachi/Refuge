@@ -37,7 +37,7 @@ const ACT = {
   goPath:(ds)=>enterNode(ds.t), restPick:(ds)=>restPick(ds.k), eventPick:(ds)=>eventPick(Number(ds.i)),
   leaveRoom:()=>{ U.dawn.restDone=false; advance(); }, dRunEnd:()=>dRunEnd(),
   showRunDeck:()=>openModal(`<h3>Le deck de ${CL[U.dawn.x.k].n}</h3>${(()=>{ const D=U.dawn; const cnt={}; const items=[]; D.run.forEach(e=>{ if(e.id==="_x") items.push(cardHTML("_x",{cd:e.cd,eff:true})); else cnt[e.id]=(cnt[e.id]||0)+1; }); return `<div class="dgrid">${Object.keys(cnt).map(id=>`<div class="dwrap">${cardHTML(id)}${cnt[id]>1?`<span class="dcnt">×${cnt[id]}</span>`:""}</div>`).join("")}${items.map(h=>`<div class="dwrap">${h}</div>`).join("")}</div>`; })()}<button style="width:100%;margin-top:10px" data-act="closeModal">Fermer</button>`),
-  pickCard:(ds)=>pickCard(Number(ds.i)), showDeck:()=>showDeck(), deckTab:(ds)=>showDeck(ds.t), moveCard:(ds)=>moveCard(ds.k), buyCard:(ds)=>buyCard(ds.k), removeCardShop:()=>removeCardShop(), rmCard:(ds)=>rmCard(Number(ds.i)),
+  pickCard:(ds)=>pickCard(Number(ds.i)), showDeck:()=>showDeck(), deckTab:(ds)=>showDeck(ds.t), moveCard:(ds)=>moveCard(ds.k), buyCard:(ds)=>buyCard(ds.k), removeCardShop:()=>removeCardShop(), rmCard:(ds)=>rmCard(Number(ds.i)), copyShop:()=>copyShop(), copyCard:(ds)=>copyCard(ds.k),
   hire:(ds)=>hire(ds.k),
   menu:()=>showMenu(), closeModal:()=>closeModal(),
   registre:(ds)=>{ U.book=null; showRegistre(ds.k||null); },
