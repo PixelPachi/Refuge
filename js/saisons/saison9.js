@@ -44,8 +44,8 @@ ROOM_SAY.dracolosse = {a:"Le port. Le soleil se couche. C'est ici que tout a com
 ROOM_KW.dracolosse = {b:"lettre",c:"adresse",k:"promesse"};
 BOSS.dracolosse = {id:149,n:"Ombre de la lettre perdue",self:true};
 LEGEND_CARD.dracolosse = "lettrelivree";
-CLIENT_CARD.dracolosse = "ouragan";
-CARDS.ouragan = {n:"Vol Postal",c:1,t:"atk",dmg:6,draw:1,r:"client",i:"✉️",from:"dracolosse"};
+CLIENT_CARD.dracolosse = "volpostal";
+CARDS.volpostal = {n:"Vol Postal",c:1,t:"atk",dmg:6,draw:1,r:"client",i:"✉️",from:"dracolosse"};
 CARDS.lettrelivree = {n:"La Lettre Livrée",c:1,t:"skill",heal:8,str:2,draw:2,r:"legende",i:"✉️",from:"dracolosse",d:"Soigne 8 PV, +2 Force, pioche 2. « Je regrette. » Enfin dit à quelqu'un."};
 
 // =====================================================================

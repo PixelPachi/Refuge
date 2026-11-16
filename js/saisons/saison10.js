@@ -89,8 +89,8 @@ ROOM_SAY.jirachi = {a:"Le champ, sous les étoiles. C'est ici qu'il m'a trouvé.
 ROOM_KW.jirachi = {b:"vœu",h:"sommeil",k:"promis"};
 BOSS.jirachi = {id:385,n:"Ombre des mille ans",self:true};
 LEGEND_CARD.jirachi = "septjours";
-CLIENT_CARD.jirachi = "voeu";
-CARDS.voeu = {n:"Vœu",c:1,t:"skill",heal:5,blockNext:6,draw:1,r:"client",i:"⭐",from:"jirachi",d:"Soigne 5 PV, 6 de Bouclier au prochain tour, pioche 1."};
+CLIENT_CARD.jirachi = "voeuetoile";
+CARDS.voeuetoile = {n:"Vœu",c:1,t:"skill",heal:5,blockNext:6,draw:1,r:"client",i:"⭐",from:"jirachi",d:"Soigne 5 PV, 6 de Bouclier au prochain tour, pioche 1."};
 CARDS.septjours = {n:"Les Sept Jours",c:1,t:"skill",heal:10,block:7,draw:1,retain:true,r:"legende",i:"⭐",from:"jirachi",d:"Soigne 10 PV, 7 de Bouclier, pioche 1. Retenue. Le vœu, ce n'est pas le papier."};
 
 // =====================================================================
